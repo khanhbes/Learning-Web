@@ -20,6 +20,8 @@ Mở http://127.0.0.1:3001. Hoặc chạy `Start BytePath.cmd` / `Stop BytePath.
 
 ## Đưa lên Botkeep
 
+Nếu cần link public tạm thời từ máy này, dùng **Start Public BytePath.cmd** / **Stop Public BytePath.cmd** theo [TUNNEL.md](docs/TUNNEL.md). Máy phải bật và có mạng; link/mật khẩu ở `.data/public/access.txt`, không đưa lên GitHub.
+
 Xem [hướng dẫn Botkeep](docs/BOTKEEP.md) và `.env.botkeep.example`. Repository: [khanhbes/Learning-Web](https://github.com/khanhbes/Learning-Web). Nhánh `main` chứa source; workflow kiểm thử/build rồi tạo **`botkeep-deploy`** có frontend build sẵn. Chọn nhánh này trong source GitHub của Botkeep, install `npm ci --omit=dev`, startup `node --v8-pool-size=1 scripts/cloud-start.mjs`. Runtime được tải và xác minh khi khởi động lần đầu, không cần upload ZIP vượt 5 MB.
 
 Botkeep chạy cả giao diện, backend và SQLite. Một người dùng đăng nhập bằng mật khẩu riêng; đây chưa phải hệ thống nhiều tài khoản. Chưa tự động xuất bản lên tài khoản Botkeep của bạn.

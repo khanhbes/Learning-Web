@@ -10,6 +10,11 @@ $env:BYTEPATH_MODE = 'local'
 $env:BYTEPATH_RUNNER = 'wasm'
 $env:SERVER_PORT = '3001'
 $env:PORT = '3001'
+try { $publicHealth = Invoke-RestMethod -Uri 'http://127.0.0.1:3002/api/health' -TimeoutSec 2 } catch { $publicHealth = $null }
+if ($publicHealth -and $publicHealth.mode -eq 'cloud' -and (Test-Path -LiteralPath '.data/public/state.json')) {
+    $publicState = Get-Content -Raw -LiteralPath '.data/public/state.json' | ConvertFrom-Json
+    if ($publicState.db -eq '.data/bytepath.sqlite') { throw 'Public BytePath is using your progress. Run Stop Public BytePath.cmd before starting local BytePath.' }
+}
 try { $existing = Invoke-RestMethod -Uri 'http://127.0.0.1:3001/api/health' -TimeoutSec 2 } catch { $existing = $null }
 if ($existing -and $existing.version) {
     if ($existing.mode -ne 'local') { throw 'A cloud server is already running on port 3001. Stop it before starting local BytePath.' }
