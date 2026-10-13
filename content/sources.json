@@ -1,0 +1,622 @@
+[
+  {
+    "id": "DSA-001",
+    "file": "773952020_4571187223201459_8567716111345376730_n.jpg",
+    "prefix": "773952020",
+    "collection": "interview",
+    "page": 8,
+    "topic": "Cây: đường kính, Same Tree, mã hóa cây",
+    "sha256": "9fbf4b5711b3de7346670743130df386eeb728bd556fd3fd450ec2da21a277ab",
+    "corrections": ["diameter"]
+  },
+  {
+    "id": "DSA-002",
+    "file": "774236902_1536531037686436_2585309489374672375_n.jpg",
+    "prefix": "774236902",
+    "collection": "interview",
+    "page": 9,
+    "topic": "Đồ thị: đảo, clone, chu trình",
+    "sha256": "ecf8f17d648df6446ea70abd1c5f6d02119d88e8c848a40f1c877f5fbb9c03e8",
+    "corrections": ["islands"]
+  },
+  {
+    "id": "DSA-003",
+    "file": "774680448_1080136488302199_6112334200767342904_n.jpg",
+    "prefix": "774680448",
+    "collection": "interview",
+    "page": 6,
+    "topic": "Stack: ngoặc, Min Stack, nhiệt độ",
+    "sha256": "1612be310d3d3597c60e1e73a1b7bf0465fd20d423f2bb614a5d0539d5a379ee",
+    "corrections": []
+  },
+  {
+    "id": "DSA-004",
+    "file": "775448175_2981753302158473_5111034655156267602_n.jpg",
+    "prefix": "775448175",
+    "collection": "interview",
+    "page": 1,
+    "topic": "Mảng: Two Sum, lợi nhuận, trùng lặp",
+    "sha256": "3c7f7ad95243534cfe504b71e88a94aee681cc0e19b21d5af67dc96d333ddd42",
+    "corrections": []
+  },
+  {
+    "id": "DSA-005",
+    "file": "775868873_1792041528483290_7166516676562344160_n.jpg",
+    "prefix": "775868873",
+    "collection": "interview",
+    "page": 7,
+    "topic": "Cây: độ sâu, đảo cây, LCA",
+    "sha256": "48f1a2f45a1baef9819a7e8882688eac6f48e466664369dae89cb632596cae56",
+    "corrections": []
+  },
+  {
+    "id": "DSA-006",
+    "file": "776040542_1400758315260652_2716957944390288153_n.jpg",
+    "prefix": "776040542",
+    "collection": "interview",
+    "page": 3,
+    "topic": "Chuỗi và cửa sổ trượt",
+    "sha256": "1faf6ab1fffe9fe78b9daf2cdefa97e5e3ab7f099aba3429d62af3f17d21a29f",
+    "corrections": []
+  },
+  {
+    "id": "DSA-007",
+    "file": "776100851_1956892538358505_4606845875145914846_n.jpg",
+    "prefix": "776100851",
+    "collection": "interview",
+    "page": 5,
+    "topic": "Linked list: đảo, trộn, chu trình",
+    "sha256": "fe91414afbcb49d6a46078d32d3110c616ae0bc27c1ab10bd453d8468ec221ea",
+    "corrections": []
+  },
+  {
+    "id": "DSA-008",
+    "file": "776222353_2177897126109359_1972917839518150191_n.jpg",
+    "prefix": "776222353",
+    "collection": "interview",
+    "page": 2,
+    "topic": "Tích mảng, Kadane, trộn mảng",
+    "sha256": "f00855a5d961d2d50e2bc7d0d070708d0d5584d121cc7d350434103dc1980f95",
+    "corrections": []
+  },
+  {
+    "id": "DSA-009",
+    "file": "778173128_1270288835108227_5171017457332079163_n.jpg",
+    "prefix": "778173128",
+    "collection": "interview",
+    "page": 10,
+    "topic": "Fibonacci, Knapsack, LCS",
+    "sha256": "37829a968b4d0b77151d9040da8f11246e3ec061abed8890f5c743bf99e83dd0",
+    "corrections": []
+  },
+  {
+    "id": "DSA-010",
+    "file": "778869907_2322175148323212_6101890995608359688_n.jpg",
+    "prefix": "778869907",
+    "collection": "notes",
+    "page": 6,
+    "topic": "Sắp xếp",
+    "sha256": "7528e48e743dcfa68d3a15fee026b3024ec36f9c4d2c19aa63542a5d5a8ac1ec",
+    "corrections": []
+  },
+  {
+    "id": "DSA-011",
+    "file": "778972158_1116509944142595_5539015709039367869_n.jpg",
+    "prefix": "778972158",
+    "collection": "interview",
+    "page": 4,
+    "topic": "Binary Search, mảng xoay, First Bad Version",
+    "sha256": "1b3b55b667980e1dc6b7cead6bb7b3fe79ca7d5941c80941ba42766d4cf73ec3",
+    "corrections": []
+  },
+  {
+    "id": "DSA-012",
+    "file": "780486757_1721812755604800_1305350250217477278_n.jpg",
+    "prefix": "780486757",
+    "collection": "patterns",
+    "page": 3,
+    "topic": "Fast & Slow Pointers",
+    "sha256": "a932b3677d6a506f49baaf503108b45a80ad51a620a3bb312ab7d922be61e33b",
+    "corrections": []
+  },
+  {
+    "id": "DSA-013",
+    "file": "781053356_2016552099005553_7315257646912427477_n.jpg",
+    "prefix": "781053356",
+    "collection": "patterns",
+    "page": 7,
+    "topic": "Two Pointers",
+    "sha256": "0e1c91fa6b9e6fe82687358849a888a7bc5836cf53734e626856491fa05da158",
+    "corrections": []
+  },
+  {
+    "id": "DSA-014",
+    "file": "782184692_1679398886489246_4763083170188994338_n.jpg",
+    "prefix": "782184692",
+    "collection": "patterns",
+    "page": 2,
+    "topic": "Sliding Window",
+    "sha256": "f8bd84306458721b7dd756f83684f65dc3a039730eaaf68ca049762a04c40cf3",
+    "corrections": []
+  },
+  {
+    "id": "DSA-015",
+    "file": "783288283_3600270930124043_1019853641373319383_n.jpg",
+    "prefix": "783288283",
+    "collection": "patterns",
+    "page": 6,
+    "topic": "Hashing",
+    "sha256": "82883e88db87237e68b02f0aa7f8695f3f0b293fdbff0d9c7d09603b322da374",
+    "corrections": []
+  },
+  {
+    "id": "DSA-016",
+    "file": "783608639_1593006352231869_6330582004905432437_n.jpg",
+    "prefix": "783608639",
+    "collection": "patterns",
+    "page": 12,
+    "topic": "Heap",
+    "sha256": "4665ad2515e49280299edeb6fd76c8ded035910ca738c8425f75beea52a9a3a8",
+    "corrections": []
+  },
+  {
+    "id": "DSA-017",
+    "file": "784003766_1024001947298295_6951215114479758168_n.jpg",
+    "prefix": "784003766",
+    "collection": "notes",
+    "page": 18,
+    "topic": "Cẩm nang ôn tập",
+    "sha256": "064db13b6870acf0001e47802cff956273ffe071fcb80bae016c0b757d7de60e",
+    "corrections": []
+  },
+  {
+    "id": "DSA-018",
+    "file": "784076100_4651434108423776_2724277731432986539_n.jpg",
+    "prefix": "784076100",
+    "collection": "notes",
+    "page": 14,
+    "topic": "Linked list",
+    "sha256": "0e1723aff9a3778d3541b4d521d72b24ca9b411860a33a26ac672648cb8e9d07",
+    "corrections": []
+  },
+  {
+    "id": "DSA-019",
+    "file": "784083222_1108610308397125_410993097950904239_n.jpg",
+    "prefix": "784083222",
+    "collection": "patterns",
+    "page": 0,
+    "topic": "Bìa: Pattern DSA",
+    "sha256": "13ae8523c9a5a16db18c82bb642b206154816c80ac59dedd9c7a36fc3334c02e",
+    "corrections": []
+  },
+  {
+    "id": "DSA-020",
+    "file": "784240284_1074082318420018_171980488343679267_n.jpg",
+    "prefix": "784240284",
+    "collection": "notes",
+    "page": 5,
+    "topic": "Tìm kiếm",
+    "sha256": "f470708b36ed4fe616af7c1067ffdb5eae1b005606505c0bdc7b05a52cfee545",
+    "corrections": []
+  },
+  {
+    "id": "DSA-021",
+    "file": "784252713_1442915781221627_3271582344615544871_n.jpg",
+    "prefix": "784252713",
+    "collection": "notes",
+    "page": 1,
+    "topic": "Giới thiệu DSA",
+    "sha256": "f04104ddbc1549fc8e9bb5c4f5d7b0da2cecbfc15cfb33d4a5c51e5f003b941e",
+    "corrections": []
+  },
+  {
+    "id": "DSA-022",
+    "file": "784426863_1776153393517700_1939625044285738519_n.jpg",
+    "prefix": "784426863",
+    "collection": "roadmap",
+    "page": 20,
+    "topic": "Roadmap & Recap",
+    "sha256": "7ef97d290df33203834b2e8f40ab569674e7f9bc565577b4cd41acb75d204356",
+    "corrections": []
+  },
+  {
+    "id": "DSA-023",
+    "file": "784616988_38289201217391515_6770235878391700889_n.jpg",
+    "prefix": "784616988",
+    "collection": "roadmap",
+    "page": 8,
+    "topic": "Linked lists",
+    "sha256": "22e070f4b660875a25d8c1846112c93eb734a1ca18924dd9f2a814665d3a8f0f",
+    "corrections": []
+  },
+  {
+    "id": "DSA-024",
+    "file": "784797440_1759070255306364_8556624140742782746_n.jpg",
+    "prefix": "784797440",
+    "collection": "notes",
+    "page": 16,
+    "topic": "Thao tác bit",
+    "sha256": "7b5c1dd68804fc87dc7fe879557e1a9b2035852dc71f88f5d0ea6630435adc48",
+    "corrections": []
+  },
+  {
+    "id": "DSA-025",
+    "file": "784877227_1791134602317813_3412676343258213544_n.jpg",
+    "prefix": "784877227",
+    "collection": "notes",
+    "page": 9,
+    "topic": "Sliding window",
+    "sha256": "51fd28db991a650f03bf40619a1c1aadf118c7153a3198277ccbb953134abda3",
+    "corrections": []
+  },
+  {
+    "id": "DSA-026",
+    "file": "785035048_1704679457271078_5337874472792692496_n.jpg",
+    "prefix": "785035048",
+    "collection": "roadmap",
+    "page": 16,
+    "topic": "Nhập môn DP",
+    "sha256": "cdd7df9c30433c991bdbac07bf39fc8ad3b22465cb3d5921bc6c9ef5b3657106",
+    "corrections": []
+  },
+  {
+    "id": "DSA-027",
+    "file": "785146756_1095973799480309_9113771725543965263_n.jpg",
+    "prefix": "785146756",
+    "collection": "patterns",
+    "page": 4,
+    "topic": "Prefix Sum",
+    "sha256": "7e66dc4f6809621510c0f4d622ffbbeda065e067063449aa250633cd289704ec",
+    "corrections": []
+  },
+  {
+    "id": "DSA-028",
+    "file": "785234418_1311516194197595_5983994942420217876_n.jpg",
+    "prefix": "785234418",
+    "collection": "notes",
+    "page": 4,
+    "topic": "Chuỗi",
+    "sha256": "04a6b645f0206c2828548cb9b2345ed81152b24184d6776d5b1e47e33d6a2b33",
+    "corrections": []
+  },
+  {
+    "id": "DSA-029",
+    "file": "785287985_2114364402806336_7706617476521691994_n.jpg",
+    "prefix": "785287985",
+    "collection": "notes",
+    "page": 17,
+    "topic": "Mẫu giải quyết vấn đề",
+    "sha256": "f47226695116a7333b79e73ab323ef588bb22fb70ee2525d6fe20e628d2babad",
+    "corrections": []
+  },
+  {
+    "id": "DSA-030",
+    "file": "785315237_1576143904292824_930713920455533274_n.jpg",
+    "prefix": "785315237",
+    "collection": "patterns",
+    "page": 11,
+    "topic": "Graph",
+    "sha256": "560204e122026312b9d0cc5dedaa42f1070b94a58078ff1f98b26fcdebc1f8af",
+    "corrections": []
+  },
+  {
+    "id": "DSA-031",
+    "file": "785583098_924082967430720_1887337522161604959_n.jpg",
+    "prefix": "785583098",
+    "collection": "notes",
+    "page": 14,
+    "topic": "Danh sách liên kết",
+    "sha256": "c9a7f0af8525b0bc592f26455b07fb4bb14e0e55e820996681b0d2a067fb9b58",
+    "corrections": []
+  },
+  {
+    "id": "DSA-032",
+    "file": "785926715_1449143983795717_6198248435522937598_n.jpg",
+    "prefix": "785926715",
+    "collection": "notes",
+    "page": 1,
+    "topic": "Giới thiệu DSA",
+    "sha256": "318929102a0db629e39462fe6638afa6cc24382e4da4c9354274f2776bb4daef",
+    "corrections": []
+  },
+  {
+    "id": "DSA-033",
+    "file": "786037131_5548724452019343_9210538151455991833_n.jpg",
+    "prefix": "786037131",
+    "collection": "patterns",
+    "page": 10,
+    "topic": "Tree",
+    "sha256": "75102ae74e1caf905beb1db66670892d92c31c946f5f778c0e65bd8926fc2e6d",
+    "corrections": []
+  },
+  {
+    "id": "DSA-034",
+    "file": "786927758_1044657448354303_6498625103591880753_n.jpg",
+    "prefix": "786927758",
+    "collection": "notes",
+    "page": 11,
+    "topic": "Hashing",
+    "sha256": "8cb68fd822e0c888fa7bcdc46fcf90e299a52a8a627e49c7a93cf0dbd407315e",
+    "corrections": []
+  },
+  {
+    "id": "DSA-035",
+    "file": "787046613_1072379125493188_2775738821326694769_n.jpg",
+    "prefix": "787046613",
+    "collection": "notes",
+    "page": 0,
+    "topic": "Bìa: Ghi chú DSA",
+    "sha256": "3be9044af817b09a24570080d4a79c575a6e3f4f2fd72481f469a25ac121f4ab",
+    "corrections": []
+  },
+  {
+    "id": "DSA-036",
+    "file": "787178887_1104123485623528_3156725728164469642_n.jpg",
+    "prefix": "787178887",
+    "collection": "notes",
+    "page": 7,
+    "topic": "Đệ quy",
+    "sha256": "7b33fa4ba4fc7e40fa04291589dd5991166871c6dbfb54030a02fa822bd50bf4",
+    "corrections": []
+  },
+  {
+    "id": "DSA-037",
+    "file": "787205013_1508718214346714_2075115431816786662_n.jpg",
+    "prefix": "787205013",
+    "collection": "notes",
+    "page": 15,
+    "topic": "Tìm kiếm nhị phân",
+    "sha256": "e7b0fea43f62fbb316c9b0f833cf31939235710cee967769f85074471fe56391",
+    "corrections": []
+  },
+  {
+    "id": "DSA-038",
+    "file": "787598499_1591308942388385_3439441341006974671_n.jpg",
+    "prefix": "787598499",
+    "collection": "roadmap",
+    "page": 10,
+    "topic": "Binary search",
+    "sha256": "a02795e491c7374275dd72aa7938c5eccbf1e934bebbab925b8ec956d08fca96",
+    "corrections": []
+  },
+  {
+    "id": "DSA-039",
+    "file": "787904001_1439598268016456_734368904126551079_n.jpg",
+    "prefix": "787904001",
+    "collection": "roadmap",
+    "page": 18,
+    "topic": "Greedy & bit tricks",
+    "sha256": "2d8cdf2b145e8425b10cbe0099a28c7267b648744f8eb9e8e25afe3dc13099aa",
+    "corrections": []
+  },
+  {
+    "id": "DSA-040",
+    "file": "787959061_1763165134825911_4486189403714471877_n.jpg",
+    "prefix": "787959061",
+    "collection": "notes",
+    "page": 2,
+    "topic": "Độ phức tạp thời gian và bộ nhớ",
+    "sha256": "641f297a42dfc7bdac46e951864f5f408a4140e7eea1e31821c757f9437d92ec",
+    "corrections": ["bounds"]
+  },
+  {
+    "id": "DSA-041",
+    "file": "788019536_1345078320715498_5390240286072924388_n.jpg",
+    "prefix": "788019536",
+    "collection": "roadmap",
+    "page": 19,
+    "topic": "Cheatsheet Pattern Map",
+    "sha256": "c0e928466d951506df02cb1cce4ed49f2fdc97ad4c98c8dffea7d3d946561ca2",
+    "corrections": []
+  },
+  {
+    "id": "DSA-042",
+    "file": "788141632_1042168378638300_9064509213329854154_n.jpg",
+    "prefix": "788141632",
+    "collection": "notes",
+    "page": 12,
+    "topic": "Stack",
+    "sha256": "39386266a77e2f8acffda0739aada3e1f301f63875874d1ba4098a8f60fd3d9e",
+    "corrections": []
+  },
+  {
+    "id": "DSA-043",
+    "file": "788218288_38673209152264227_3773763647866310522_n.jpg",
+    "prefix": "788218288",
+    "collection": "notes",
+    "page": 3,
+    "topic": "Mảng",
+    "sha256": "d9449e6a0fc6cbf51c623d44d08280f6a5e097673683329ade37671f1337c46f",
+    "corrections": []
+  },
+  {
+    "id": "DSA-044",
+    "file": "788230971_1409150691152024_7993267175400810156_n.jpg",
+    "prefix": "788230971",
+    "collection": "roadmap",
+    "page": 1,
+    "topic": "Bìa: ghi chú và tư duy DSA",
+    "sha256": "dc9bab8f29e2939db07327b741b9406fda9452ce1acc45105c9fb2fa19b57e85",
+    "corrections": []
+  },
+  {
+    "id": "DSA-045",
+    "file": "788361264_1689384228796968_1258277350453945309_n.jpg",
+    "prefix": "788361264",
+    "collection": "notes",
+    "page": 8,
+    "topic": "Two pointers",
+    "sha256": "980c8a1ce719978bfac82cecb776829a644d0bd3dd76bb310408bbf7fce2007c",
+    "corrections": []
+  },
+  {
+    "id": "DSA-046",
+    "file": "788413623_1095379143450011_1822905540967765772_n.jpg",
+    "prefix": "788413623",
+    "collection": "notes",
+    "page": 4,
+    "topic": "Chuỗi",
+    "sha256": "334cc34e10f7e4a28b1a21be2300b804ecf9ff6f01d7f8035e4b32e1aad708a4",
+    "corrections": ["runtime"]
+  },
+  {
+    "id": "DSA-047",
+    "file": "788629858_1318070890205851_3445549603447962024_n.jpg",
+    "prefix": "788629858",
+    "collection": "notes",
+    "page": 5,
+    "topic": "Tìm kiếm",
+    "sha256": "20a345f582b838dd265665971363ec7f3ecf483e340bb0a1400dda1380659368",
+    "corrections": []
+  },
+  {
+    "id": "DSA-048",
+    "file": "788640051_2659610327825733_8971438374832513577_n.jpg",
+    "prefix": "788640051",
+    "collection": "roadmap",
+    "page": 12,
+    "topic": "Trees & BST",
+    "sha256": "2261f51c3de9b9095e052e2361bce26117f870f61a35eef1b1c1fb02d701deed",
+    "corrections": ["height"]
+  },
+  {
+    "id": "DSA-049",
+    "file": "788689467_1052452514380949_7666895585474357478_n.jpg",
+    "prefix": "788689467",
+    "collection": "notes",
+    "page": 13,
+    "topic": "Queue & deque",
+    "sha256": "c73d761d0503f70f64a2d60d38a6e958cdff0acf402073b9858044251b78ce78",
+    "corrections": []
+  },
+  {
+    "id": "DSA-050",
+    "file": "788689477_3256642627849017_5234951013011619003_n.jpg",
+    "prefix": "788689477",
+    "collection": "notes",
+    "page": 10,
+    "topic": "Prefix sum & difference array",
+    "sha256": "349c7159babb8a16fd316c4ca3c3eb082ca6f7232d51cc7027e73cb99460932c",
+    "corrections": ["prefix-updates"]
+  },
+  {
+    "id": "DSA-051",
+    "file": "788705001_2086920791934500_974548874745252647_n.jpg",
+    "prefix": "788705001",
+    "collection": "roadmap",
+    "page": 14,
+    "topic": "Graphs BFS & DFS",
+    "sha256": "404273dcec66e3aaabfcf2ef703c082e4f0b0e68230efa7a2d348fc3e83c7753",
+    "corrections": ["graph-consistency"]
+  },
+  {
+    "id": "DSA-052",
+    "file": "788816683_1594828105347202_8535996820200705694_n.jpg",
+    "prefix": "788816683",
+    "collection": "roadmap",
+    "page": 11,
+    "topic": "Sorting essentials",
+    "sha256": "663b14b6f931d23a527ba0c38236360b8b9970a0de5a477208846254b5c0a3bb",
+    "corrections": []
+  },
+  {
+    "id": "DSA-053",
+    "file": "788879295_28395129056790040_2836581261332431932_n.jpg",
+    "prefix": "788879295",
+    "collection": "roadmap",
+    "page": 17,
+    "topic": "Classic DP patterns",
+    "sha256": "0726ad408ad2fa55e2f2d20f8cebbfa4ee0cb82c00b459b7a27b0fafe9a246d8",
+    "corrections": []
+  },
+  {
+    "id": "DSA-054",
+    "file": "788952208_1579724013876015_6782679289888237178_n.jpg",
+    "prefix": "788952208",
+    "collection": "notes",
+    "page": 8,
+    "topic": "Two pointers",
+    "sha256": "a8efc9913f82f1552092f03c5bebd566eb02921cfa6aacd3c39003170d9b8d21",
+    "corrections": []
+  },
+  {
+    "id": "DSA-055",
+    "file": "788953852_1619735759778051_837137232109089120_n.jpg",
+    "prefix": "788953852",
+    "collection": "roadmap",
+    "page": 4,
+    "topic": "Arrays & strings",
+    "sha256": "5991214864ea66e244f374a5be9dd7679f3fbe35bc1c71e2b6d11c28ffd24659",
+    "corrections": []
+  },
+  {
+    "id": "DSA-056",
+    "file": "789581073_2046449735978139_4366892344533991584_n.jpg",
+    "prefix": "789581073",
+    "collection": "roadmap",
+    "page": 6,
+    "topic": "Hashing & HashMaps",
+    "sha256": "3f2f0e1add72f79a22788a8c4354220b9425c9f01efd7d344e13af9ff2e2ad44",
+    "corrections": []
+  },
+  {
+    "id": "DSA-057",
+    "file": "790003285_1555412816324558_1982793432606894368_n.jpg",
+    "prefix": "790003285",
+    "collection": "roadmap",
+    "page": 15,
+    "topic": "Graphs: paths & order",
+    "sha256": "aa30b20fc7fe6b11b044e8f8d913c7c226313f508cb40216731ba3d9f75fef8d",
+    "corrections": ["dijkstra"]
+  },
+  {
+    "id": "DSA-058",
+    "file": "790086654_1407473307983562_5439334368758788301_n.jpg",
+    "prefix": "790086654",
+    "collection": "roadmap",
+    "page": 3,
+    "topic": "Big-O complexity",
+    "sha256": "f8d4af36686f495e5bffe270414c7655e979b5d294f9abf0b2d6e537b11304a0",
+    "corrections": []
+  },
+  {
+    "id": "DSA-059",
+    "file": "790425298_1054560957183655_3617744614474341236_n.jpg",
+    "prefix": "790425298",
+    "collection": "roadmap",
+    "page": 2,
+    "topic": "What & why DSA",
+    "sha256": "2473ae3dcf8ee6021e26a133c6dc88bc6be7412cbb4249b2be45a78112269ccf",
+    "corrections": []
+  },
+  {
+    "id": "DSA-060",
+    "file": "790440036_1585109863270722_4980906369290010042_n.jpg",
+    "prefix": "790440036",
+    "collection": "roadmap",
+    "page": 9,
+    "topic": "Recursion & backtracking",
+    "sha256": "bd82ee6b1b5f0cc1809d1a5de2cc5eb05db97f2bcd3b2c563c07de0cb753daa8",
+    "corrections": []
+  },
+  {
+    "id": "DSA-061",
+    "file": "790505739_1616404259828868_720585547464228384_n.jpg",
+    "prefix": "790505739",
+    "collection": "roadmap",
+    "page": 5,
+    "topic": "Two pointers & sliding window",
+    "sha256": "91de35b3f4f2f3b5af2daf1e29b61b234b91dbc77251797d4c8eef2c4e1c65e6",
+    "corrections": []
+  },
+  {
+    "id": "DSA-062",
+    "file": "791419364_1578381260751828_5743105945885543620_n.jpg",
+    "prefix": "791419364",
+    "collection": "roadmap",
+    "page": 7,
+    "topic": "Stacks & queues",
+    "sha256": "ecb6178e6b1c5c2285e780094cf53ffdcdebe29088b84b57ac1c1cdc2ae6b642",
+    "corrections": []
+  }
+]

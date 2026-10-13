@@ -1,0 +1,434 @@
+import { useEffect, useState } from "react";
+import {
+  Routes,
+  Route,
+  NavLink,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { AnimatePresence, motion } from "motion/react";
+import { api } from "./api";
+import { AppContext, useApp } from "./context";
+import type { AppState, Course } from "./types";
+import { Byte, Icon, Button, Modal, ProgressBar } from "./components";
+import {
+  Home,
+  League,
+  Quests,
+  Shop,
+  Profile,
+  Review,
+  Sources,
+  PracticeHub,
+} from "./pages";
+import LessonPage from "./LessonPage";
+import CapstonePage from "./CapstonePage";
+import SignIn from "./SignIn";
+const nav = [
+  ["/", "map", "Học"],
+  ["/review", "target", "Ôn tập"],
+  ["/league", "trophy", "Xếp hạng"],
+  ["/quests", "gift", "Nhiệm vụ"],
+  ["/shop", "shop", "Cửa hàng"],
+  ["/profile", "user", "Hồ sơ"],
+];
+function Sidebar() {
+  const { state } = useApp();
+  return (
+    <aside className="sidebar">
+      <Link to="/" className="brand" aria-label="BytePath trang chủ">
+        <span className="brand-symbol">
+          <Icon name="code" size={30} />
+        </span>
+        byte<span>path</span>
+        <span className="brand-dot">.</span>
+      </Link>
+      <nav aria-label="Điều hướng chính">
+        {nav.map(([to, icon, label]) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === "/"}
+            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+          >
+            <Icon name={icon} size={26} />
+            <span>{label}</span>
+            {to === "/review" && state.reviewDue > 0 ? (
+              <b className="nav-badge">{state.reviewDue}</b>
+            ) : null}
+          </NavLink>
+        ))}
+      </nav>
+      <div className="sidebar-bottom">
+        <div className="little-code">&lt; / &gt;</div>
+        <p>
+          Mỗi bước nhỏ.
+          <br />
+          <strong>Một ý tưởng lớn.</strong>
+        </p>
+        <Link to="/sources">
+          <Icon name="bookmark" size={17} /> Thư viện DSA
+        </Link>
+        <span className="local-label">
+          <i /> Học trên máy của bạn
+        </span>
+      </div>
+    </aside>
+  );
+}
+function Topbar() {
+  const { state, refresh, notify } = useApp();
+  return (
+    <header className="topbar">
+      <Link to="/" className="mobile-brand">
+        bytepath.
+      </Link>
+      <div className="course-label">
+        <span className="course-symbol">
+          <Icon name="code" size={20} />
+        </span>
+        <span>HÀNH TRÌNH DSA</span>
+      </div>
+      <div className="topbar-stats">
+        <button
+          className="language-chip"
+          title="Đổi ngôn ngữ lập trình"
+          onClick={async () => {
+            try {
+              await api("/profile", "PUT", {
+                ...state.profile,
+                language:
+                  state.profile.language === "python" ? "cpp" : "python",
+              });
+              await refresh();
+            } catch (e) {
+              notify((e as Error).message);
+            }
+          }}
+        >
+          <span className={`language-flag ${state.profile.language}`}>
+            {state.profile.language === "python" ? "Py" : "C+"}
+          </span>
+          <span>{state.profile.language === "python" ? "Python" : "C++"}</span>
+          <Icon name="next" size={14} />
+        </button>
+        <Link to="/profile" className="stat flame" title="Chuỗi ngày học">
+          <Icon name="flame" />
+          {state.streak}
+        </Link>
+        <Link to="/shop" className="stat gem" title="Gem của bạn">
+          <Icon name="gem" />
+          {state.gems}
+        </Link>
+        <Link
+          to="/shop"
+          className="stat energy"
+          title="Năng lượng · kiểm tra luôn miễn phí"
+        >
+          <Icon name="zap" />
+          {state.energy}
+          <small>/30</small>
+        </Link>
+      </div>
+    </header>
+  );
+}
+function Welcome() {
+  const { state, refresh, notify } = useApp();
+  const [name, setName] = useState("");
+  const [language, setLanguage] = useState<"python" | "cpp">("python");
+  const [goal, setGoal] = useState(50);
+  const [busy, setBusy] = useState(false);
+  return (
+    <Modal open={!state.profile.name} title="Chào mừng tới BytePath">
+      <div className="welcome">
+        <span className="eyebrow">MỘT HÀNH TRÌNH MỚI</span>
+        <Byte size={150} mood="wave" />
+        <h1>Chào bạn, mình là Byte!</h1>
+        <p>
+          Cùng biến những thuật toán khó hiểu thành những bước thật đơn giản
+          nhé.
+        </p>
+        <label>
+          Tên bạn là gì?
+          <input
+            autoFocus
+            maxLength={32}
+            placeholder="Tên của bạn"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+        <div className="welcome-languages">
+          {(["python", "cpp"] as const).map((l) => (
+            <button
+              key={l}
+              className={`choice ${language === l ? "chosen" : ""}`}
+              onClick={() => setLanguage(l)}
+            >
+              <span className={`language-flag ${l}`}>
+                {l === "python" ? "Py" : "C+"}
+              </span>
+              <strong>{l === "python" ? "Python" : "C++"}</strong>
+              <small>
+                {l === "python" ? "Dễ bắt đầu" : "Theo tài liệu gốc"}
+              </small>
+              {language === l && <Icon name="check" size={20} />}
+            </button>
+          ))}
+        </div>
+        <label>
+          Mục tiêu mỗi ngày
+          <select
+            value={goal}
+            onChange={(e) => setGoal(Number(e.target.value))}
+          >
+            <option value={20}>Nhẹ nhàng · 20 XP</option>
+            <option value={50}>Đều đặn · 50 XP</option>
+            <option value={100}>Tập trung · 100 XP</option>
+          </select>
+        </label>
+        <Button
+          busy={busy}
+          disabled={!name.trim()}
+          onClick={async () => {
+            setBusy(true);
+            try {
+              await api("/profile", "PUT", {
+                name: name.trim(),
+                language,
+                dailyGoal: goal,
+              });
+              await refresh();
+            } catch (e) {
+              notify((e as Error).message);
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          BẮT ĐẦU KHÁM PHÁ <Icon name="right" size={20} />
+        </Button>
+        <small>
+          Học theo tốc độ của bạn. Có thể đổi ngôn ngữ bất kỳ lúc nào.
+        </small>
+      </div>
+    </Modal>
+  );
+}
+function RightRail() {
+  const { state } = useApp(),
+    today = state.daily[state.today]?.xp || 0;
+  return (
+    <aside className="right-rail">
+      <div className="rail-illustration">
+        <div className="orbit orbit-one" />
+        <div className="orbit orbit-two" />
+        <span className="floating-code">&lt;/&gt;</span>
+        <Byte size={145} skin={state.profile.skin} />
+        <span className="floating-star">
+          <Icon name="star" size={22} />
+        </span>
+        <h3>
+          Một chút mỗi ngày,
+          <br />
+          tiến xa hơn bạn nghĩ.
+        </h3>
+      </div>
+      <section className="rail-section">
+        <div className="row between">
+          <h3>Mục tiêu hôm nay</h3>
+          <Icon name="target" className="orange-text" size={24} />
+        </div>
+        <div className="row between goal-numbers">
+          <span>
+            {Math.min(today, state.profile.dailyGoal)}{" "}
+            <small>/ {state.profile.dailyGoal} XP</small>
+          </span>
+          <span>
+            {Math.round(Math.min(1, today / state.profile.dailyGoal) * 100)}%
+          </span>
+        </div>
+        <ProgressBar
+          value={today}
+          max={state.profile.dailyGoal}
+          color="orange"
+        />
+        <p>
+          {today >= state.profile.dailyGoal
+            ? "Đã đạt mục tiêu. Byte tự hào về bạn!"
+            : "Bạn chỉ cần một bước nhỏ để bắt đầu."}
+        </p>
+      </section>
+      <section className="rail-section">
+        <div className="row between">
+          <h3>Nhiệm vụ hằng ngày</h3>
+          <Link className="text-link" to="/quests">
+            XEM TẤT CẢ
+          </Link>
+        </div>
+        {state.quests.slice(0, 2).map((q) => (
+          <div className="rail-quest" key={q.id}>
+            <span className={`quest-symbol ${q.id}`}>
+              <Icon name={q.icon} size={24} />
+            </span>
+            <div>
+              <strong>{q.title}</strong>
+              <ProgressBar value={q.current} max={q.target} />
+            </div>
+          </div>
+        ))}
+      </section>
+      <Link to="/league" className="league-teaser">
+        <span className="league-shield">
+          <Icon name="shield" size={32} />
+        </span>
+        <div>
+          <strong>Giải đấu {state.tierName}</strong>
+          <span>
+            Bạn đang ở hạng #{state.leagueRows.find((r) => !r.isBot)?.rank}
+          </span>
+          <small>19 đối thủ mô phỏng</small>
+        </div>
+        <Icon name="next" size={19} />
+      </Link>
+      <div className="rail-footer">
+        <Link to="/sources">TÀI LIỆU</Link>
+        <Link to="/profile">CÀI ĐẶT</Link>
+        <span>BYTEPATH © 2026</span>
+      </div>
+    </aside>
+  );
+}
+export default function App() {
+  const [state, setState] = useState<AppState | null>(null),
+    [course, setCourse] = useState<Course | null>(null),
+    [health, setHealth] = useState<any>(null),
+    [error, setError] = useState(""),
+    [toast, setToast] = useState("");
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const location = useLocation();
+  async function refresh() {
+    const [s, c] = await Promise.all([
+      api<AppState>("/state"),
+      api<Course>("/course"),
+    ]);
+    setState(s);
+    setCourse(c);
+    setNeedsLogin(false);
+    setError("");
+  }
+  useEffect(() => {
+    refresh().catch((e) => {
+      setError(e.message);
+      if (e.status === 401) setNeedsLogin(true);
+    });
+    api("/health")
+      .then(setHealth)
+      .catch(() => {});
+    const sync = () => {
+      refresh().catch((e) => {
+        if (e.status === 401) setNeedsLogin(true);
+      });
+      api("/health")
+        .then(setHealth)
+        .catch(() => {});
+    };
+    const timer = window.setInterval(sync, 30000);
+    window.addEventListener("focus", sync);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", sync);
+    };
+  }, []);
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(""), 5500);
+    return () => clearTimeout(timer);
+  }, [toast]);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location.pathname]);
+  if (needsLogin) return <SignIn onSuccess={refresh} />;
+  if (!state || !course)
+    return (
+      <div className="boot">
+        <Byte size={140} mood="thinking" />
+        <h2>
+          {error ? "Byte chưa kết nối được" : "Chuẩn bị hành trình của bạn…"}
+        </h2>
+        <p>{error || "Đang mở thư viện DSA"}</p>
+        {error && (
+          <Button onClick={() => window.location.reload()}>Thử lại</Button>
+        )}
+      </div>
+    );
+  const immersive = location.pathname.startsWith("/lesson/");
+  return (
+    <AppContext.Provider
+      value={{ state, course, refresh, notify: setToast, health }}
+    >
+      {!immersive && <Sidebar />}
+      <div className={immersive ? "immersive" : "app-content"}>
+        {!immersive && <Topbar />}
+        <div
+          className={
+            !immersive && location.pathname === "/"
+              ? "home-layout"
+              : "page-layout"
+          }
+        >
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/lesson/:id" element={<LessonPage />} />
+              <Route path="/review" element={<Review />} />
+              <Route path="/practice" element={<PracticeHub />} />
+              <Route path="/league" element={<League />} />
+              <Route path="/quests" element={<Quests />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/sources" element={<Sources />} />
+              <Route path="/capstone" element={<CapstonePage />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </main>
+          {!immersive && location.pathname === "/" && <RightRail />}
+        </div>
+      </div>
+      {!immersive && (
+        <nav className="mobile-nav" aria-label="Điều hướng điện thoại">
+          {nav.slice(0, 5).map(([to, icon, label]) => (
+            <NavLink key={to} to={to} end={to === "/"}>
+              <Icon name={icon} size={23} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+      )}
+      <Welcome />
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            className="toast"
+            role="status"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 20, opacity: 0 }}
+          >
+            <Icon name="info" size={22} />
+            <span>{toast}</span>
+            <button
+              className="icon-button"
+              onClick={() => setToast("")}
+              aria-label="Đóng thông báo"
+            >
+              <Icon name="close" size={18} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </AppContext.Provider>
+  );
+}
