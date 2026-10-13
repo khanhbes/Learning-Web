@@ -2,6 +2,8 @@
 
 Website, tiến độ SQLite và chấm code chạy trên máy của bạn tại http://127.0.0.1:3001. Python/C++ chạy trong WebAssembly với test/checker có sẵn; AI không quyết định điểm, pass/fail hoặc mở khóa. Không cần Docker, Botkeep hay tải model AI.
 
+DSA và ML có tiến độ riêng. ML dùng Python 3.14/Pyodide cùng NumPy, pandas, SciPy, scikit-learn và matplotlib trong Chromium cách ly. Xem [chuẩn bị runner ML](ML-RUNTIME.md), [học liệu](ML-CONTENT.md) và [cấp độ/vật phẩm](MULTI-COURSE-GAME.md). Khởi động lần đầu cần mạng để tải tài nguyên; chấm và học sau đó dùng offline.
+
 ## Khởi động
 
 Máy cần Node.js 24 trở lên. Chạy `Start BytePath.cmd` ở thư mục dự án, đợi thông báo sẵn sàng rồi mở địa chỉ trên. Launcher tạo `.env` từ `.env.example` nếu chưa có, cài dependency/runtime/build khi thiếu. Nó luôn dùng local tại cổng 3001 và runner WebAssembly, giữ nguyên key trong `.env`.
@@ -15,6 +17,7 @@ Nếu muốn chạy bằng terminal từ thư mục dự án:
 if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 npm.cmd ci
 npm.cmd run runner:setup
+npm.cmd run ml:setup
 npm.cmd run build
 npm.cmd start
 ```

@@ -1,5 +1,9 @@
 # Bàn giao BytePath — 13/10/2026
 
+## Bản mở rộng nhiều khóa
+
+Đã thêm ML 40+12, thư viện 40 mẹo/65 chủ đề phỏng vấn, 24 diện mạo, X2 theo lượt và 30 cấp. DSA giữ tiến độ và nguồn sau khi chuyển thư mục. SQLite/backup v2 nhận v1. Runner ML chạy Pyodide/Chromium sandbox trên Windows; AI giữ vai trò trợ giảng. Báo cáo mới ở [EXPANSION-REPORT.md](EXPANSION-REPORT.md), hướng dẫn [ML-RUNTIME.md](ML-RUNTIME.md). Các số liệu DSA dưới đây thuộc lần nghiệm thu trước; bản mở rộng có 80 test tự động, 384 reference ML trong browser và 24 ví dụ thư viện đã xác minh.
+
 Phương án hiện tại theo lựa chọn của người dùng: chạy local, chấm bằng test/checker có sẵn trên WebAssembly, Gemini chỉ trợ giảng và phản hồi. Không cần Docker hoặc Botkeep để học và chấm code. Ngày 13/10/2026, người dùng đã cấu hình key và một yêu cầu trợ giảng qua API thật đã trả lời thành công.
 
 ## Phạm vi đã hoàn thiện

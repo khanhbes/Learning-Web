@@ -21,9 +21,13 @@ if ($existing -and $existing.version) {
     Write-Host 'BytePath is already running: http://127.0.0.1:3001'
     exit 0
 }
-if (-not (Test-Path -LiteralPath 'node_modules')) { & npm.cmd ci; if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed.' } }
+if (-not (Test-Path -LiteralPath 'node_modules/playwright/package.json') -or -not (Test-Path -LiteralPath 'node_modules/pyodide/package.json')) { & npm.cmd ci; if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed.' } }
 & node --input-type=module -e "import { wasmHealth } from './server/wasm-runner.mjs'; if (!(await wasmHealth()).available) process.exit(1);"
 if ($LASTEXITCODE -ne 0) { & npm.cmd run runner:setup; if ($LASTEXITCODE -ne 0) { throw 'Runner setup failed. Check your connection and retry.' } }
+if (-not (Test-Path -LiteralPath '.runtime/ml/manifest.json')) {
+    & npm.cmd run ml:setup
+    if ($LASTEXITCODE -ne 0) { Write-Host 'ML runtime is not ready; DSA remains available. Run npm run ml:setup when storage/network are ready.' }
+}
 if (-not (Test-Path -LiteralPath 'dist/index.html')) { & npm.cmd run build; if ($LASTEXITCODE -ne 0) { throw 'Build failed.' } }
 New-Item -ItemType Directory -Force -Path '.data' | Out-Null
 $serverPath = Join-Path $projectRoot 'server/index.mjs'

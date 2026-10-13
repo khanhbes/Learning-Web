@@ -3,6 +3,8 @@ import type { AppState, Course } from "./types";
 export interface AppContextType {
   state: AppState;
   course: Course;
+  courses: Course[];
+  selectCourse: (courseId: string) => Promise<void>;
   refresh: () => Promise<void>;
   notify: (message: string) => void;
   health: any;

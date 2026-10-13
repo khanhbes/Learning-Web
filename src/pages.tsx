@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { useApp } from "./context";
 import { api, download } from "./api";
 import { Byte, Icon, Button, ProgressBar, Modal, Empty } from "./components";
 import type { Unit, LessonSummary } from "./types";
+import { ProfileLevel, ProfileFrames } from "./Expansion";
+import ExpandedShop from "./ExpandedShop";
 export function Home() {
   const { state, course, notify, refresh } = useApp(),
     navigate = useNavigate();
-  const next = course.lessons.find((l) => !l.progress?.passed && l.id <= 48);
-  const [unitId, setUnitId] = useState(next?.unitId || 11),
+  const next = course.lessons.find((l) => !l.progress?.passed && l.id <= (course.mandatoryCount || 48));
+  const [unitId, setUnitId] = useState(next?.unitId || course.units.at(-2)?.id || 1),
     [reward, setReward] = useState<any>(null);
   const unit = course.units.find((u) => u.id === unitId)!;
   const nodes = course.lessons.filter((l) => l.unitId === unitId);
@@ -21,24 +23,23 @@ export function Home() {
         <div>
           <span className="eyebrow">KHÓA HỌC CỦA BẠN</span>
           <h1>
-            Cấu trúc dữ liệu
-            <br className="desktop-br" /> & thuật toán
+            {course.title}
             <span className="title-spark">✦</span>
           </h1>
           <p>Hiểu từng bước. Tự mình giải được.</p>
         </div>
         <Link
-          to="/practice"
+          to="/courses"
           className="round-outline"
-          aria-label="Mở phòng thực hành"
+          aria-label="Chọn khóa học"
         >
-          <Icon name="code" size={26} />
+          <Icon name="layers" size={26} />
         </Link>
       </div>
       <div className="course-progress">
-        <ProgressBar value={state.completed} max={48} />
+        <ProgressBar value={state.completed} max={course.mandatoryCount || 48} />
         <span>
-          <b>{state.completed}</b> / 48 buổi
+          <b>{state.completed}</b> / {course.mandatoryCount || 48} buổi
         </span>
       </div>
       <div className={`unit-banner ${unit.color}`}>
@@ -53,7 +54,7 @@ export function Home() {
         <div>
           <span>
             CHẶNG {unit.id} ·{" "}
-            {unit.id === 12 ? "NÂNG CAO TỰ CHỌN" : `${nodes.length} BUỔI`}
+            {unit === course.units.at(-1) ? "NÂNG CAO TỰ CHỌN" : `${nodes.length} BUỔI`}
           </span>
           <h2>{unit.title}</h2>
         </div>
@@ -145,9 +146,9 @@ export function Home() {
                 aria-disabled={!available}
                 onClick={() =>
                   available
-                    ? navigate("/lesson/" + l.id)
+                    ? navigate(`/courses/${course.id}/lesson/` + l.id)
                     : notify(
-                        l.id > 48
+                        l.kind === "advanced"
                           ? "Hoàn thành khóa nền tảng và bài cuối khóa để mở phần nâng cao."
                           : `Hoàn thành buổi ${l.id - 1} để mở khóa buổi này.`,
                       )
@@ -200,7 +201,7 @@ export function Home() {
             aria-label="Mở hộp quà chặng"
             onClick={async () => {
               try {
-                const r = await api("/chests/" + unitId + "/claim", "POST");
+                const r = await api("/courses/" + course.id + "/chests/" + unitId + "/claim", "POST");
                 setReward(r.reward);
                 await refresh();
               } catch (e) {
@@ -228,7 +229,7 @@ export function Home() {
         >
           CHẶNG TIẾP <Icon name="right" size={18} />
         </Button>
-        <Link to="/capstone" className="capstone-link">
+        <Link to={`/courses/${course.id}/capstone`} className="capstone-link">
           <Icon name="graduate" /> Bài cuối khóa{" "}
           {state.capstoneUnlocked ? (
             <Icon name="next" size={18} />
@@ -273,11 +274,11 @@ export function PageHeading({ eyebrow, title, description, icon }: any) {
   );
 }
 export function Review() {
-  const { state } = useApp(),
+  const { state, course } = useApp(),
     [data, setData] = useState<any>(null);
   useEffect(() => {
-    api("/review").then(setData);
-  }, [state.completed]);
+    api("/review?courseId=" + course.id).then(setData);
+  }, [state.completed, course.id]);
   return (
     <div className="wide-page">
       <PageHeading
@@ -305,7 +306,7 @@ export function Review() {
       {data?.items.map((l: any) => (
         <Link
           key={l.id}
-          to={`/lesson/${l.id}?mode=review`}
+          to={`/courses/${course.id}/lesson/${l.id}?mode=review`}
           className="lesson-list-row"
         >
           <span className="list-icon">
@@ -355,10 +356,10 @@ export function PracticeHub() {
                 </span>
                 <div>
                   <h3>{l.title}</h3>
-                  <small>{l.problemIds.length} bài code · Python / C++</small>
+                  <small>{l.problemIds.length} bài code · {course.id === "ml" ? "Python" : "Python / C++"}</small>
                 </div>
                 {l.unlocked ? (
-                  <Link className="text-link" to={`/lesson/${l.id}?phase=code`}>
+                  <Link className="text-link" to={`/courses/${course.id}/lesson/${l.id}?phase=code`}>
                     LUYỆN <Icon name="next" size={16} />
                   </Link>
                 ) : (
@@ -545,150 +546,7 @@ export function Quests() {
     </div>
   );
 }
-export function Shop() {
-  const { state, refresh, notify } = useApp(),
-    [data, setData] = useState<any>(null),
-    [busy, setBusy] = useState("");
-  useEffect(() => {
-    api("/shop").then(setData);
-  }, []);
-  return (
-    <div className="wide-page">
-      <PageHeading
-        eyebrow="GÓC NHỎ CỦA BYTE"
-        title="Cửa hàng"
-        description="Đổi những nỗ lực của bạn thành một chút niềm vui."
-        icon="shop"
-      />
-      <div className="wallet">
-        <div>
-          <Icon name="gem" size={34} />
-          <span>
-            <b>{state.gems}</b> gem
-          </span>
-        </div>
-        <span>Kiếm gem bằng học và hoàn thành nhiệm vụ.</span>
-      </div>
-      <section className="shop-section">
-        <h2>Nạp lại để tiếp tục</h2>
-        {data?.items
-          .filter((i: any) => i.type !== "skin")
-          .map((item: any) => (
-            <div className="shop-item" key={item.id}>
-              <span className={`shop-item-icon ${item.type}`}>
-                <Icon
-                  name={item.type === "energy" ? "zap" : "shield"}
-                  size={44}
-                />
-              </span>
-              <div>
-                <h3>{item.name}</h3>
-                <p>{item.description}</p>
-                {item.type === "energy" ? (
-                  <small>Bạn có {state.energy}/30 năng lượng</small>
-                ) : (
-                  <small>Bạn có {state.freeze}/2 vật phẩm</small>
-                )}
-              </div>
-              <Button
-                busy={busy === item.id}
-                variant="outline"
-                disabled={
-                  state.gems < item.price ||
-                  (item.type === "energy" && state.energy === 30) ||
-                  (item.type === "freeze" && state.freeze === 2)
-                }
-                onClick={async () => {
-                  setBusy(item.id);
-                  try {
-                    await api("/shop/buy", "POST", { itemId: item.id });
-                    await refresh();
-                    notify("Vật phẩm đã vào túi của bạn!");
-                  } catch (e) {
-                    notify((e as Error).message);
-                  } finally {
-                    setBusy("");
-                  }
-                }}
-              >
-                <Icon name="gem" size={19} />
-                {item.price}
-              </Button>
-            </div>
-          ))}
-      </section>
-      <section className="shop-section">
-        <h2>Một diện mạo mới</h2>
-        <p>Byte vẫn là Byte, với bộ áo bạn yêu thích.</p>
-        <div className="skin-grid">
-          {[
-            { id: "original", name: "Byte nguyên bản", price: 0 },
-            ...(data?.items.filter((i: any) => i.type === "skin") ?? []),
-          ].map((item: any) => {
-            const owned = state.inventory.includes(item.id),
-              selected = state.profile.skin === item.id;
-            return (
-              <div
-                className={`skin-item ${selected ? "equipped" : ""}`}
-                key={item.id}
-              >
-                <Byte size={140} skin={item.id} />
-                <h3>{item.name}</h3>
-                <Button
-                  variant={selected ? "soft" : "outline"}
-                  busy={busy === item.id}
-                  disabled={selected || (!owned && state.gems < item.price)}
-                  onClick={async () => {
-                    setBusy(item.id);
-                    try {
-                      if (!owned)
-                        await api("/shop/buy", "POST", { itemId: item.id });
-                      else
-                        await api("/profile", "PUT", {
-                          ...state.profile,
-                          skin: item.id,
-                        });
-                      await refresh();
-                      notify(
-                        owned
-                          ? "Byte đã thay áo mới!"
-                          : "Bộ áo đã vào túi. Chọn để mặc cho Byte.",
-                      );
-                    } catch (e) {
-                      notify((e as Error).message);
-                    } finally {
-                      setBusy("");
-                    }
-                  }}
-                >
-                  {selected ? (
-                    <>
-                      <Icon name="check" size={16} /> ĐANG MẶC
-                    </>
-                  ) : owned ? (
-                    "MẶC CHO BYTE"
-                  ) : (
-                    <>
-                      <Icon name="gem" size={16} />
-                      {item.price}
-                    </>
-                  )}
-                </Button>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-      <details className="soft-note">
-        <summary>Hộp quà chặng có gì?</summary>
-        <p>
-          5 gem: 50% · 10 gem: 30% · 20 gem: 15% · 1 bảo vệ streak: 5%. Nếu đã
-          đủ 2 bảo vệ, nhận 10 gem. Mỗi hộp mở một lần.
-        </p>
-      </details>
-    </div>
-  );
-}
+export function Shop() { return <ExpandedShop />; }
 const badgeDefs = [
   [
     "debugger",
@@ -723,10 +581,25 @@ const badgeDefs = [
 ];
 export function Profile() {
   const { state, refresh, notify, health, course } = useApp();
+  const [settings, setSettings] = useState(state.profile.settings || {});
+  const pendingSettings = useRef(0);
+  useEffect(() => { if (!pendingSettings.current) setSettings(state.profile.settings || {}); }, [state.profile.settings]);
+  async function updateSetting(key: "sound" | "reducedMotion", value: boolean) {
+    const previous = settings[key];
+    pendingSettings.current++;
+    setSettings(current => ({ ...current, [key]: value }));
+    try {
+      await api("/profile", "PUT", { ...state.profile, settings: { [key]: value } });
+      await refresh();
+    } catch (err) {
+      setSettings(current => ({ ...current, [key]: previous }));
+      notify((err as Error).message);
+    } finally { pendingSettings.current--; }
+  }
   const allBadges = [
     ...badgeDefs,
     ...course.units
-      .filter((u) => u.range[0] <= 48)
+      .filter((u) => u.range[0] <= (course.mandatoryCount || 48))
       .map((u) => [
         "chapter-" + u.id,
         "Chặng " + u.id,
@@ -758,7 +631,7 @@ export function Profile() {
         icon="user"
       />
       <div className="profile-hero">
-        <Byte size={145} skin={state.profile.skin} />
+        <div className={`profile-avatar ${state.profile.avatarFrame || ""}`}><Byte size={145} skin={state.profile.skin} /></div>
         <div>
           <h2>{state.profile.name}</h2>
           <p>Nhà khám phá · Giải đấu {state.tierName}</p>
@@ -773,14 +646,14 @@ export function Profile() {
             </span>
             <span>
               <Icon name="book" />
-              {state.completed}/48 buổi
+              {state.completed}/{course.mandatoryCount || 48} buổi
             </span>
           </div>
         </div>
       </div>
       <div className="profile-progress">
         <h3>Mức hoàn thành khóa</h3>
-        <ProgressBar value={state.completed} max={48} />
+        <ProgressBar value={state.completed} max={course.mandatoryCount || 48} />
         <p>
           Điểm khóa hiện tại: <b>{state.courseScore}/100</b> · Bài cuối khóa:{" "}
           {state.capstonePassed
@@ -811,8 +684,18 @@ export function Profile() {
           ))}
         </div>
       </section>
+      <ProfileLevel />
+      <ProfileFrames />
       <section className="settings-section">
         <h2>Nhịp học của bạn</h2>
+        <label className="setting-toggle">
+          <input type="checkbox" checked={!!settings.sound} onChange={e => void updateSetting("sound", e.target.checked)} />
+          Âm thanh thành tích
+        </label>
+        <label className="setting-toggle">
+          <input type="checkbox" checked={!!settings.reducedMotion} onChange={e => void updateSetting("reducedMotion", e.target.checked)} />
+          Giảm chuyển động
+        </label>
         <label>
           Tên hiển thị
           <input
@@ -891,8 +774,8 @@ export function Profile() {
         </div>
         <div className="system-health">
           <span>
-            <i className={health?.runner.available ? "online" : "offline"} /> Bộ
-            chạy code: {health?.runner.available ? "Sẵn sàng" : "Chưa sẵn sàng"}
+            <i className={(course.id === "ml" ? health?.mlRunner?.available : health?.runner?.available) ? "online" : "offline"} /> Bộ
+            chạy code {course.id.toUpperCase()}: {(course.id === "ml" ? health?.mlRunner?.available : health?.runner?.available) ? "Sẵn sàng" : "Chưa sẵn sàng"}
           </span>
           <span>
             <i className={health?.ai.available ? "online" : "offline"} /> Trợ
@@ -923,13 +806,14 @@ export function Profile() {
   );
 }
 export function Sources() {
+  const { course } = useApp();
   const [data, setData] = useState<any>(null),
     [query, setQuery] = useState(""),
     [image, setImage] = useState<any>(null),
     [tab, setTab] = useState("images");
   useEffect(() => {
-    api("/sources").then(setData);
-  }, []);
+    api("/sources?courseId=" + course.id).then(setData);
+  }, [course.id]);
   const names: Record<string, string> = {
     interview: "30 bài phỏng vấn",
     notes: "Ghi chú DSA",
@@ -940,8 +824,8 @@ export function Sources() {
     <div className="wide-page">
       <PageHeading
         eyebrow="NỀN TẢNG CỦA KHÓA HỌC"
-        title="Thư viện DSA"
-        description="62 ảnh gốc, nội dung đã hệ thống hóa và sổ hiệu đính có thể đối chiếu."
+        title={"Thư viện " + course.id.toUpperCase()}
+        description={`${course.id === "ml" ? 65 : 62} ảnh gốc và nội dung hiệu đính có thể đối chiếu.`}
         icon="bookmark"
       />
       <div className="tabs">
@@ -949,7 +833,7 @@ export function Sources() {
           className={tab === "images" ? "active" : ""}
           onClick={() => setTab("images")}
         >
-          Ảnh nguồn <span>62</span>
+          Ảnh nguồn <span>{data?.sources?.length || 0}</span>
         </button>
         <button
           className={tab === "corrections" ? "active" : ""}
@@ -984,12 +868,12 @@ export function Sources() {
                   <div>
                     <img
                       loading="lazy"
-                      src={"/sources/" + s.file}
+                      src={s.url || "/sources/" + s.file}
                       alt={s.topic}
                     />
                   </div>
                   <span>
-                    {s.id} · {names[s.collection]}
+                    {s.id} · {names[s.collection] || s.collection}
                   </span>
                   <strong>{s.topic}</strong>
                   <small>Trang {s.page || "bìa"}</small>
@@ -1034,7 +918,7 @@ export function Sources() {
         {image && (
           <img
             className="source-full"
-            src={"/sources/" + image.file}
+            src={image.url || "/sources/" + image.file}
             alt={image.topic}
           />
         )}

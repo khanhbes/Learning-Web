@@ -23,8 +23,8 @@ export default function CodePanel({
   base?: string;
   graded?: boolean;
 }) {
-  const { state, notify, refresh } = useApp(),
-    [language, setLanguage] = useState<Language>(state.profile.language),
+  const { state, course, notify, refresh } = useApp(),
+    [language, setLanguage] = useState<Language>(attempt.courseId === "ml" ? "python" : state.profile.language),
     [pid, setPid] = useState(problems[0]?.id),
     [busy, setBusy] = useState(false),
     [result, setResult] = useState<any>(null),
@@ -66,7 +66,7 @@ export default function CodePanel({
       } while (job.status === "queued" || job.status === "running");
       setResult(job.result);
       const updated = await api<Attempt>(
-        `/${base === "capstones" ? "capstone" : base}/${attempt.id}`,
+        `/${base.endsWith("capstones") ? base.replace(/capstones$/, "capstone") : base}/${attempt.id}`,
       );
       onChange({
         ...current.current,
@@ -166,7 +166,7 @@ export default function CodePanel({
                   try {
                     setReference(
                       await api(
-                        "/solutions/" + p.id + "?lessonId=" + attempt.lessonId,
+                        "/solutions/" + p.id + "?lessonId=" + attempt.lessonId + "&courseId=" + (attempt.courseId || course.id),
                       ),
                     );
                   } catch (e) {
@@ -192,8 +192,8 @@ export default function CodePanel({
               value={language}
               onChange={(e) => setLanguage(e.target.value as Language)}
             >
-              <option value="python">Python 3.12</option>
-              <option value="cpp">C++17</option>
+              <option value="python">{attempt.courseId === "ml" ? "Python 3.14 · ML" : "Python 3.12"}</option>
+              {attempt.courseId !== "ml" && <option value="cpp">C++17</option>}
             </select>
             <button
               className="icon-button"

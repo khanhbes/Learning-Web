@@ -45,21 +45,24 @@ function question(id, prompt, correct, wrong, explanation, rng) {
     explanation,
   };
 }
-export function generateQuestions(lesson, mode, seed) {
+export function generateQuestions(lesson, mode, seed, definition = null) {
+  const lessonList=definition?.lessons??lessons,topics=definition?.topicQuestions??topicQuestions;
+  const inputFor=definition?.generateInput??generateInput,answerFor=definition?.oracle??oracle;
+  const check=definition?.checkOutput??checkOutput,problemList=definition?.problems??problems;
   const rng = random(seed),
     rows = [];
   const pool =
     lesson.kind === "exam"
-      ? lessons
+      ? lessonList
           .filter(
             (l) =>
               l.id < lesson.id &&
-              l.id > ({ 13: 0, 26: 13, 38: 26, 48: 38 }[lesson.id] ?? 0),
+              l.id > Math.max(0,...lessonList.filter(x=>x.kind==="exam" && x.id<lesson.id).map(x=>x.id)),
           )
           .flatMap((l) =>
-            topicQuestions[l.pack].map((row) => ({ row, pack: l.pack })),
+            topics[l.pack].map((row) => ({ row, pack: l.pack })),
           )
-      : topicQuestions[lesson.pack].map((row) => ({ row, pack: lesson.pack }));
+      : topics[lesson.pack].map((row) => ({ row, pack: lesson.pack }));
   const n =
     mode === "practice" || mode === "review"
       ? 8
@@ -85,19 +88,19 @@ export function generateQuestions(lesson, mode, seed) {
     const taskIds =
       lesson.kind === "exam" ? lesson.problemIds : [lesson.problemIds[0]];
     const pid = taskIds[i % taskIds.length],
-      input = generateInput(pid, `${seed}:trace:${i}`),
-      correct = JSON.stringify(oracle(pid, input)),
+      input = inputFor(pid, `${seed}:trace:${i}`),
+      correct = JSON.stringify(answerFor(pid, input)),
       wrong = [1, 2, 3, 4]
-        .map((j) => different(oracle(pid, input), j))
-        .filter((candidate) => !checkOutput(pid, input, candidate))
+        .map((j) => different(answerFor(pid, input), j))
+        .filter((candidate) => !check(pid, input, candidate))
         .map((candidate) => JSON.stringify(candidate));
     rows.push(
       question(
         `q-${i}`,
-        `Chạy tay ${problems[pid].title}. Kết quả trả về với dữ liệu sau là gì?`,
+        `Chạy tay ${problemList[pid].title}. Kết quả trả về với dữ liệu sau là gì?`,
         correct,
         wrong.slice(0, 2),
-        `Kết quả đúng là ${correct}. Đối chiếu các bước mô phỏng ${problems[pid].skill}.`,
+        `Kết quả đúng là ${correct}. Đối chiếu các bước mô phỏng ${problemList[pid].skill}.`,
         rng,
       ),
     );
@@ -106,17 +109,18 @@ export function generateQuestions(lesson, mode, seed) {
   }
   return rows;
 }
-export function newAttempt(lesson, mode, seed, id, now) {
+export function newAttempt(lesson, mode, seed, id, now, definition = null) {
   return {
     id,
+    courseId: definition?.course.id??"dsa",
     lessonId: lesson.id,
     mode,
     seed,
-    version: VERSION,
+    version: definition?.VERSION??VERSION,
     createdAt: now,
     updatedAt: now,
     status: "active",
-    questions: generateQuestions(lesson, mode, seed),
+    questions: generateQuestions(lesson, mode, seed,definition),
     answers: {},
     codeDrafts: {},
     codesPassed: [],
@@ -128,7 +132,7 @@ export function newAttempt(lesson, mode, seed, id, now) {
         : [],
     jobIds: [],
     result: null,
-    lab: ["practice", "review"].includes(mode) ? createLab(lesson, seed) : null,
+    lab: ["practice", "review"].includes(mode) ? (definition?.createLab??createLab)(lesson, seed) : null,
     learningCursor: {
       phase: mode === "review" ? "practice" : "learn",
       block: 0,

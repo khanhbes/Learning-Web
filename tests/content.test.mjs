@@ -25,7 +25,7 @@ test("62 source images are mapped and their checksums are correct", () => {
     assert.equal(
       s.sha256,
       createHash("sha256")
-        .update(readFileSync("DSA/" + s.file))
+        .update(readFileSync("study documents/DSA/" + s.file))
         .digest("hex"),
     );
 });

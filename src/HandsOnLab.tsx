@@ -122,11 +122,11 @@ export default function HandsOnLab({
               name={
                 lab.completed?.includes(item.id)
                   ? "check"
-                  : ["layers", "link", "code", "puzzle"][i]
+                  : ["layers", "link", "code", "puzzle"][i % 4]
               }
               size={18}
             />
-            <span>{["Xếp bước", "Ghép cặp", "Chạy tay", "Sửa lỗi"][i]}</span>
+            <span>{["Xếp bước", "Ghép cặp", "Chạy tay", "Sửa lỗi"][i % 4]}{i >= 4 ? " " + (i + 1) : ""}</span>
           </button>
         ))}
       </div>

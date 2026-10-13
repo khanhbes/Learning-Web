@@ -16,6 +16,8 @@ import QuizPane from "./QuizPane";
 import ConceptScene from "./ConceptScene";
 import HandsOnLab from "./HandsOnLab";
 import StructurePlayground from "./StructurePlayground";
+import MLVisualizer from "./MLVisualizer";
+import MLConceptScene from "./MLConceptScene";
 const phases = [
   ["learn", "Hiểu"],
   ["visual", "Khám phá"],
@@ -27,7 +29,7 @@ export default function LessonPage() {
   const { id } = useParams(),
     [params] = useSearchParams(),
     navigate = useNavigate(),
-    { state, refresh, notify, health } = useApp();
+    { state, course, refresh, notify, health } = useApp();
   const [lesson, setLesson] = useState<Lesson | null>(null),
     [attempt, setAttempt] = useState<Attempt | null>(null),
     [phase, setPhase] = useState(
@@ -56,6 +58,7 @@ export default function LessonPage() {
     try {
       const a = await api<Attempt>("/attempts", "POST", {
         lessonId: Number(id),
+        courseId: course.id,
         mode,
         retake,
       });
@@ -97,7 +100,7 @@ export default function LessonPage() {
     setRecallAnswer("");
     setPracticeView("lab");
     setVisualProblemId("");
-    api<Lesson>("/lessons/" + id)
+    api<Lesson>("/courses/" + course.id + "/lessons/" + id)
       .then(async (l) => {
         if (!active) return;
         setLesson(l);
@@ -123,7 +126,7 @@ export default function LessonPage() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, course.id]);
   useEffect(() => {
     if (!attempt || attempt.status !== "active") return;
     localStorage.setItem(
@@ -356,7 +359,7 @@ export default function LessonPage() {
                   />
                   <h1>{lesson.blocks[block].title}</h1>
                 </div>
-                {block !== 2 &&
+                {course.id !== "ml" && block !== 2 &&
                   block !== 5 &&
                   !lesson.blocks[block].problemId && (
                     <ConceptScene
@@ -365,7 +368,7 @@ export default function LessonPage() {
                       complexity={block === 4}
                     />
                   )}
-                {block === 2 && (
+                {course.id !== "ml" && block === 2 && (
                   <Visualizer
                     problemId={main.id}
                     defaultVariant={
@@ -373,12 +376,13 @@ export default function LessonPage() {
                     }
                   />
                 )}
-                {lesson.blocks[block].problemId && (
+                {course.id !== "ml" && lesson.blocks[block].problemId && (
                   <Visualizer
                     key={lesson.blocks[block].problemId}
                     problemId={lesson.blocks[block].problemId!}
                   />
                 )}
+                {course.id === "ml" && <MLConceptScene lesson={lesson} />}
                 <p className="teaching-text">{lesson.blocks[block].text}</p>
                 {block === 0 && (
                   <details className="recall-panel">
@@ -499,7 +503,7 @@ export default function LessonPage() {
                     </select>
                   </label>
                 )}
-                <Visualizer
+                {course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
                   key={visualProblemId || main.id}
                   problemId={visualProblemId || main.id}
                   defaultVariant={
@@ -510,14 +514,14 @@ export default function LessonPage() {
                         ? "counting"
                         : "insertion"
                   }
-                />
-                {lesson.id === 23 && (
+                />}
+                {course.id !== "ml" && lesson.id === 23 && (
                   <details>
                     <summary>So sánh Merge Sort và Quick Sort</summary>
                     <Visualizer problemId="sort" defaultVariant="merge" />
                   </details>
                 )}
-                <StructurePlayground pack={lesson.pack} />
+                {course.id !== "ml" && <StructurePlayground pack={lesson.pack} />}
                 <div className="algorithm-steps">
                   <h3>Cách tiếp cận</h3>
                   {lesson.steps.map((s, i) => (
@@ -656,7 +660,7 @@ export default function LessonPage() {
                   {lesson.sources.map((s) => (
                     <a
                       key={s.id}
-                      href={"/sources/" + s.file}
+                      href={s.url || "/sources/" + s.file}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -719,7 +723,7 @@ export default function LessonPage() {
                 : "Code bắt buộc: chưa đạt"
               : "Kết quả luyện giúp bạn chuẩn bị trước khi kiểm tra."}
           </p>
-          {result?.reward.xp > 0 && (
+          {result?.reward?.xp > 0 && (
             <div className="reward-strip">
               <span>
                 <Icon name="star" />+{result.reward.xp} XP
@@ -729,6 +733,7 @@ export default function LessonPage() {
               </span>
             </div>
           )}
+          {result?.reward?.bonusXp > 0 && <p className="boost-result">X2: {result.reward.baseXp} XP g?c + {result.reward.bonusXp} XP th?m ? c?n {result.reward.boostRemaining} l??t</p>}
           <details className="answer-review">
             <summary>Xem giải thích từng câu</summary>
             {result?.details.map((d: any, i: number) => (
@@ -806,6 +811,7 @@ export default function LessonPage() {
               const r = await api("/tutor", "POST", {
                 question,
                 lessonId: lesson.id,
+                courseId: course.id,
                 code: attempt.codeDrafts[main.id]?.[
                   state.profile.language
                 ]?.slice(0, 10000),
@@ -830,7 +836,7 @@ export default function LessonPage() {
           <div className="tutor-reply">
             <p>{tutorReply}</p>
             <Link
-              to={"/lesson/" + lesson.id + "?phase=learn"}
+              to={`/courses/${course.id}/lesson/` + lesson.id + "?phase=learn"}
               onClick={() => {
                 setTutorOpen(false);
                 setBlock(1);

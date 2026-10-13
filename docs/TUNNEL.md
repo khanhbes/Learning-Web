@@ -10,6 +10,8 @@ Web và SQLite chạy trên máy này; Cloudflare chuyển tiếp HTTPS tới ba
 - Chạy **Stop Public BytePath.cmd** để đóng tunnel và backend public. Dữ liệu/mật khẩu được giữ. Muốn trở về local, chạy **Start BytePath.cmd** sau khi dừng bản public.
 - Bấm Start Public khi bản public đang khỏe sẽ dùng lại link đang chạy. Nếu dừng tunnel rồi mở lại, Cloudflare cấp hostname mới; xem lại `access.txt`.
 
+Launcher kiểm tra cả backend trên máy và đầu tunnel HTTPS. Nếu tiến trình cloudflared vẫn tồn tại nhưng tunnel đã hết hiệu lực, Start Public tạo lại kết nối và cập nhật Worker, giữ mật khẩu và hồ sơ đang dùng. Khi địa chỉ ngắn đã được cấu hình, địa chỉ `hoc.bytepath.workers.dev` vẫn giữ nguyên.
+
 Máy phải bật, có Internet và không sleep để web hoạt động. Quick Tunnel là phương án tạm thời, không có cam kết uptime; hostname đổi khi tạo tunnel mới. Xem [tài liệu Cloudflare](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
 
 ## Quyền truy cập và dữ liệu

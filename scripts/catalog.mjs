@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { sourceMap, corrections } from "../content/sources-map.mjs";
-const files = readdirSync("DSA")
+const files = readdirSync("study documents/DSA")
   .filter((f) => f.endsWith(".jpg"))
   .sort();
 if (files.length !== 62 || sourceMap.length !== 62)
@@ -17,7 +17,7 @@ const catalog = files.map((file, index) => {
     page: entry[2],
     topic: entry[3],
     sha256: createHash("sha256")
-      .update(readFileSync("DSA/" + file))
+      .update(readFileSync("study documents/DSA/" + file))
       .digest("hex"),
     corrections: corrections
       .filter((c) => c.source === entry[0])

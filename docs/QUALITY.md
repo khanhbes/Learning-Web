@@ -1,5 +1,7 @@
 # Học liệu và kiểm chứng
 
+Bản mở rộng ML/nhiều khóa có báo cáo riêng tại [EXPANSION-REPORT.md](EXPANSION-REPORT.md): 80 test tự động, 200 seed mỗi mẫu ML/hoạt động, 384 reference browser, 24 ví dụ thư viện và luồng API chấm thật. Nội dung DSA và bằng chứng nghiệm thu trước được giữ dưới đây.
+
 ## Nội dung
 
 `content/sources.json` là danh mục 62 ảnh với mã tham chiếu, bộ tài liệu, trang, chủ đề và SHA-256. `content/sources-map.mjs` chứa sổ hiệu đính; màn hình Tài liệu cho xem ảnh gốc và phần sửa. Ảnh gốc không bị sửa.

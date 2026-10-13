@@ -25,13 +25,19 @@ if ($listeners -and -not $publicAppProcess) { throw 'Port 3002 belongs to anothe
 if ($tunnelProcess -and $publicAppProcess -and $state.db -eq $database) {
     try { $existing = Invoke-RestMethod -Uri 'http://127.0.0.1:3002/api/health' -TimeoutSec 2 } catch { $existing = $null }
     if ($existing -and $existing.mode -eq 'cloud') {
-        if ($state.publicOrigin -and (Test-Path -LiteralPath (Join-Path $privateRoot 'worker.json'))) {
-            & node (Join-Path $PSScriptRoot 'update-public-alias.mjs')
-            if ($LASTEXITCODE -ne 0) { Write-Warning ('Could not update the short address. Use the tunnel fallback URL: ' + $state.origin) }
+        try { $upstreamReady = Invoke-RestMethod -Uri ($state.origin + '/api/health') -TimeoutSec 5 } catch { $upstreamReady = $null }
+        if ($upstreamReady -and $upstreamReady.mode -eq 'cloud') {
+            if ($state.publicOrigin -and (Test-Path -LiteralPath (Join-Path $privateRoot 'worker.json'))) {
+                & node (Join-Path $PSScriptRoot 'update-public-alias.mjs')
+                if ($LASTEXITCODE -ne 0) { Write-Warning ('Could not update the short address. Use the tunnel fallback URL: ' + $state.origin) }
+            }
+            Write-Host ('Public BytePath: ' + $(if ($state.publicOrigin) { $state.publicOrigin } else { $state.origin }))
+            Write-Host ('Login password is in ' + $accessPath)
+            exit 0
         }
-        Write-Host ('Public BytePath: ' + $(if ($state.publicOrigin) { $state.publicOrigin } else { $state.origin }))
-        Write-Host ('Login password is in ' + $accessPath)
-        exit 0
+        Write-Host 'The old tunnel no longer responds. Reconnecting with the existing password and database.'
+        Stop-VerifiedPublicProcess $tunnelProcess
+        $tunnelProcess = $null
     }
 }
 Stop-VerifiedPublicProcess $publicAppProcess

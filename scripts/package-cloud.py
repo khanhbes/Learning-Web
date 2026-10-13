@@ -8,7 +8,7 @@ required = ['dist/index.html', '.runtime/manifest.json', 'package-lock.json']
 for name in required:
     if not (root / name).is_file():
         raise SystemExit('Missing ' + name + '; build/setup first.')
-folders = ['content', 'shared', 'server', 'src', 'dist', 'DSA', 'docs', '.runtime', 'tests', 'runner']
+folders = ['content', 'shared', 'server', 'src', 'dist', 'study documents', 'docs', '.runtime', 'tests', 'runner']
 files = ['package.json', 'package-lock.json', 'README.md', '.env.example', '.env.botkeep.example', 'index.html', 'tsconfig.json', 'vite.config.ts', '.gitignore']
 with ZipFile(output, 'w', ZIP_DEFLATED, compresslevel=6) as archive:
     for name in files:

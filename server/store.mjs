@@ -1,9 +1,11 @@
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
-export const DATA_VERSION = 1;
+import { normalizeCourses } from "./course-state.mjs";
+import { normalizeGamification, applyXPBoost, syncLevelRewards } from "./gamification.mjs";
+export const DATA_VERSION = 2;
 export function initialState(now = Date.now()) {
-  return {
+  return normalizeGamification(normalizeCourses({
     version: DATA_VERSION,
     profile: { name: "", language: "python", dailyGoal: 50, skin: "original" },
     xp: 0,
@@ -22,7 +24,7 @@ export function initialState(now = Date.now()) {
     league: { week: null, tier: 0, history: [] },
     capstonePassed: false,
     capstoneScore: 0,
-  };
+  }));
 }
 export function createStore(path = ".data/bytepath.sqlite") {
   if (path !== ":memory:") mkdirSync(dirname(path), { recursive: true });
@@ -36,16 +38,16 @@ CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY,status TEXT NOT NULL,data TE
 CREATE TABLE IF NOT EXISTS ledger(id TEXT PRIMARY KEY,created_at INTEGER NOT NULL,xp INTEGER NOT NULL,gems INTEGER NOT NULL,reason TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS drafts(id TEXT PRIMARY KEY,created_at INTEGER NOT NULL,data TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS capstones(id TEXT PRIMARY KEY,status TEXT NOT NULL,data TEXT NOT NULL);
-PRAGMA user_version=1;`);
+CREATE TABLE IF NOT EXISTS knowledge_attempts(id TEXT PRIMARY KEY,status TEXT NOT NULL,data TEXT NOT NULL);`);
   if (!db.prepare("SELECT value FROM meta WHERE key=?").get("state"))
     db.prepare("INSERT INTO meta VALUES (?,?)").run(
       "state",
       JSON.stringify(initialState()),
     );
-  const getState = () =>
+  const getState = () => normalizeGamification(normalizeCourses(
     JSON.parse(
       db.prepare("SELECT value FROM meta WHERE key=?").get("state").value,
-    );
+    )));
   const putState = (s) =>
     db
       .prepare("UPDATE meta SET value=? WHERE key=?")
@@ -62,47 +64,67 @@ PRAGMA user_version=1;`);
     }
   }
   function get(table, id) {
+    if(!["attempts","jobs","drafts","capstones","knowledge_attempts"].includes(table)) throw Error("Unknown table");
     const row = db.prepare(`SELECT data FROM ${table} WHERE id=?`).get(id);
-    return row ? JSON.parse(row.data) : null;
+    return row ? {courseId:"dsa",...JSON.parse(row.data)} : null;
   }
   function put(table, obj) {
     if (table === "attempts")
       db.prepare(
-        "INSERT INTO attempts VALUES (?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,data=excluded.data",
-      ).run(obj.id, obj.lessonId, obj.mode, obj.status, JSON.stringify(obj));
+        "INSERT INTO attempts(id,lesson_id,mode,status,data,course_id) VALUES (?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,data=excluded.data,course_id=excluded.course_id",
+      ).run(obj.id, obj.lessonId, obj.mode, obj.status, JSON.stringify(obj),obj.courseId??"dsa");
     else if (table === "drafts")
-      db.prepare("INSERT INTO drafts VALUES (?,?,?)").run(
+      db.prepare("INSERT INTO drafts(id,created_at,data,course_id) VALUES (?,?,?,?)").run(
         obj.id,
         obj.createdAt,
         JSON.stringify(obj),
+        obj.courseId??"dsa",
       );
     else
       db.prepare(
-        `INSERT INTO ${table} VALUES (?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,data=excluded.data`,
-      ).run(obj.id, obj.status, JSON.stringify(obj));
+        `INSERT INTO ${table}(id,status,data,course_id) VALUES (?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,data=excluded.data,course_id=excluded.course_id`,
+      ).run(obj.id, obj.status, JSON.stringify(obj),obj.courseId??"dsa");
   }
   const list = (table) =>
     db
       .prepare(`SELECT data FROM ${table} ORDER BY rowid DESC`)
       .all()
-      .map((r) => JSON.parse(r.data));
+      .map((r) => ({courseId:"dsa",...JSON.parse(r.data)}));
   function reward(
     state,
     id,
-    { xp = 0, gems = 0, reason = "", now = Date.now() },
+    { xp = 0, gems = 0, reason = "", now = Date.now(),courseId=null },
   ) {
     if (db.prepare("SELECT id FROM ledger WHERE id=?").get(id)) return false;
-    db.prepare("INSERT INTO ledger VALUES (?,?,?,?,?)").run(
+    const before=state.xp;
+    const grant=applyXPBoost(state,xp);
+    db.prepare("INSERT INTO ledger(id,created_at,xp,gems,reason,course_id) VALUES (?,?,?,?,?,?)").run(
       id,
       now,
-      xp,
+      grant.xp,
       gems,
       reason,
+      courseId,
     );
-    state.xp += xp;
+    state.xp += grant.xp;
     state.gems += gems;
+    state.lastReward={...grant,gems,id,courseId};
+    syncLevelRewards(state,{now,fromXp:before});
     return true;
   }
+  // Schema and old profile migrate together. Numeric lesson ids remain scoped
+  // by course, and historical rewards are preserved rather than reissued.
+  transaction(()=>{
+    for(const table of ["attempts","jobs","drafts","capstones","knowledge_attempts","ledger"]){
+      if(!db.prepare(`PRAGMA table_info(${table})`).all().some(c=>c.name==="course_id"))
+        db.exec(`ALTER TABLE ${table} ADD COLUMN course_id TEXT DEFAULT 'dsa'`);
+    }
+    const raw=JSON.parse(db.prepare("SELECT value FROM meta WHERE key='state'").get().value);
+    const migrated=normalizeGamification(normalizeCourses(raw),{retroactive:true});
+    migrated.version=DATA_VERSION;
+    putState(migrated);
+    db.exec("PRAGMA user_version=2");
+  });
   // Interrupted jobs are infrastructure errors, never student failures.
   for (const job of list("jobs"))
     if (job.status === "queued" || job.status === "running") {

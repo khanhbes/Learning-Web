@@ -7,8 +7,17 @@ import { Byte, Button, Icon, Modal, ProgressBar, Empty } from "./components";
 import type { Attempt } from "./types";
 import CodePanel from "./CodePanelLazy";
 import QuizPane from "./QuizPane";
+function ChurnChart({input}:{input:{p:number[];y:number[];threshold:number}}) {
+  return <section className="ml-visualizer"><h3>Đọc kết quả trên khách hàng giả lập</h3><p>Mỗi cột là xác suất rời dịch vụ. Màu cam: nhãn thật 1; màu xanh: nhãn thật 0. Hãy giải thích các cảnh báo nhầm và trường hợp bỏ sót.</p><svg viewBox="0 0 560 260" role="img" aria-label="Biểu đồ xác suất churn trên tập test; đường ngang là ngưỡng dự đoán dương">
+    <path d="M48 20v200h490" fill="none" stroke="#829880" strokeWidth="2"/>
+    {[0,.5,1].map(p=><g key={p}><path d={`M48 ${220-p*180}h490`} stroke="#dce7d8" strokeDasharray="4 4"/><text x="38" y={225-p*180} textAnchor="end" fontSize="13">{p}</text></g>)}
+    <path d={`M48 ${220-input.threshold*180}h490`} stroke="#9273ce" strokeWidth="2" strokeDasharray="5 4"/>
+    {input.p.map((p,i)=><g key={i}><rect x={63+i*460/input.p.length} y={220-p*180} width={Math.min(35,400/input.p.length)} height={p*180} rx="4" fill={input.y[i]===1?"#efaa43":"#58b92b"}><title>{`Khách ${i+1}: p=${p.toFixed(3)}, nhãn thật=${input.y[i]}`}</title></rect><text x={78+i*460/input.p.length} y="239" textAnchor="middle" fontSize="12">{i+1}</text></g>)}
+    <text x="270" y="258" textAnchor="middle" fontSize="12">Chỉ số khách trong tập test (bắt đầu 1 trên hình)</text><text transform="translate(14,142) rotate(-90)" textAnchor="middle" fontSize="12">Xác suất dự đoán [0,1]</text>
+  </svg><small>Ngưỡng {input.threshold}; p bằng ngưỡng được dự đoán là 1. Đây là hình phân tích, điểm do checker xác định.</small></section>;
+}
 export default function CapstonePage() {
-  const { state, refresh, notify } = useApp(),
+  const { state, course, refresh, notify } = useApp(),
     [data, setData] = useState<any>(null),
     [attempt, setAttempt] = useState<Attempt | null>(null),
     [tab, setTab] = useState("essay"),
@@ -18,10 +27,11 @@ export default function CapstonePage() {
     [feedback, setFeedback] = useState<any>(null),
     [result, setResult] = useState<any>(null),
     [versions, setVersions] = useState(false);
+  const prefix = "/courses/" + course.id + "/capstone";
   const current = useRef(attempt);
   current.current = attempt;
   useEffect(() => {
-    api("/capstone")
+    api(prefix)
       .then((d) => {
         setData(d);
         if (d.latest) {
@@ -47,12 +57,12 @@ export default function CapstonePage() {
         }
       })
       .catch((e) => notify(e.message));
-  }, []);
+  }, [course.id]);
   async function start(retake = false) {
     setBusy(true);
     try {
       const a = await api<Attempt>(
-        "/capstone" + (retake ? "/retake" : ""),
+        prefix + (retake ? "/retake" : ""),
         "POST",
         {},
       );
@@ -85,7 +95,7 @@ export default function CapstonePage() {
     const persist = async () => {
       try {
         const updated = await api<Attempt>(
-          "/capstone/" + attempt.id,
+          prefix + "/" + attempt.id,
           "PATCH",
           body,
         );
@@ -120,7 +130,7 @@ export default function CapstonePage() {
     const flush = () => {
       const a = current.current;
       if (a?.status === "active")
-        fetch("/api/capstone/" + a.id, {
+        fetch("/api" + prefix + "/" + a.id, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -134,7 +144,7 @@ export default function CapstonePage() {
     };
     window.addEventListener("pagehide", flush);
     return () => window.removeEventListener("pagehide", flush);
-  }, []);
+  }, [course.id]);
   if (!data)
     return (
       <div className="boot">
@@ -148,31 +158,31 @@ export default function CapstonePage() {
         <PageHeading
           eyebrow="ĐÍCH ĐẾN TIẾP THEO"
           title="Xây một điều có ích"
-          description="Dùng những gì bạn đã học để làm hệ thống lập kế hoạch học thông minh."
+          description={course.id === "ml" ? "Từ dữ liệu khách hàng đến một quy trình dự đoán có thể kiểm chứng." : "Dùng những gì bạn đã học để làm hệ thống lập kế hoạch học thông minh."}
           icon="graduate"
         />
         <div className="capstone-locked">
           <Byte size={210} mood="thinking" skin={state.profile.skin} />
           <h2>Mỗi chặng đều đưa bạn đến đây</h2>
           <p>
-            Hoàn thành 48 buổi nền tảng để mở bài luận kèm lập trình. Bạn đã đi
+            Hoàn thành {course.mandatoryCount || 48} buổi nền tảng để mở bài luận kèm lập trình. Bạn đã đi
             được {state.completed} buổi.
           </p>
-          <ProgressBar value={state.completed} max={48} />
+          <ProgressBar value={state.completed} max={course.mandatoryCount || 48} />
           <Link to="/" className="btn primary">
             TIẾP TỤC HÀNH TRÌNH <Icon name="right" size={19} />
           </Link>
         </div>
         <div className="capstone-preview">
-          <h3>Ba ý tưởng, một hệ thống</h3>
+          <h3>{course.id === "ml" ? "Ba chức năng, một pipeline" : "Ba ý tưởng, một hệ thống"}</h3>
           <p>
-            <Icon name="network" /> Sắp lịch theo tiên quyết bằng đồ thị
+            <Icon name="network" /> {course.id === "ml" ? "Tiền xử lý học từ train, tránh leakage" : "Sắp lịch theo tiên quyết bằng đồ thị"}
           </p>
           <p>
-            <Icon name="crown" /> Chọn công việc tiếp theo bằng priority queue
+            <Icon name="crown" /> {course.id === "ml" ? "Huấn luyện và dự đoán đúng cấu hình" : "Chọn công việc tiếp theo bằng priority queue"}
           </p>
           <p>
-            <Icon name="layers" /> Thống kê thời gian bằng prefix sum
+            <Icon name="layers" /> {course.id === "ml" ? "Tính metric và kiểm tra trường hợp biên" : "Thống kê thời gian bằng prefix sum"}
           </p>
         </div>
       </div>
@@ -190,13 +200,13 @@ export default function CapstonePage() {
       } catch {
         throw new Error("Bộ test cần là JSON hợp lệ.");
       }
-      await api("/capstone/" + attempt.id, "PATCH", {
+      await api(prefix + "/" + attempt.id, "PATCH", {
         essay: attempt.essay,
         answers: attempt.answers,
         codeDrafts: attempt.codeDrafts,
         customTests,
       });
-      const r = await api("/capstone/" + attempt.id + "/submit", "POST", {});
+      const r = await api(prefix + "/" + attempt.id + "/submit", "POST", {});
       setResult(r);
       setAttempt({ ...attempt, status: "completed", result: r });
       localStorage.removeItem("bytepath-capstone-" + attempt.id);
@@ -211,7 +221,7 @@ export default function CapstonePage() {
     <div className="capstone-page">
       <PageHeading
         eyebrow="BÀI CUỐI KHÓA"
-        title="Lập kế hoạch học thông minh"
+        title={course.id === "ml" ? "Dự đoán khách hàng ngừng sử dụng dịch vụ" : "Lập kế hoạch học thông minh"}
         description="Giải thích ý tưởng, viết code, kiểm chứng và nhìn lại cách mình đã giải bài."
         icon="graduate"
       />
@@ -241,7 +251,7 @@ export default function CapstonePage() {
               className="text-link"
               onClick={async () => {
                 try {
-                  setData(await api("/capstone"));
+                  setData(await api(prefix));
                   setVersions(true);
                 } catch (e) {
                   notify((e as Error).message);
@@ -302,6 +312,7 @@ export default function CapstonePage() {
               MARKDOWN
             </button>
           </div>
+          {course.id === "ml" && (attempt as any).tasks?.["ml-confusion"] && <ChurnChart input={(attempt as any).tasks["ml-confusion"]} />}
           <div className="tabs capstone-tabs">
             {[
               ["essay", "Bài luận"],
@@ -355,7 +366,7 @@ export default function CapstonePage() {
               attempt={attempt}
               problems={data.problems}
               onChange={setAttempt}
-              base="capstones"
+              base={`courses/${course.id}/capstones`}
               graded
             />
           ) : tab === "verify" ? (
@@ -369,14 +380,13 @@ export default function CapstonePage() {
               <h2>Test tốt phát hiện được lỗi</h2>
               <p>
                 Tạo tối đa 30 test. Mỗi test có problemId, input và expected.
-                Điểm kiểm thử dựa trên việc phát hiện 4 lỗi mẫu: bỏ tiên quyết,
-                bỏ ưu tiên, tie-break sai và lệch biên tổng đoạn.
+                {course.id === "ml" ? "Điểm kiểm thử dựa trên việc phát hiện các lỗi mẫu về leakage, dự đoán và tính metric." : "Điểm kiểm thử dựa trên việc phát hiện 4 lỗi mẫu: bỏ tiên quyết, bỏ ưu tiên, tie-break sai và lệch biên tổng đoạn."}
               </p>
               <details>
                 <summary>Xem cách viết một test</summary>
                 <pre>
                   {JSON.stringify(
-                    [
+                    course.id === "ml" ? (data.testExample || [{ problemId: data.problems[0]?.id, input: data.problems[0]?.sampleInput, expected: data.problems[0]?.sampleOutput }]) : [
                       {
                         problemId: "prefix",
                         input: { nums: [3, 1, 4], queries: [[0, 2]] },
@@ -445,7 +455,7 @@ export default function CapstonePage() {
                       <h2>{result.score}/100</h2>
                       <p>
                         {result.passed
-                          ? "Bạn đã hoàn thành khóa DSA nền tảng!"
+                          ? `Bạn đã hoàn thành khóa ${course.id.toUpperCase()} nền tảng!`
                           : "Dùng báo cáo để tìm phần cần cải thiện rồi thử đề mới."}
                       </p>
                     </div>
@@ -491,7 +501,7 @@ export default function CapstonePage() {
                       try {
                         setFeedback(
                           await api(
-                            "/capstone/" + attempt.id + "/feedback",
+                            prefix + "/" + attempt.id + "/feedback",
                             "POST",
                             {},
                           ),
@@ -558,7 +568,7 @@ export default function CapstonePage() {
                   className="version-row"
                   onClick={async () => {
                     try {
-                      const d = await api("/capstone/versions/" + v.id);
+                      const d = await api(prefix+"/versions/" + v.id);
                       if (attempt.status !== "active") {
                         download(
                           "bytepath-draft-" + v.id + ".json",

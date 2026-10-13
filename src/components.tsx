@@ -152,153 +152,7 @@ export function Button({
     </button>
   );
 }
-export function Byte({
-  size = 160,
-  mood = "happy",
-  skin = "original",
-  className = "",
-}: {
-  size?: number;
-  mood?: string;
-  skin?: string;
-  className?: string;
-}) {
-  const colors: Record<string, string[]> = {
-    original: ["#58cc02", "#46a302"],
-    ocean: ["#1cb0f6", "#138cca"],
-    sunset: ["#ff9600", "#e67e00"],
-    cosmic: ["#a560e8", "#8348c5"],
-  };
-  const [color, dark] = colors[skin] || colors.original;
-  const reduced = useReducedMotion();
-  return (
-    <motion.div
-      className={`byte byte-${mood} ${className}`}
-      style={{ width: size, height: size }}
-      animate={
-        reduced ? {} : { y: mood === "celebrate" ? [0, -12, 0] : [0, -4, 0] }
-      }
-      transition={{
-        duration: mood === "celebrate" ? 0.7 : 3,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    >
-      <svg
-        viewBox="0 0 180 180"
-        role="img"
-        aria-label={`Robot Byte ${mood === "celebrate" ? "đang ăn mừng" : mood === "thinking" ? "đang suy nghĩ" : "đồng hành cùng bạn"}`}
-      >
-        <ellipse cx="90" cy="169" rx="45" ry="8" fill="#d5ebc9" opacity=".6" />
-        <path
-          d="M62 144v16q0 7 10 7h9v-23M99 144v23h11q9 0 9-8v-15"
-          fill={dark}
-        />
-        <rect x="52" y="104" width="77" height="48" rx="22" fill={color} />
-        <path d="M64 114h52v25H64z" fill={dark} opacity=".35" />
-        <path
-          d="m86 119-9 7 9 7m11-14 9 7-9 7"
-          stroke="white"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-        <motion.path
-          d={
-            mood === "celebrate"
-              ? "M49 116Q20 100 23 80M132 116q25-19 25-36"
-              : mood === "wave"
-                ? "M52 117Q31 128 33 145M128 117q25-23 20-46"
-                : mood === "explaining"
-                  ? "M52 117Q31 128 33 145M128 117q26-4 25-28"
-                  : mood === "encouraging"
-                    ? "M52 117Q35 104 29 109M128 117q20-12 27-7"
-                    : "M52 117Q31 128 33 145M128 117q24 8 21 27"
-          }
-          animate={
-            mood === "wave" && !reduced ? { rotate: [0, -6, 0] } : { rotate: 0 }
-          }
-          style={{ transformOrigin: "90px 117px" }}
-          transition={{
-            duration: 1.1,
-            repeat: mood === "wave" && !reduced ? Infinity : 0,
-          }}
-          stroke={dark}
-          strokeWidth="14"
-          strokeLinecap="round"
-          fill="none"
-        />
-        <path d="M87 31V18" stroke={dark} strokeWidth="7" />
-        <circle cx="87" cy="14" r="8" fill="#ffc800" />
-        <rect x="24" y="57" width="15" height="34" rx="7" fill={dark} />
-        <rect x="140" y="57" width="15" height="34" rx="7" fill={dark} />
-        <rect x="33" y="31" width="114" height="80" rx="29" fill={color} />
-        <path
-          d="M54 40h47"
-          stroke="white"
-          strokeOpacity=".25"
-          strokeWidth="8"
-          strokeLinecap="round"
-        />
-        <rect x="44" y="51" width="92" height="48" rx="18" fill="#163f2b" />
-        <path
-          d="M54 57h52"
-          stroke="#fff"
-          strokeWidth="3"
-          strokeOpacity=".12"
-          strokeLinecap="round"
-        />
-        {mood === "sleep" ? (
-          <path
-            d="M60 73h14m32 0h14"
-            stroke="#bcf899"
-            strokeWidth="5"
-            strokeLinecap="round"
-          />
-        ) : mood === "celebrate" ? (
-          <path
-            d="M60 77q6-11 12 0m32 0q6-11 12 0"
-            stroke="#bcf899"
-            strokeWidth="5"
-            strokeLinecap="round"
-            fill="none"
-          />
-        ) : (
-          <>
-            <rect
-              x={mood === "thinking" ? 64 : 61}
-              y="65"
-              width="12"
-              height="17"
-              rx="6"
-              fill="#bcf899"
-            />
-            <rect
-              x={mood === "thinking" ? 108 : 104}
-              y="65"
-              width="12"
-              height="17"
-              rx="6"
-              fill="#bcf899"
-            />
-            <circle cx="66" cy="69" r="2" fill="white" />
-            <circle cx="109" cy="69" r="2" fill="white" />
-          </>
-        )}
-        <path
-          d={mood === "sad" ? "M83 89q7-6 14 0" : "M83 86q7 7 14 0"}
-          fill="none"
-          stroke="#bcf899"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-        <ellipse cx="55" cy="85" rx="5" ry="2.5" fill="#ffb0a3" opacity=".7" />
-        <ellipse cx="125" cy="85" rx="5" ry="2.5" fill="#ffb0a3" opacity=".7" />
-      </svg>
-    </motion.div>
-  );
-}
+export { default as Byte } from './Mascot';
 export function ProgressBar({
   value,
   max = 100,
@@ -327,7 +181,7 @@ export function ProgressBar({
     </div>
   );
 }
-export function Modal({ open, onClose, children, title }: any) {
+export function Modal({ open, onClose, children, title, className = "" }: any) {
   useEffect(() => {
     if (!open) return;
     const previousFocus = document.activeElement as HTMLElement | null;
@@ -392,7 +246,7 @@ export function Modal({ open, onClose, children, title }: any) {
             role="dialog"
             aria-modal="true"
             aria-label={title || "Thông báo"}
-            className="modal"
+            className={`modal ${className}`}
             initial={{ y: 30, scale: 0.97 }}
             animate={{ y: 0, scale: 1 }}
             exit={{ y: 20, opacity: 0 }}

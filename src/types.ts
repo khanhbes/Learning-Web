@@ -4,6 +4,9 @@ export interface Profile {
   language: Language;
   dailyGoal: number;
   skin: string;
+  avatarFrame?: string;
+  activeCourse?: string;
+  settings?: { sound?: boolean; reducedMotion?: boolean };
 }
 export interface Progress {
   passed: boolean;
@@ -12,6 +15,13 @@ export interface Progress {
   nextReview?: number;
 }
 export interface AppState {
+  activeCourse?: string;
+  courses?: Record<string, any>;
+  level?: { level: number; xpIntoLevel: number; xpForNext: number; progress: number; totalXp: number; capped: boolean };
+  rewardEvents?: any[];
+  consumables?: Record<string, number>;
+  activeBoost?: { itemId: string; charges: number; totalCharges: number } | null;
+  avatarFrames?: string[];
   profile: Profile;
   xp: number;
   gems: number;
@@ -78,6 +88,12 @@ export interface Course {
   version: string;
   lessons: LessonSummary[];
   units: Unit[];
+  description?: string;
+  mandatoryCount?: number;
+  advancedCount?: number;
+  languages?: Language[];
+  completed?: number;
+  capstoneTitle?: string;
 }
 export interface Question {
   id: string;
@@ -89,6 +105,7 @@ export interface Question {
   explanation?: string;
 }
 export interface Attempt {
+  courseId?: string;
   id: string;
   lessonId: number;
   mode: string;

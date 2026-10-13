@@ -134,7 +134,7 @@ export function recordXP(s, xp, now = Date.now()) {
 }
 export function quests(s, now = Date.now()) {
   const d = daily(s, now),
-    allDone = Object.values(s.progress).filter((p) => p.passed).length >= 48;
+    allDone = Object.values(s.progress).filter((p) => p.passed).length >= (s.mandatoryLessons??48);
   const canReview = Object.values(s.progress).some((p) => p.passed);
   return [
     {

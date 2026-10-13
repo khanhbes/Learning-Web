@@ -1,0 +1,1569 @@
+[
+  {
+    "id": "ML-807660311",
+    "courseId": "ml",
+    "prefix": "807660311",
+    "file": "807660311_1788430922171198_3619476015889788192_n.jpg",
+    "path": "study documents/ML/807660311_1788430922171198_3619476015889788192_n.jpg",
+    "sha256": "754bd8ed589870ac6a41d9439b174452f861d1eb3519a9d0375add9e783f0018",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 0,
+    "title": "Bìa",
+    "topics": [
+      "Bìa"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  },
+  {
+    "id": "ML-807484306",
+    "courseId": "ml",
+    "prefix": "807484306",
+    "file": "807484306_2155737241992647_796738691216532433_n.jpg",
+    "path": "study documents/ML/807484306_2155737241992647_796738691216532433_n.jpg",
+    "sha256": "2d91650df32ace0893ade97f38dd06bf7088821c0e25faf576c6db6d5a245849",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 1,
+    "title": "Nền tảng ML",
+    "topics": [
+      "Nền tảng ML"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806473750",
+    "courseId": "ml",
+    "prefix": "806473750",
+    "file": "806473750_38385930767717429_7335615508557947635_n.jpg",
+    "path": "study documents/ML/806473750_38385930767717429_7335615508557947635_n.jpg",
+    "sha256": "b74a71d88c3993f656a301ca9702540a2ca41b0c3e0f6eae61f1375f1b14a257",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 2,
+    "title": "Các loại học",
+    "topics": [
+      "Các loại học"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806416452",
+    "courseId": "ml",
+    "prefix": "806416452",
+    "file": "806416452_2213953426128626_6529860090031727170_n.jpg",
+    "path": "study documents/ML/806416452_2213953426128626_6529860090031727170_n.jpg",
+    "sha256": "5726d9881103a03f42d15881e65d0c7b6993c69a5d551f0720b194bafcf21e8f",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 3,
+    "title": "Dataset và feature",
+    "topics": [
+      "Dataset và feature"
+    ],
+    "lessonIds": [
+      7
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806473744",
+    "courseId": "ml",
+    "prefix": "806473744",
+    "file": "806473744_1465519362077522_4944573475073553295_n.jpg",
+    "path": "study documents/ML/806473744_1465519362077522_4944573475073553295_n.jpg",
+    "sha256": "b1435ca494f9330254afb42aae66ef595e4e678d8ecb4941b06c41f6bd8b11a4",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 4,
+    "title": "Tiền xử lý",
+    "topics": [
+      "Tiền xử lý"
+    ],
+    "lessonIds": [
+      9,
+      10,
+      11,
+      36
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807485581",
+    "courseId": "ml",
+    "prefix": "807485581",
+    "file": "807485581_1013714941673490_4002555015520515366_n.jpg",
+    "path": "study documents/ML/807485581_1013714941673490_4002555015520515366_n.jpg",
+    "sha256": "2e600a70ccc549d1a305588c0d127d23685061fa250574770c06b951786962e0",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 5,
+    "title": "EDA",
+    "topics": [
+      "EDA"
+    ],
+    "lessonIds": [
+      5,
+      8
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807877651",
+    "courseId": "ml",
+    "prefix": "807877651",
+    "file": "807877651_2091655025560651_149760899435043838_n.jpg",
+    "path": "study documents/ML/807877651_2091655025560651_149760899435043838_n.jpg",
+    "sha256": "7e3fc0fda4823f92912c4de0a8d415fb40a326d4919f40797f36631c96f333d4",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 6,
+    "title": "Supervised",
+    "topics": [
+      "Supervised"
+    ],
+    "lessonIds": [
+      14,
+      18
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-805696647",
+    "courseId": "ml",
+    "prefix": "805696647",
+    "file": "805696647_1134713965886652_2039638425238696604_n.jpg",
+    "path": "study documents/ML/805696647_1134713965886652_2039638425238696604_n.jpg",
+    "sha256": "abc909e952206078898391b58aa7e05147688c7bb585dd1ec8ff905c25ba2c08",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 7,
+    "title": "Regression",
+    "topics": [
+      "Regression"
+    ],
+    "lessonIds": [
+      14,
+      15,
+      16,
+      17
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806530621",
+    "courseId": "ml",
+    "prefix": "806530621",
+    "file": "806530621_1480916287160856_575178166300658605_n.jpg",
+    "path": "study documents/ML/806530621_1480916287160856_575178166300658605_n.jpg",
+    "sha256": "07f38b5d4c3fb38889e8eb4f0f528f0648a6ce1b5376931c6de1c17e39837e05",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 8,
+    "title": "Classification",
+    "topics": [
+      "Classification"
+    ],
+    "lessonIds": [
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807699729",
+    "courseId": "ml",
+    "prefix": "807699729",
+    "file": "807699729_2198480364033602_6723795366282043305_n.jpg",
+    "path": "study documents/ML/807699729_2198480364033602_6723795366282043305_n.jpg",
+    "sha256": "cf510aa20d42067e538e09cd0ed47b7fcc3fbc62f1a4505dfff614792320de74",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 9,
+    "title": "Unsupervised",
+    "topics": [
+      "Unsupervised"
+    ],
+    "lessonIds": [
+      31,
+      32,
+      33
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806687285",
+    "courseId": "ml",
+    "prefix": "806687285",
+    "file": "806687285_1394965752058765_5623179803836158754_n.jpg",
+    "path": "study documents/ML/806687285_1394965752058765_5623179803836158754_n.jpg",
+    "sha256": "98ed2541186e6e9d7726f2dee870bd1952083b9a485e154f2ea5855822dddab3",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 10,
+    "title": "Feature engineering",
+    "topics": [
+      "Feature engineering"
+    ],
+    "lessonIds": [
+      12
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-802699705",
+    "courseId": "ml",
+    "prefix": "802699705",
+    "file": "802699705_1149038690792965_1106040382941636283_n.jpg",
+    "path": "study documents/ML/802699705_1149038690792965_1106040382941636283_n.jpg",
+    "sha256": "5346c5ecfa54b31cc223f6a326fa323276f6d8b920ed4f42ffa0c1ac373d503b",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 11,
+    "title": "Metrics",
+    "topics": [
+      "Metrics"
+    ],
+    "lessonIds": [
+      25,
+      26,
+      27
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807921342",
+    "courseId": "ml",
+    "prefix": "807921342",
+    "file": "807921342_2126307657923785_3315897979671235260_n.jpg",
+    "path": "study documents/ML/807921342_2126307657923785_3315897979671235260_n.jpg",
+    "sha256": "e6cd843e2b88547f781dc96c19f222dd155c45f9311c8bc0d4c32214c9e01f45",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 12,
+    "title": "Cross-validation",
+    "topics": [
+      "Cross-validation"
+    ],
+    "lessonIds": [
+      29,
+      30
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806785671",
+    "courseId": "ml",
+    "prefix": "806785671",
+    "file": "806785671_1063652886387051_5851779255273679077_n.jpg",
+    "path": "study documents/ML/806785671_1063652886387051_5851779255273679077_n.jpg",
+    "sha256": "bb226f62e2f73084b1e19043adcaf8b86261f333fae4c7ecd880dff79afcfc7f",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 13,
+    "title": "Bias và variance",
+    "topics": [
+      "Bias và variance"
+    ],
+    "lessonIds": [
+      16,
+      17,
+      28
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806093391",
+    "courseId": "ml",
+    "prefix": "806093391",
+    "file": "806093391_1625317072534123_8615566002365898743_n.jpg",
+    "path": "study documents/ML/806093391_1625317072534123_8615566002365898743_n.jpg",
+    "sha256": "f6f9864a9062577e5028ba93dfd93202f0ab7a21cb67dd6a86ccc539e88e2d9d",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 14,
+    "title": "Ensemble",
+    "topics": [
+      "Ensemble"
+    ],
+    "lessonIds": [
+      21,
+      41,
+      42
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806790527",
+    "courseId": "ml",
+    "prefix": "806790527",
+    "file": "806790527_1111121908527140_9008212135563471537_n.jpg",
+    "path": "study documents/ML/806790527_1111121908527140_9008212135563471537_n.jpg",
+    "sha256": "c2d58551aadd5b2f1ccf9d554655dde9a0e86aaa96dcf11b5624cafae360d93b",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 15,
+    "title": "PCA và interpretability",
+    "topics": [
+      "PCA và interpretability"
+    ],
+    "lessonIds": [
+      34,
+      43
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807901017",
+    "courseId": "ml",
+    "prefix": "807901017",
+    "file": "807901017_1953196712573862_3332453614269141745_n.jpg",
+    "path": "study documents/ML/807901017_1953196712573862_3332453614269141745_n.jpg",
+    "sha256": "c4a0e76bcac38e93383b8ddb62498799beb13a3b6d18e589217a45f895014381",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 16,
+    "title": "Dự án",
+    "topics": [
+      "Dự án"
+    ],
+    "lessonIds": [
+      37
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-806118948",
+    "courseId": "ml",
+    "prefix": "806118948",
+    "file": "806118948_1614102983578874_1348510916674701250_n.jpg",
+    "path": "study documents/ML/806118948_1614102983578874_1348510916674701250_n.jpg",
+    "sha256": "8bc51172b57f20204b64b6f704698d0bc1ea949da5af3200e0425821bd14a888",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 17,
+    "title": "MLOps",
+    "topics": [
+      "MLOps"
+    ],
+    "lessonIds": [
+      38,
+      39,
+      51
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807284854",
+    "courseId": "ml",
+    "prefix": "807284854",
+    "file": "807284854_1866270298117849_440602753189679748_n.jpg",
+    "path": "study documents/ML/807284854_1866270298117849_440602753189679748_n.jpg",
+    "sha256": "f54a85d4b1305238bed218ec810bd4a0f0c2a5b59f0c16a2057f7e477519a992",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang ML đầy đủ",
+    "page": 18,
+    "title": "Ôn tập",
+    "topics": [
+      "Ôn tập"
+    ],
+    "lessonIds": [
+      40
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  },
+  {
+    "id": "ML-808730302",
+    "courseId": "ml",
+    "prefix": "808730302",
+    "file": "808730302_28186456437649260_6669583640980316929_n.jpg",
+    "path": "study documents/ML/808730302_28186456437649260_6669583640980316929_n.jpg",
+    "sha256": "54ac4b4ffe0e75d1628d171b5efc83dc6c8e5b33de5b1e56d08f55f659d8d664",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 1,
+    "title": "Giới thiệu",
+    "topics": [
+      "Giới thiệu"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-807590284",
+    "courseId": "ml",
+    "prefix": "807590284",
+    "file": "807590284_4062278380741385_4646494045374458731_n.jpg",
+    "path": "study documents/ML/807590284_4062278380741385_4646494045374458731_n.jpg",
+    "sha256": "ba550969b91ed6fb1f092e016c25c8e27d665d53cf6374ee0066fdafdd02a51a",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 2,
+    "title": "Các loại ML",
+    "topics": [
+      "Các loại ML"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809979323",
+    "courseId": "ml",
+    "prefix": "809979323",
+    "file": "809979323_1430090805724717_432163505023037749_n.jpg",
+    "path": "study documents/ML/809979323_1430090805724717_432163505023037749_n.jpg",
+    "sha256": "ae012efe1f3bbabf5a03d8503f5ec306376b36d0fa20fbe9f75577b9c00dd852",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 3,
+    "title": "Kiểu dữ liệu",
+    "topics": [
+      "Kiểu dữ liệu"
+    ],
+    "lessonIds": [
+      7
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809544128",
+    "courseId": "ml",
+    "prefix": "809544128",
+    "file": "809544128_1926262541693993_8396317041189826928_n.jpg",
+    "path": "study documents/ML/809544128_1926262541693993_8396317041189826928_n.jpg",
+    "sha256": "e981c8c9c5a04d0a9c45191d5e2b332d9093c5641adb572c069707735171ba85",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 4,
+    "title": "Features và labels",
+    "topics": [
+      "Features và labels"
+    ],
+    "lessonIds": [
+      7
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809209957",
+    "courseId": "ml",
+    "prefix": "809209957",
+    "file": "809209957_1514046363750494_5244876298995171135_n.jpg",
+    "path": "study documents/ML/809209957_1514046363750494_5244876298995171135_n.jpg",
+    "sha256": "2f052ee67bdb890a703a3c38d2af3ac87bad3555f44cce1e507bebda26ebef9e",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 5,
+    "title": "Train validation test",
+    "topics": [
+      "Train validation test"
+    ],
+    "lessonIds": [
+      9
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809386657",
+    "courseId": "ml",
+    "prefix": "809386657",
+    "file": "809386657_1083824910896760_1539424874491731911_n.jpg",
+    "path": "study documents/ML/809386657_1083824910896760_1539424874491731911_n.jpg",
+    "sha256": "b4b912903e8d28f5e40cf1ede1e7e0ae871880bcbff429543f9a3c939d9137bb",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 6,
+    "title": "Preprocessing",
+    "topics": [
+      "Preprocessing"
+    ],
+    "lessonIds": [
+      10,
+      11
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809226191",
+    "courseId": "ml",
+    "prefix": "809226191",
+    "file": "809226191_4669211043313637_204471200831716544_n.jpg",
+    "path": "study documents/ML/809226191_4669211043313637_204471200831716544_n.jpg",
+    "sha256": "03a6403ac317717269a59f1e84d00c1b5e397793dd742ae0c932569b7d9c41ac",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 7,
+    "title": "Regression",
+    "topics": [
+      "Regression"
+    ],
+    "lessonIds": [
+      14,
+      15,
+      27
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809980279",
+    "courseId": "ml",
+    "prefix": "809980279",
+    "file": "809980279_1054922554102180_8266506819184063326_n.jpg",
+    "path": "study documents/ML/809980279_1054922554102180_8266506819184063326_n.jpg",
+    "sha256": "c200c8946ca7b55f50d4a2cb9e2cd0d28f458a4df68e4a5adc0ca68d8a71fa57",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 8,
+    "title": "Classification",
+    "topics": [
+      "Classification"
+    ],
+    "lessonIds": [
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-808661757",
+    "courseId": "ml",
+    "prefix": "808661757",
+    "file": "808661757_1778420080065122_8357474366782307205_n.jpg",
+    "path": "study documents/ML/808661757_1778420080065122_8357474366782307205_n.jpg",
+    "sha256": "bbd38d10e1eb38ddb9826a511b12c2c55e0fd2647f90589c5c89eceb3df6750e",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 9,
+    "title": "Clustering",
+    "topics": [
+      "Clustering"
+    ],
+    "lessonIds": [
+      31,
+      32,
+      33,
+      44
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809259108",
+    "courseId": "ml",
+    "prefix": "809259108",
+    "file": "809259108_955839070183451_5398957555130246793_n.jpg",
+    "path": "study documents/ML/809259108_955839070183451_5398957555130246793_n.jpg",
+    "sha256": "1829e14af983948312ccde0d5100881df8de9613070b04e04b8f6e8a0d11bcc6",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 10,
+    "title": "Thuật toán",
+    "topics": [
+      "Thuật toán"
+    ],
+    "lessonIds": [
+      14,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      31
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809235391",
+    "courseId": "ml",
+    "prefix": "809235391",
+    "file": "809235391_2097497170851188_5107262417451626857_n.jpg",
+    "path": "study documents/ML/809235391_2097497170851188_5107262417451626857_n.jpg",
+    "sha256": "a8a27c73b01d4716866a6e6246b6286b3355a065a5b7d29d49ffe4c35446e83e",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 11,
+    "title": "Overfit underfit",
+    "topics": [
+      "Overfit underfit"
+    ],
+    "lessonIds": [
+      16,
+      17,
+      28
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809039208",
+    "courseId": "ml",
+    "prefix": "809039208",
+    "file": "809039208_3587475988066655_7361579869078039787_n.jpg",
+    "path": "study documents/ML/809039208_3587475988066655_7361579869078039787_n.jpg",
+    "sha256": "6330e3c2a7909c086bafffefba5fa946aeee8aa2cf586294fe169393d980f2a1",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 12,
+    "title": "Đánh giá",
+    "topics": [
+      "Đánh giá"
+    ],
+    "lessonIds": [
+      25,
+      26,
+      27
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809168003",
+    "courseId": "ml",
+    "prefix": "809168003",
+    "file": "809168003_1086757884265800_9148252092321771868_n.jpg",
+    "path": "study documents/ML/809168003_1086757884265800_9148252092321771868_n.jpg",
+    "sha256": "7f8fa0b66179f1bcaf0a78c2d4b0caa26871ebc2e20dd706c6e7839c9308b8d9",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 13,
+    "title": "Feature engineering",
+    "topics": [
+      "Feature engineering"
+    ],
+    "lessonIds": [
+      12,
+      43
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-808123932",
+    "courseId": "ml",
+    "prefix": "808123932",
+    "file": "808123932_2293070284842824_2731528210946898837_n.jpg",
+    "path": "study documents/ML/808123932_2293070284842824_2731528210946898837_n.jpg",
+    "sha256": "3036c2991ffede6490f3db750fa4aafb2e7b822ccce235ae1b95966f1bb932cc",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 14,
+    "title": "Cải thiện model",
+    "topics": [
+      "Cải thiện model"
+    ],
+    "lessonIds": [
+      28,
+      29,
+      30
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-809940084",
+    "courseId": "ml",
+    "prefix": "809940084",
+    "file": "809940084_1546383753458973_4717943160256787324_n.jpg",
+    "path": "study documents/ML/809940084_1546383753458973_4717943160256787324_n.jpg",
+    "sha256": "73ae2feed0f0249ad3a311a5c23e51ba5fea6ab6c36caa6b80043f358cf8fdfa",
+    "pack": "basic",
+    "packTitle": "ML dành cho lập trình viên",
+    "page": 15,
+    "title": "Tổng kết",
+    "topics": [
+      "Tổng kết"
+    ],
+    "lessonIds": [
+      40
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  },
+  {
+    "id": "ML-809465304",
+    "courseId": "ml",
+    "prefix": "809465304",
+    "file": "809465304_2065164654140763_1095059093455598059_n.jpg",
+    "path": "study documents/ML/809465304_2065164654140763_1095059093455598059_n.jpg",
+    "sha256": "e4c36262c7caa64d8e7fea8e6424c4fb43a873413078babd78d2ba732ed41141",
+    "pack": "cover",
+    "packTitle": "Ghi chú cơ bản",
+    "page": 1,
+    "title": "Bìa và lộ trình",
+    "topics": [
+      "Bìa và lộ trình"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  },
+  {
+    "id": "ML-825567823",
+    "courseId": "ml",
+    "prefix": "825567823",
+    "file": "825567823_4271210633170668_2683190759345854600_n.jpg",
+    "path": "study documents/ML/825567823_4271210633170668_2683190759345854600_n.jpg",
+    "sha256": "b86c4a1e60be1388da00e97e031fa72870f4012ea2f0d68a43b8d9e4b6a62670",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 1,
+    "title": "Phỏng vấn 1–5",
+    "topics": [
+      "Phỏng vấn 1–5"
+    ],
+    "lessonIds": [
+      1,
+      49,
+      50
+    ],
+    "interviewIds": [
+      "ml-interview-01",
+      "ml-interview-02",
+      "ml-interview-03",
+      "ml-interview-04",
+      "ml-interview-05"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-825268151",
+    "courseId": "ml",
+    "prefix": "825268151",
+    "file": "825268151_4369796503351031_2371343453569926965_n.jpg",
+    "path": "study documents/ML/825268151_4369796503351031_2371343453569926965_n.jpg",
+    "sha256": "09074acda57af9138f91606c859f9b69100918085f56a36d9e661a432c02ee02",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 2,
+    "title": "Phỏng vấn 6–10",
+    "topics": [
+      "Phỏng vấn 6–10"
+    ],
+    "lessonIds": [
+      49,
+      50
+    ],
+    "interviewIds": [
+      "ml-interview-06",
+      "ml-interview-07",
+      "ml-interview-08",
+      "ml-interview-09",
+      "ml-interview-10"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-825273896",
+    "courseId": "ml",
+    "prefix": "825273896",
+    "file": "825273896_1620626243047931_8182025162250033328_n.jpg",
+    "path": "study documents/ML/825273896_1620626243047931_8182025162250033328_n.jpg",
+    "sha256": "9558455739d6efb2fe07c38264f81c92bf22ace3d76145721de9e1b51d361189",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 3,
+    "title": "Phỏng vấn 11–15",
+    "topics": [
+      "Phỏng vấn 11–15"
+    ],
+    "lessonIds": [
+      10,
+      11,
+      12,
+      17,
+      43
+    ],
+    "interviewIds": [
+      "ml-interview-11",
+      "ml-interview-12",
+      "ml-interview-13",
+      "ml-interview-14",
+      "ml-interview-15"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-823562989",
+    "courseId": "ml",
+    "prefix": "823562989",
+    "file": "823562989_1505505178053507_3539557526146593871_n.jpg",
+    "path": "study documents/ML/823562989_1505505178053507_3539557526146593871_n.jpg",
+    "sha256": "bec6ad2aa4a544c1f5c0f2b41d2c134760ad427f4a214a1278f6fa069e3581a7",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 4,
+    "title": "Phỏng vấn 16–20",
+    "topics": [
+      "Phỏng vấn 16–20"
+    ],
+    "lessonIds": [
+      16,
+      17,
+      21,
+      28
+    ],
+    "interviewIds": [
+      "ml-interview-16",
+      "ml-interview-17",
+      "ml-interview-18",
+      "ml-interview-19",
+      "ml-interview-20"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-821665106",
+    "courseId": "ml",
+    "prefix": "821665106",
+    "file": "821665106_1132931366070828_5447205794735711850_n.jpg",
+    "path": "study documents/ML/821665106_1132931366070828_5447205794735711850_n.jpg",
+    "sha256": "8dfedd6518849b47829c2a4d96c252bcfff9347673a6aee30923ed8dd1637ef8",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 5,
+    "title": "Phỏng vấn 21–25",
+    "topics": [
+      "Phỏng vấn 21–25"
+    ],
+    "lessonIds": [
+      36,
+      38,
+      39,
+      51
+    ],
+    "interviewIds": [
+      "ml-interview-21",
+      "ml-interview-22",
+      "ml-interview-23",
+      "ml-interview-24",
+      "ml-interview-25"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-820935142",
+    "courseId": "ml",
+    "prefix": "820935142",
+    "file": "820935142_1402096018054203_3195045661365323717_n.jpg",
+    "path": "study documents/ML/820935142_1402096018054203_3195045661365323717_n.jpg",
+    "sha256": "759cc86a7b99cbe9f0df2df9c685ae9001c6126f0f6f17dcd6c8320b7ca0b15f",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 6,
+    "title": "Phỏng vấn 26–30",
+    "topics": [
+      "Phỏng vấn 26–30"
+    ],
+    "lessonIds": [
+      49,
+      50
+    ],
+    "interviewIds": [
+      "ml-interview-26",
+      "ml-interview-27",
+      "ml-interview-28",
+      "ml-interview-29",
+      "ml-interview-30"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-819470891",
+    "courseId": "ml",
+    "prefix": "819470891",
+    "file": "819470891_1053976797461144_2214213785636819443_n.jpg",
+    "path": "study documents/ML/819470891_1053976797461144_2214213785636819443_n.jpg",
+    "sha256": "666a8d61eaa36d17bc7efa471adf57e25c770033e798435958229fdbbbe30bfa",
+    "pack": "interview",
+    "packTitle": "35 câu hỏi phỏng vấn",
+    "page": 7,
+    "title": "Phỏng vấn 31–35",
+    "topics": [
+      "Phỏng vấn 31–35"
+    ],
+    "lessonIds": [
+      50,
+      51
+    ],
+    "interviewIds": [
+      "ml-interview-31",
+      "ml-interview-32",
+      "ml-interview-33",
+      "ml-interview-34",
+      "ml-interview-35"
+    ],
+    "uses": [
+      "lesson",
+      "interview"
+    ]
+  },
+  {
+    "id": "ML-839200958",
+    "courseId": "ml",
+    "prefix": "839200958",
+    "file": "839200958_2245615419687451_1872983912333524949_n.jpg",
+    "path": "study documents/ML/839200958_2245615419687451_1872983912333524949_n.jpg",
+    "sha256": "f3c2606461c43f38056090eaec317053bf2ad2f1cfa4ced708e1f9f212fdfac4",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 0,
+    "title": "Bìa thuật toán",
+    "topics": [
+      "Bìa thuật toán"
+    ],
+    "lessonIds": [
+      14
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  },
+  {
+    "id": "ML-829941342",
+    "courseId": "ml",
+    "prefix": "829941342",
+    "file": "829941342_1598320318756262_2135328584602788759_n.jpg",
+    "path": "study documents/ML/829941342_1598320318756262_2135328584602788759_n.jpg",
+    "sha256": "7ebba0dd4d4f3dc4bb50d3d154ea9b4c130682de3c8d38e6dfd7dbba41c41206",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 1,
+    "title": "Decision Tree",
+    "topics": [
+      "Decision Tree"
+    ],
+    "lessonIds": [
+      20
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-836930971",
+    "courseId": "ml",
+    "prefix": "836930971",
+    "file": "836930971_2109072769979850_4568317827805581815_n.jpg",
+    "path": "study documents/ML/836930971_2109072769979850_4568317827805581815_n.jpg",
+    "sha256": "3cbce201ca05119d3ff0820a082defda368080a5e1c2f3da201a74350a286979",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 2,
+    "title": "Logistic Regression",
+    "topics": [
+      "Logistic Regression"
+    ],
+    "lessonIds": [
+      18
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-839361200",
+    "courseId": "ml",
+    "prefix": "839361200",
+    "file": "839361200_1756793532207344_8175400195527273159_n.jpg",
+    "path": "study documents/ML/839361200_1756793532207344_8175400195527273159_n.jpg",
+    "sha256": "9c30213b8ca10cdd42e6e2ecc8047b70f12dc22774165849929f724f2a538d13",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 3,
+    "title": "K-Means",
+    "topics": [
+      "K-Means"
+    ],
+    "lessonIds": [
+      31
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-839766844",
+    "courseId": "ml",
+    "prefix": "839766844",
+    "file": "839766844_1600864034659061_9167490637408766322_n.jpg",
+    "path": "study documents/ML/839766844_1600864034659061_9167490637408766322_n.jpg",
+    "sha256": "40a122eebc44da61fd12192b64951454e999ed69a889e0f862d2af9e67068b23",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 4,
+    "title": "Transformer",
+    "topics": [
+      "Transformer"
+    ],
+    "lessonIds": [
+      48
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840001573",
+    "courseId": "ml",
+    "prefix": "840001573",
+    "file": "840001573_1096431102990172_3975308395837518338_n.jpg",
+    "path": "study documents/ML/840001573_1096431102990172_3975308395837518338_n.jpg",
+    "sha256": "b4e086f0435d635c4f66e3c384f1f47325393b6e14b9b5a846965676d07b27a1",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 5,
+    "title": "Gradient Boosting",
+    "topics": [
+      "Gradient Boosting"
+    ],
+    "lessonIds": [
+      41
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840333526",
+    "courseId": "ml",
+    "prefix": "840333526",
+    "file": "840333526_1466829535370088_1370081434663244790_n.jpg",
+    "path": "study documents/ML/840333526_1466829535370088_1370081434663244790_n.jpg",
+    "sha256": "84926d4a887e6323c8b4d9df30517fbac14814ab04c3dd55b775300b65178284",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 6,
+    "title": "SVM",
+    "topics": [
+      "SVM"
+    ],
+    "lessonIds": [
+      23
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840404900",
+    "courseId": "ml",
+    "prefix": "840404900",
+    "file": "840404900_1392905375890053_1341251888445810007_n.jpg",
+    "path": "study documents/ML/840404900_1392905375890053_1341251888445810007_n.jpg",
+    "sha256": "bf77d627b6657653384243223b2242f9c94f4c2b0a8ddceb481063c51f0b0803",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 7,
+    "title": "Random Forest",
+    "topics": [
+      "Random Forest"
+    ],
+    "lessonIds": [
+      21
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840642329",
+    "courseId": "ml",
+    "prefix": "840642329",
+    "file": "840642329_1065117439896251_7684213366582644344_n.jpg",
+    "path": "study documents/ML/840642329_1065117439896251_7684213366582644344_n.jpg",
+    "sha256": "046a92f71092d5010f3bf2adcf0247e7bccb0735074007533293d78f14d6be0b",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 8,
+    "title": "KNN",
+    "topics": [
+      "KNN"
+    ],
+    "lessonIds": [
+      19
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840714558",
+    "courseId": "ml",
+    "prefix": "840714558",
+    "file": "840714558_1807879967009361_7973886790164138683_n.jpg",
+    "path": "study documents/ML/840714558_1807879967009361_7973886790164138683_n.jpg",
+    "sha256": "e350ff5ce9cc51679bf76f6b35ca5e19fbdf282c1832f91ecc1b788a28dd6b3d",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 9,
+    "title": "Neural Network",
+    "topics": [
+      "Neural Network"
+    ],
+    "lessonIds": [
+      47
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840809089",
+    "courseId": "ml",
+    "prefix": "840809089",
+    "file": "840809089_1411796220934667_889696374385367268_n.jpg",
+    "path": "study documents/ML/840809089_1411796220934667_889696374385367268_n.jpg",
+    "sha256": "5d2cff9b749f81a40eebb4f6f0c2c40af4aeac290e6de9516411c204673e6850",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 10,
+    "title": "Naive Bayes",
+    "topics": [
+      "Naive Bayes"
+    ],
+    "lessonIds": [
+      22
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840923029",
+    "courseId": "ml",
+    "prefix": "840923029",
+    "file": "840923029_1478954624109823_975060115684104029_n.jpg",
+    "path": "study documents/ML/840923029_1478954624109823_975060115684104029_n.jpg",
+    "sha256": "cefa6e0098e4c607043731f985f57fc3ac14f1f9cf733599ea6355dc5554a3f0",
+    "pack": "algorithms",
+    "packTitle": "Các thuật toán cần biết",
+    "page": 11,
+    "title": "Linear Regression",
+    "topics": [
+      "Linear Regression"
+    ],
+    "lessonIds": [
+      14
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-841425779",
+    "courseId": "ml",
+    "prefix": "841425779",
+    "file": "841425779_1906185880744253_7559070506720861042_n.jpg",
+    "path": "study documents/ML/841425779_1906185880744253_7559070506720861042_n.jpg",
+    "sha256": "e9c620d9ffcf2af3cb6b1a5c52009c4f7dc436db7a568f5f6ac1d443fbe28310",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 0,
+    "title": "Bìa",
+    "topics": [
+      "Bìa"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  },
+  {
+    "id": "ML-841754926",
+    "courseId": "ml",
+    "prefix": "841754926",
+    "file": "841754926_1187397690824143_209633619987467739_n.jpg",
+    "path": "study documents/ML/841754926_1187397690824143_209633619987467739_n.jpg",
+    "sha256": "0ce899f3904b1a7d33aa37c39cea47486e602e4da06e4939c5ba388638e09ea0",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 1,
+    "title": "Giới thiệu",
+    "topics": [
+      "Giới thiệu"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-837142919",
+    "courseId": "ml",
+    "prefix": "837142919",
+    "file": "837142919_1500600335225442_7672983479135044425_n.jpg",
+    "path": "study documents/ML/837142919_1500600335225442_7672983479135044425_n.jpg",
+    "sha256": "0c2da64ee0f0ac496aebf2b04e20d5cd0a702c55156b5e5feffba9814a5b9354",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 2,
+    "title": "Các loại ML",
+    "topics": [
+      "Các loại ML"
+    ],
+    "lessonIds": [
+      1,
+      52
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840498749",
+    "courseId": "ml",
+    "prefix": "840498749",
+    "file": "840498749_28300485616319124_4828447721608150645_n.jpg",
+    "path": "study documents/ML/840498749_28300485616319124_4828447721608150645_n.jpg",
+    "sha256": "8ad2b03171cac5ab535c8fed2cba5882b9b6a27bb3d03b69d1afc8a9627a7a56",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 3,
+    "title": "Quy trình",
+    "topics": [
+      "Quy trình"
+    ],
+    "lessonIds": [
+      9,
+      36,
+      37
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-841013435",
+    "courseId": "ml",
+    "prefix": "841013435",
+    "file": "841013435_2205435663741607_8794902784239757762_n.jpg",
+    "path": "study documents/ML/841013435_2205435663741607_8794902784239757762_n.jpg",
+    "sha256": "5ed5b9e2505472d613de7d838e0d91af2982c9e932061fc768c72125319b825c",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 4,
+    "title": "Thuật ngữ",
+    "topics": [
+      "Thuật ngữ"
+    ],
+    "lessonIds": [
+      7
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-839011137",
+    "courseId": "ml",
+    "prefix": "839011137",
+    "file": "839011137_2086961658592110_2279099658481742530_n.jpg",
+    "path": "study documents/ML/839011137_2086961658592110_2279099658481742530_n.jpg",
+    "sha256": "4fab318f84e43d9d992e28fb49c4700503a73bbd20a46ccecaab85ce1b2342be",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 5,
+    "title": "Supervised",
+    "topics": [
+      "Supervised"
+    ],
+    "lessonIds": [
+      14,
+      18
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-842492234",
+    "courseId": "ml",
+    "prefix": "842492234",
+    "file": "842492234_1065409193163347_5985938532340805983_n.jpg",
+    "path": "study documents/ML/842492234_1065409193163347_5985938532340805983_n.jpg",
+    "sha256": "01570f7a82a3475d3827572edd037862801238cc006941dd6b9a080d47086f83",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 6,
+    "title": "Unsupervised",
+    "topics": [
+      "Unsupervised"
+    ],
+    "lessonIds": [
+      31,
+      32,
+      33,
+      34,
+      46
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-843548500",
+    "courseId": "ml",
+    "prefix": "843548500",
+    "file": "843548500_2899024140464112_5288118352030969286_n.jpg",
+    "path": "study documents/ML/843548500_2899024140464112_5288118352030969286_n.jpg",
+    "sha256": "39116a6ad0b06ebeb18b670b9568aa1ac20e89d5bb5a33c8d84677d8dc46c489",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 7,
+    "title": "Huấn luyện đánh giá",
+    "topics": [
+      "Huấn luyện đánh giá"
+    ],
+    "lessonIds": [
+      9,
+      16,
+      28
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-839475682",
+    "courseId": "ml",
+    "prefix": "839475682",
+    "file": "839475682_2186136638951883_6472709769818796797_n.jpg",
+    "path": "study documents/ML/839475682_2186136638951883_6472709769818796797_n.jpg",
+    "sha256": "82dde6fcf938424b128823a1ee993857f427e1f580d17169fd9dc2238b2e53ed",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 8,
+    "title": "CV metrics",
+    "topics": [
+      "CV metrics"
+    ],
+    "lessonIds": [
+      25,
+      26,
+      27,
+      29,
+      30
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-840408070",
+    "courseId": "ml",
+    "prefix": "840408070",
+    "file": "840408070_1990212124950171_7507845958771955122_n.jpg",
+    "path": "study documents/ML/840408070_1990212124950171_7507845958771955122_n.jpg",
+    "sha256": "a4f444b059ed84080456a4ac11535d832dbfce294a9b202610d2d1945bf223c6",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 9,
+    "title": "Ensemble",
+    "topics": [
+      "Ensemble"
+    ],
+    "lessonIds": [
+      21,
+      41,
+      42
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson"
+    ]
+  },
+  {
+    "id": "ML-842143160",
+    "courseId": "ml",
+    "prefix": "842143160",
+    "file": "842143160_1444600147639034_9218754407999421827_n.jpg",
+    "path": "study documents/ML/842143160_1444600147639034_9218754407999421827_n.jpg",
+    "sha256": "a553ba023a50597e0220a8eac1226a41594d5bbcb5980dfc94629718921ab6bc",
+    "pack": "overview",
+    "packTitle": "Ghi chú ML tổng quan",
+    "page": 10,
+    "title": "Tổng kết",
+    "topics": [
+      "Tổng kết"
+    ],
+    "lessonIds": [
+      40
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ]
+  }
+]

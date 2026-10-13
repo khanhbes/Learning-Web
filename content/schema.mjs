@@ -4,7 +4,7 @@ const block = z.object({
   title: text,
   text,
   label: text,
-  code: z.object({ python: text, cpp: text }).optional(),
+  code: z.object({ python: text, cpp: text.optional() }).optional(),
   problemId: text.optional(),
 });
 export const lessonSchema = z.object({
@@ -72,6 +72,8 @@ export function validateContent({ course, lessons, problems, sources }) {
   const references = new Set(sources.map((s) => s.prefix)),
     ids = new Set(lessons.map((l) => l.id));
   for (const l of lessons) {
+    const requiredLanguages=course.languages??["python","cpp"];
+    if(l.blocks.some(b=>b.code && requiredLanguages.some(lang=>!b.code[lang])))fail("Code thiếu ngôn ngữ của khóa: "+l.id);
     const unit = course.units.find((u) => u.id === l.unitId);
     if (!unit || l.id < unit.range[0] || l.id > unit.range[1])
       fail("Chặng của buổi " + l.id);

@@ -11,7 +11,7 @@ export async function api<T = any>(
   const value = await r.json();
   if (!r.ok)
     throw Object.assign(
-      new Error(value.error || "Không kết nối được ứng dụng."),
+      new Error(value.message || (typeof value.error === "string" ? value.error : "Không kết nối được ứng dụng.")),
       { status: r.status },
     );
   return value;

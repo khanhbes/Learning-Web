@@ -11,6 +11,7 @@
     "catalog": "node scripts/catalog.mjs",
     "runner:build": "docker build -t bytepath-runner:1 runner",
     "runner:setup": "node scripts/setup-wasm.mjs",
+    "ml:setup": "node scripts/setup-ml.mjs",
     "verify:solutions": "node scripts/verify-solutions.mjs"
   },
   "dependencies": {
@@ -23,6 +24,8 @@
     "lucide-react": "^0.468.0",
     "monaco-editor": "^0.57.0",
     "motion": "^12.23.0",
+    "playwright": "1.64.0",
+    "pyodide": "314.0.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.0",

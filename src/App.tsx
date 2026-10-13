@@ -6,8 +6,9 @@ import {
   Link,
   useLocation,
   useNavigate,
+  useParams,
 } from "react-router-dom";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { api } from "./api";
 import { AppContext, useApp } from "./context";
 import type { AppState, Course } from "./types";
@@ -25,14 +26,24 @@ import {
 import LessonPage from "./LessonPage";
 import CapstonePage from "./CapstonePage";
 import SignIn from "./SignIn";
+import { CoursesPage, LearningHub, LevelCelebration } from "./Expansion";
+import KnowledgePage from "./KnowledgePage";
+import "./expansion.css";
 const nav = [
   ["/", "map", "Học"],
-  ["/review", "target", "Ôn tập"],
+  ["/learn", "target", "Luyện"],
   ["/league", "trophy", "Xếp hạng"],
-  ["/quests", "gift", "Nhiệm vụ"],
   ["/shop", "shop", "Cửa hàng"],
   ["/profile", "user", "Hồ sơ"],
 ];
+function CourseBoundary({capstone=false,legacy=false}:{capstone?:boolean;legacy?:boolean}) {
+  const {course,courses,selectCourse,notify}=useApp(),params=useParams();
+  const target=legacy?"dsa":params.courseId;
+  useEffect(()=>{if(target && courses.some(c=>c.id===target) && course.id!==target)void selectCourse(target).catch(e=>notify(e.message));},[target,course.id]);
+  if(!target || !courses.some(c=>c.id===target))return <p>Không tìm thấy khóa học.</p>;
+  if(course.id!==target)return <p role="status">Đang mở khóa học…</p>;
+  return capstone?<CapstonePage key={target}/>:<LessonPage key={target+params.id}/>;
+}
 function Sidebar() {
   const { state } = useApp();
   return (
@@ -61,6 +72,7 @@ function Sidebar() {
         ))}
       </nav>
       <div className="sidebar-bottom">
+        <Link to="/courses"><Icon name="layers" size={17} /> Các khóa học</Link>
         <div className="little-code">&lt; / &gt;</div>
         <p>
           Mỗi bước nhỏ.
@@ -68,7 +80,7 @@ function Sidebar() {
           <strong>Một ý tưởng lớn.</strong>
         </p>
         <Link to="/sources">
-          <Icon name="bookmark" size={17} /> Thư viện DSA
+          <Icon name="bookmark" size={17} /> Tài liệu nguồn
         </Link>
         <span className="local-label">
           <i /> Học trên máy của bạn
@@ -78,22 +90,23 @@ function Sidebar() {
   );
 }
 function Topbar() {
-  const { state, refresh, notify } = useApp();
+  const { state, course, courses, selectCourse, refresh, notify } = useApp();
   return (
     <header className="topbar">
       <Link to="/" className="mobile-brand">
         bytepath.
       </Link>
-      <div className="course-label">
-        <span className="course-symbol">
-          <Icon name="code" size={20} />
-        </span>
-        <span>HÀNH TRÌNH DSA</span>
-      </div>
+      <label className="course-switch" aria-label="Khóa đang học">
+        <Icon name={course.id === "ml" ? "brain" : "code"} size={21} />
+        <select value={course.id} onChange={e => void selectCourse(e.target.value).catch(e => notify(e.message))}>
+          {courses.map(c => <option key={c.id} value={c.id}>{c.id.toUpperCase()} · {c.title}</option>)}
+        </select>
+      </label>
       <div className="topbar-stats">
         <button
           className="language-chip"
           title="Đổi ngôn ngữ lập trình"
+          disabled={course.id === "ml"}
           onClick={async () => {
             try {
               await api("/profile", "PUT", {
@@ -113,6 +126,7 @@ function Topbar() {
           <span>{state.profile.language === "python" ? "Python" : "C++"}</span>
           <Icon name="next" size={14} />
         </button>
+        <Link to="/quests" className="stat gift" title="Nhiệm vụ hôm nay"><Icon name="gift" /></Link>
         <Link to="/profile" className="stat flame" title="Chuỗi ngày học">
           <Icon name="flame" />
           {state.streak}
@@ -304,20 +318,23 @@ function RightRail() {
 export default function App() {
   const [state, setState] = useState<AppState | null>(null),
     [course, setCourse] = useState<Course | null>(null),
+    [courses, setCourses] = useState<Course[]>([]),
     [health, setHealth] = useState<any>(null),
     [error, setError] = useState(""),
     [toast, setToast] = useState("");
   const [needsLogin, setNeedsLogin] = useState(false);
   const location = useLocation();
   async function refresh() {
-    const [s, c] = await Promise.all([
-      api<AppState>("/state"),
-      api<Course>("/course"),
-    ]);
-    setState(s);
-    setCourse(c);
+    const [s, catalog] = await Promise.all([api<AppState>("/state"), api<{courses: Course[]}>("/courses")]);
+    const selected = s.activeCourse || s.profile.activeCourse || "dsa";
+    const c = await api<Course>("/courses/" + selected);
+    setState(s); setCourse(c); setCourses(catalog.courses);
     setNeedsLogin(false);
     setError("");
+  }
+  async function selectCourse(courseId: string) {
+    await api("/profile", "PUT", { ...state?.profile, activeCourse: courseId,language:state?.courses?.[courseId]?.language || "python" });
+    await refresh();
   }
   useEffect(() => {
     refresh().catch((e) => {
@@ -350,6 +367,9 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [location.pathname]);
+  useEffect(() => {
+    document.documentElement.classList.toggle("reduce-motion", !!state?.profile.settings?.reducedMotion);
+  }, [state?.profile.settings?.reducedMotion]);
   if (needsLogin) return <SignIn onSuccess={refresh} />;
   if (!state || !course)
     return (
@@ -358,17 +378,18 @@ export default function App() {
         <h2>
           {error ? "Byte chưa kết nối được" : "Chuẩn bị hành trình của bạn…"}
         </h2>
-        <p>{error || "Đang mở thư viện DSA"}</p>
+        <p>{error || "Đang mở các khóa học"}</p>
         {error && (
           <Button onClick={() => window.location.reload()}>Thử lại</Button>
         )}
       </div>
     );
-  const immersive = location.pathname.startsWith("/lesson/");
+  const immersive = /\/(?:lesson)\//.test(location.pathname);
   return (
     <AppContext.Provider
-      value={{ state, course, refresh, notify: setToast, health }}
+      value={{ state, course, courses, selectCourse, refresh, notify: setToast, health }}
     >
+      <MotionConfig reducedMotion={state.profile.settings?.reducedMotion ? "always" : "user"}>
       {!immersive && <Sidebar />}
       <div className={immersive ? "immersive" : "app-content"}>
         {!immersive && <Topbar />}
@@ -381,8 +402,13 @@ export default function App() {
         >
           <main>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/lesson/:id" element={<LessonPage />} />
+              <Route path="/" element={<Home key={course.id} />} />
+              <Route path="/lesson/:id" element={<CourseBoundary legacy />} />
+              <Route path="/courses/:courseId/lesson/:id" element={<CourseBoundary />} />
+              <Route path="/courses/:courseId/capstone" element={<CourseBoundary capstone />} />
+              <Route path="/courses" element={<CoursesPage />} />
+              <Route path="/learn" element={<LearningHub />} />
+              <Route path="/knowledge" element={<KnowledgePage key={course.id} />} />
               <Route path="/review" element={<Review />} />
               <Route path="/practice" element={<PracticeHub />} />
               <Route path="/league" element={<League />} />
@@ -390,8 +416,8 @@ export default function App() {
               <Route path="/shop" element={<Shop />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/sources" element={<Sources />} />
-              <Route path="/capstone" element={<CapstonePage />} />
-              <Route path="*" element={<Home />} />
+              <Route path="/capstone" element={<CourseBoundary capstone legacy />} />
+              <Route path="*" element={<Home key={course.id} />} />
             </Routes>
           </main>
           {!immersive && location.pathname === "/" && <RightRail />}
@@ -408,6 +434,7 @@ export default function App() {
         </nav>
       )}
       <Welcome />
+      <LevelCelebration />
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -429,6 +456,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      </MotionConfig>
     </AppContext.Provider>
   );
 }

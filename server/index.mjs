@@ -7,6 +7,13 @@ import { readFileSync, existsSync } from "node:fs";
 import { resolve, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createStore, DATA_VERSION } from "./store.mjs";
+import { courseRegistry,getCourse,courseForProblem } from "../content/registry.mjs";
+import { courseState,persistCourse,courseSummary,courseUnlocked,normalizeCourses } from "./course-state.mjs";
+import { runML,mlRunnerHealth } from "./ml-runner.mjs";
+import { registerKnowledgeRoutes,validateSavedKnowledgeAttempt } from "./knowledge.mjs";
+import { knowledgeById } from "../content/knowledge.mjs";
+import { registerGamificationRoutes,purchaseExtended,awardCourseCosmetic,normalizeGamification } from "./gamification.mjs";
+import { extendedShop } from "../shared/cosmetics.mjs";
 import {
   course,
   lessons,
@@ -71,11 +78,16 @@ const sources = JSON.parse(
   readFileSync(new URL("../content/sources.json", import.meta.url), "utf8"),
 );
 validateContent({ course, lessons, problems, sources });
+validateContent({course:getCourse("ml").course,lessons:getCourse("ml").lessons,problems:getCourse("ml").problems,sources:getCourse("ml").sources});
+const courseIdSchema=z.enum(Object.keys(courseRegistry));
 const profileSchema = z.object({
   name: z.string().trim().min(1).max(32),
   language: z.enum(["python", "cpp"]),
   dailyGoal: z.number().int().min(20).max(200),
   skin: z.string().optional(),
+  activeCourse: courseIdSchema.optional(),
+  settings: z.object({sound:z.boolean().optional(),reducedMotion:z.boolean().optional()}).optional(),
+  avatarFrame:z.string().max(100).nullable().optional(),
 });
 const answerSchema = z.record(z.string(), z.string().max(64));
 const codeSchema = z.object({
@@ -98,7 +110,8 @@ const savedAttemptSchema = z
     mode: z.enum(["practice", "review", "assessment", "capstone"]),
     status: z.enum(["active", "completed", "abandoned"]),
     seed: z.string().max(200),
-    version: z.enum([VERSION, LEGACY_VERSION]),
+    version: z.string().min(1).max(80),
+    courseId: courseIdSchema.default("dsa"),
     createdAt: z.number(),
     updatedAt: z.number(),
     questions: z
@@ -128,7 +141,7 @@ const savedAttemptSchema = z
     customTests: z
       .array(
         z.object({
-          problemId: z.enum(["topo", "priority", "prefix"]),
+          problemId: z.string(),
           input: z.unknown(),
           expected: z.unknown(),
         }),
@@ -145,7 +158,8 @@ const savedJobSchema = z
     language: z.enum(["python", "cpp"]),
     publicOnly: z.boolean(),
     createdAt: z.number(),
-    version: z.enum([VERSION, LEGACY_VERSION]),
+    version: z.string().min(1).max(80),
+    courseId: courseIdSchema.default("dsa"),
     code: z.string().max(50000),
     status: z.enum(["queued", "running", "completed", "error"]),
     result: z.unknown(),
@@ -162,6 +176,7 @@ export async function createApp({
   aiHealth = tutorHealth,
   tutor = askTutor,
   config = configuration(),
+  assetRoot=resolve("dist"),
 } = {}) {
   const app = Fastify({
     logger: log
@@ -191,6 +206,8 @@ export async function createApp({
     reply.header("X-Content-Type-Options", "nosniff");
   });
   installAuth(app, store, config, now);
+  const capstoneAliases=[];
+  app.addHook("onRoute",route=>{if(route.method!=="HEAD" && /^\/api\/capstones?(\/|$)/.test(route.url))capstoneAliases.push({method:route.method,url:"/api/courses/:courseId"+route.url.slice(4),handler:route.handler});});
   app.setErrorHandler((e, req, reply) =>
     reply.code(e instanceof z.ZodError ? 400 : (e.statusCode ?? 500)).send({
       error: e instanceof z.ZodError ? "Dữ liệu chưa hợp lệ." : e.message,
@@ -200,6 +217,10 @@ export async function createApp({
     return store.transaction(() => {
       const s = refreshGame(store.getState(), now());
       awardChapters(s, units);
+      for(const def of Object.values(courseRegistry)) {
+        const c=courseSummary(s,def,now());
+        if(c.capstonePassed && c.completed===def.course.mandatoryLessons)awardCourseCosmetic(s,def.course.id,{now:now()});
+      }
       store.putState(s);
       return s;
     });
@@ -226,14 +247,16 @@ export async function createApp({
     const a = store.get("attempts", id);
     if (!a) throw fail("Không tìm thấy lượt làm.", 404);
     if (["practice", "review"].includes(a.mode) && !a.lab) {
-      a.lab = createLab(lessons[a.lessonId - 1], a.seed);
+      const def=getCourse(a.courseId);
+      a.lab = (def.createLab??createLab)(def.lessons[a.lessonId - 1], a.seed);
       store.put("attempts", a);
     }
     return a;
   }
-  function cap(id) {
+  function cap(id,courseId) {
     const a = store.get("capstones", id);
     if (!a) throw fail("Không tìm thấy bài cuối khóa.", 404);
+    if(courseId && a.courseId!==courseId)throw fail("Bài cuối khóa thuộc khóa khác.",404);
     return a;
   }
   // A pass belongs to an immutable submitted source, not merely to a problem id.
@@ -257,31 +280,15 @@ export async function createApp({
     ];
   }
   function view(s) {
-    const mandatory = Object.entries(s.progress).filter(
-      ([id, p]) => Number(id) <= 48 && p.passed,
-    );
-    const learning = mandatory.filter(
-      ([id]) => !lessons[Number(id) - 1]?.kind.includes("exam"),
-    );
-    const exams = mandatory.filter(
-      ([id]) => lessons[Number(id) - 1]?.kind === "exam",
-    );
-    const avg = (rows) =>
-      rows.length
-        ? rows.reduce((v, [, p]) => v + p.bestKnowledge, 0) / rows.length
-        : 0;
+    const summaries=Object.fromEntries(Object.entries(courseRegistry).map(([id,def])=>[id,courseSummary(s,def,now())]));
+    const c=summaries[s.activeCourse];
     return {
       ...s,
-      quests: quests(s, now()),
+      ...c,courses:summaries,
+      profile:{...s.profile,language:c.language},
+      quests: quests({...s,progress:c.progress,mandatoryLessons:c.mandatoryCount}, now()),
       leagueRows: leagueRows(s, now()),
       tierName: TIERS[s.league.tier],
-      courseScore: Math.round(
-        0.3 * avg(learning) + 0.3 * avg(exams) + 0.4 * s.capstoneScore,
-      ),
-      completed: mandatory.length,
-      capstoneUnlocked: mandatory.length === 48,
-      reviewDue: reviewList(s, lessons, now()).filter((l) => l.due <= now())
-        .length,
       today: dayKey(now()),
     };
   }
@@ -292,10 +299,25 @@ export async function createApp({
       const s = refreshGame(store.getState(), now());
       if (p.skin && !s.inventory.includes(p.skin))
         throw fail("Bạn chưa sở hữu skin này.");
-      s.profile = { ...s.profile, ...p };
+      if(p.avatarFrame && !s.avatarFrames.includes(p.avatarFrame))throw fail("Bạn chưa sở hữu khung này.");
+      if(p.activeCourse)s.activeCourse=p.activeCourse;
+      const def=getCourse(s.activeCourse),c=courseState(s,s.activeCourse);
+      if(!def.course.languages.includes(p.language))throw fail("Ngôn ngữ không thuộc khóa.");
+      c.language=p.language;persistCourse(s,s.activeCourse,c);
+      s.profile = { ...s.profile, ...p,settings:{...s.profile.settings,...p.settings} };
+      s.profile.language=s.courses.dsa.language;
       store.putState(s);
       return view(s);
     });
+  });
+  const courseView=(s,id)=>{const def=getCourse(id),summary=courseSummary(s,def,now());return {...def.course,...summary,id,languages:def.course.languages,lessons:def.lessons.map(l=>({id:l.id,title:l.title,kind:l.kind,pack:l.pack,unitId:l.unitId,duration:l.duration,problemIds:l.problemIds,courseId:id,unlocked:courseUnlocked(s,def,l.id),progress:summary.progress[l.id]??null}))};};
+  app.get("/api/courses",async()=>{const s=state();return {courses:Object.keys(courseRegistry).map(id=>courseView(s,id))};});
+  app.get("/api/courses/:courseId",async req=>courseView(state(),req.params.courseId));
+  app.get("/api/courses/:courseId/lessons/:id",async req=>{
+    const def=getCourse(req.params.courseId),l=def.lessons.find(l=>l.id===Number(req.params.id));
+    if(!l)throw fail("Không tìm thấy buổi học.",404);
+    if(!courseUnlocked(state(),def,l.id))throw fail("Hoàn thành buổi trước để mở khóa.",403);
+    return {...def.lessonMaterial(l),courseId:def.course.id,sources:def.sources.filter(s=>l.sourcePrefixes.includes(s.prefix)),problems:l.problemIds.map(id=>def.problemDetails(id)),helpers:def.helpers};
   });
   app.get("/api/course", async () => {
     const s = state();
@@ -339,22 +361,31 @@ export async function createApp({
       helpers: { python: pythonHelpers, cpp: cppHelpers },
     };
   });
-  app.get("/api/sources", async () => ({ sources, corrections }));
+  app.get("/api/sources", async req => {const def=getCourse(req.query.courseId??"dsa");return {sources:def.sources,corrections:def.corrections??[],courseId:def.course.id};});
   app.get("/sources/:file", async (req, reply) => {
     const entry = sources.find((s) => s.file === req.params.file);
     if (!entry) throw fail("Ảnh không tồn tại.", 404);
     return reply
       .type("image/jpeg")
-      .send(readFileSync(resolve("DSA", entry.file)));
+      .send(readFileSync(resolve("study documents/DSA", entry.file)));
   });
+  app.get("/sources/:courseId/:file",async(req,reply)=>{const def=getCourse(req.params.courseId),entry=def.sources.find(s=>s.file===req.params.file);if(!entry)throw fail("Ảnh không tồn tại.",404);return reply.type("image/jpeg").send(readFileSync(resolve("study documents",def.course.id.toUpperCase(),entry.file)));});
   app.get("/api/health", async () => ({
     mode: config.cloud ? "cloud" : "local",
     runner: await health(),
+    mlRunner: await mlRunnerHealth(),
     ai: await aiHealth(),
     version: VERSION,
   }));
   app.get("/api/traces/:pid", async (req) => {
     const pid = req.params.pid;
+    if(pid.startsWith("ml-")) {
+      const def=courseForProblem(pid),l=def.lessons.find(l=>l.problemIds.includes(pid)&&courseUnlocked(state(),def,l.id)&&(req.query.lessonId===undefined||l.id===Number(req.query.lessonId)));
+      if(!l)throw fail("Bài chưa mở khóa.",403);
+      if(store.list("attempts").some(a=>a.courseId==="ml"&&a.mode==="assessment"&&a.status==="active"))throw fail("Mô phỏng ẩn trong kiểm tra.",403);
+      const input=req.query.seed?def.generateInput(pid,String(req.query.seed)):def.problems[pid].sampleInput;
+      return {...def.traceFor(pid,input),edgeCount:0};
+    }
     if (!problems[pid]) throw fail("Bài không tồn tại.");
     if (
       !lessons.some(
@@ -407,9 +438,10 @@ export async function createApp({
     }
     return { ...traceFor(pid, input, { variant }), edgeCount: edges.length };
   });
-  app.get("/api/attempts", async () =>
-    store.list("attempts").map((a) => ({
+  app.get("/api/attempts", async req =>
+    store.list("attempts").filter(a=>a.courseId===(req.query.courseId??"dsa")).map((a) => ({
       id: a.id,
+      courseId:a.courseId,
       lessonId: a.lessonId,
       mode: a.mode,
       status: a.status,
@@ -418,32 +450,34 @@ export async function createApp({
     })),
   );
   app.post("/api/attempts", async (req) => {
-    const { lessonId, mode, retake } = z
+    const { lessonId, mode, retake,courseId } = z
       .object({
         lessonId: z.number().int().min(1).max(60),
         mode: z.enum(["practice", "assessment", "review"]),
         retake: z.boolean().default(false),
+        courseId:courseIdSchema.default("dsa"),
       })
       .parse(req.body);
     return store.transaction(() => {
       const s = refreshGame(store.getState(), now());
-      if (!unlocked(s, lessonId)) throw fail("Buổi học chưa mở khóa.", 403);
+      const def=getCourse(courseId),c=courseState(s,courseId);
+      if (!courseUnlocked(s,def,lessonId)) throw fail("Buổi học chưa mở khóa.", 403);
       const old = store
         .list("attempts")
         .find(
           (a) =>
-            a.lessonId === lessonId && a.mode === mode && a.status === "active",
+            a.courseId===courseId && a.lessonId === lessonId && a.mode === mode && a.status === "active",
         );
       if (old && !retake) return publicAttempt(getAttempt(old.id));
       if (old) {
         old.status = "abandoned";
         store.put("attempts", old);
       }
-      const l = lessons[lessonId - 1];
+      const l = def.lessons[lessonId - 1];
       if (
         mode === "practice" &&
         l.kind !== "exam" &&
-        !s.started.includes(lessonId)
+        !c.started.includes(lessonId)
       ) {
         if (s.energy < 5)
           throw fail(
@@ -452,10 +486,11 @@ export async function createApp({
           );
         s.energy -= 5;
         s.energyAt = now();
-        s.started.push(lessonId);
+        c.started.push(lessonId);
       }
       const id = randomUUID(),
-        a = newAttempt(l, mode, randomUUID(), id, now());
+        a = newAttempt(l, mode, randomUUID(), id, now(),def);
+      persistCourse(s,courseId,c);
       store.put("attempts", a);
       store.putState(s);
       return publicAttempt(a);
@@ -506,7 +541,7 @@ export async function createApp({
         throw fail("Thực hành tương tác chỉ mở ngoài lượt kiểm tra.", 403);
       const q = a.lab?.questions.find((q) => q.id === questionId);
       if (!q) throw fail("Hoạt động không thuộc lượt học.");
-      const correct = checkLab(q, value),
+      const correct = (getCourse(a.courseId).checkLab??checkLab)(q, value),
         wasCorrect = a.lab.completed?.includes(q.id);
       if (correct && !wasCorrect) (a.lab.completed ??= []).push(q.id);
       a.lab.responses[q.id] = { value, correct, explanation: q.explanation };
@@ -541,7 +576,7 @@ export async function createApp({
             ]),
           )
           .optional(),
-        labCursor: z.number().int().min(0).max(3).optional(),
+        labCursor: z.number().int().min(0).max(7).optional(),
         codeDrafts: z
           .record(
             z.string(),
@@ -581,7 +616,7 @@ export async function createApp({
       }
       if (p.codeDrafts)
         for (const [pid, draft] of Object.entries(p.codeDrafts)) {
-          if (!lessons[a.lessonId - 1].problemIds.includes(pid))
+          if (!getCourse(a.courseId).lessons[a.lessonId - 1].problemIds.includes(pid))
             throw fail("Bài code không thuộc buổi.");
           a.codeDrafts[pid] = { ...a.codeDrafts[pid], ...draft };
         }
@@ -600,16 +635,19 @@ export async function createApp({
   );
   async function scheduleCode(a, body, table) {
     if (a.status !== "active") throw fail("Lượt đã kết thúc.");
+    const def=getCourse(a.courseId);
+    if(!def.course.languages.includes(body.language))throw fail("Ngôn ngữ không thuộc khóa.");
     const allowed =
       table === "capstones"
-        ? capstoneProblems
-        : lessons[a.lessonId - 1].problemIds;
+        ? a.requiredProblems
+        : def.lessons[a.lessonId - 1].problemIds;
     if (!allowed.includes(body.problemId)) throw fail("Bài không thuộc đề.");
     if (a.mode === "assessment" && body.publicOnly)
       throw fail("Kiểm tra tính điểm chỉ nhận lượt chấm đầy đủ.");
     const id = randomUUID(),
       job = {
         id,
+        courseId:a.courseId,
         status: "queued",
         attemptId: a.id,
         problemId: body.problemId,
@@ -617,10 +655,10 @@ export async function createApp({
         publicOnly: body.publicOnly,
         createdAt: now(),
         version: a.version,
-        fixtures: testsFor(body.problemId, a.seed, {
+        fixtures: [...(table==="capstones"&&a.courseId==="ml"?[{input:a.tasks[body.problemId],expected:def.oracle(body.problemId,a.tasks[body.problemId]),group:"sample",name:"Dataset cuối khóa của bạn"}]:[]),...def.testsFor(body.problemId, a.seed, {
           publicOnly: body.publicOnly,
           version: a.version,
-        }),
+        })],
         result: null,
         code: body.code,
       };
@@ -641,7 +679,7 @@ export async function createApp({
       job.status = "running";
       store.put("jobs", job);
       try {
-        job.result = await execute({
+        job.result = await (a.courseId==="ml" && execute===runCode ? runML : execute)({
           ...body,
           seed: a.seed,
           version: job.version,
@@ -733,9 +771,10 @@ export async function createApp({
         );
       const result = scoreAttempt(a),
         s = refreshGame(store.getState(), now());
+      const def=getCourse(a.courseId),c=courseState(s,a.courseId);
       let reward = { xp: 0, gems: 0 };
       if (a.mode === "assessment") {
-        const previous = s.progress[a.lessonId] ?? {
+        const previous = c.progress[a.lessonId] ?? {
           passed: false,
           bestKnowledge: 0,
           mistakes: 0,
@@ -752,28 +791,34 @@ export async function createApp({
           previous.nextReview = now() + 86400000;
           if (first) {
             reward =
-              lessons[a.lessonId - 1].kind === "exam"
+              def.lessons[a.lessonId - 1].kind === "exam"
                 ? { xp: 100, gems: 30 }
                 : { xp: 50, gems: 10 };
             if (
-              store.reward(s, "lesson:" + a.lessonId, {
+              store.reward(s, (a.courseId==="dsa"?"":a.courseId+":")+"lesson:" + a.lessonId, {
                 ...reward,
                 reason: "Hoàn thành buổi",
                 now: now(),
+                courseId:a.courseId,
               })
             ) {
+              reward={...reward,...s.lastReward};
               recordXP(s, reward.xp, now());
               daily(s, now()).lessons++;
             } else reward = { xp: 0, gems: 0 };
             if (
-              lessons[a.lessonId - 1].kind === "exam" &&
-              !s.badges.includes("checkpoint-" + a.lessonId)
+              def.lessons[a.lessonId - 1].kind === "exam" &&
+              !s.badges.includes((a.courseId==="dsa"?"":a.courseId+":")+"checkpoint-" + a.lessonId)
             )
-              s.badges.push("checkpoint-" + a.lessonId);
+              s.badges.push((a.courseId==="dsa"?"":a.courseId+":")+"checkpoint-" + a.lessonId);
           }
         }
-        s.progress[a.lessonId] = previous;
-        awardChapters(s, units);
+        c.progress[a.lessonId] = previous;
+        if(a.courseId==="dsa")awardChapters(s, units);
+        else for(const unit of def.course.units.filter(u=>u.range[1]<=def.course.mandatoryLessons)) {
+          const badge=a.courseId+":chapter-"+unit.id;
+          if(def.lessons.filter(l=>l.unitId===unit.id).every(l=>c.progress[l.id]?.passed)&&!s.badges.includes(badge))s.badges.push(badge);
+        }
       } else if (a.mode === "review" && result.passed) {
         s.energy = Math.min(30, s.energy + 5);
         daily(s, now()).reviews++;
@@ -788,21 +833,23 @@ export async function createApp({
             })
           ) {
             d.reviewRewards++;
-            recordXP(s, 10, now());
+            reward={...reward,...s.lastReward};
+            recordXP(s, reward.xp, now());
           }
         }
-        const progress = s.progress[a.lessonId];
+        const progress = c.progress[a.lessonId];
         if (progress) {
           progress.reviewStage = Math.min(3, (progress.reviewStage ?? 0) + 1);
           progress.nextReview =
             now() + [1, 3, 7, 14][progress.reviewStage] * 86400000;
           progress.mistakes = a.questions.length - result.correct;
         }
-      } else if (a.mode === "review" && s.progress[a.lessonId]) {
-        s.progress[a.lessonId].nextReview = now() + 86400000;
-        s.progress[a.lessonId].mistakes = a.questions.length - result.correct;
+      } else if (a.mode === "review" && c.progress[a.lessonId]) {
+        c.progress[a.lessonId].nextReview = now() + 86400000;
+        c.progress[a.lessonId].mistakes = a.questions.length - result.correct;
       }
       a.status = "completed";
+      persistCourse(s,a.courseId,c);
       a.result = { ...result, reward, mode: a.mode };
       a.updatedAt = now();
       store.put("attempts", a);
@@ -811,15 +858,15 @@ export async function createApp({
     }),
   );
   app.get("/api/solutions/:pid", async (req) => {
-    const pid = req.params.pid,
-      l = lessons.find(
+    const pid = req.params.pid,def=courseForProblem(pid),
+      l = def.lessons.find(
         (l) =>
           l.problemIds.includes(pid) &&
-          unlocked(state(), l.id) &&
+          courseUnlocked(state(),def,l.id) &&
           (req.query.lessonId === undefined ||
             l.id === Number(req.query.lessonId)),
       );
-    if (!problems[pid] || !l) throw fail("Lời giải chưa mở.", 403);
+    if (!def.problems[pid] || !l) throw fail("Lời giải chưa mở.", 403);
     if (
       store
         .list("attempts")
@@ -827,7 +874,7 @@ export async function createApp({
           (a) =>
             a.mode === "assessment" &&
             a.status === "active" &&
-            lessons[a.lessonId - 1].problemIds.includes(pid),
+            getCourse(a.courseId).lessons[a.lessonId - 1].problemIds.includes(pid),
         )
     )
       throw fail("Lời giải ẩn trong kiểm tra đang làm.", 403);
@@ -835,30 +882,37 @@ export async function createApp({
       python:
         l.id === 39 && pid === "union-find"
           ? componentsSolution("python")
-          : solution(pid, "python"),
+          : def.solution(pid, "python"),
       cpp:
         l.id === 39 && pid === "union-find"
           ? componentsSolution("cpp")
-          : solution(pid, "cpp"),
-      helpers: { python: pythonHelpers, cpp: cppHelpers },
+          : def.course.languages.includes("cpp")?def.solution(pid, "cpp"):"",
+      helpers: def.helpers,
     };
   });
-  app.get("/api/review", async () => {
-    const s = state(),
-      list = reviewList(s, lessons, now());
+  app.get("/api/review", async req => {
+    const s = state(),def=getCourse(req.query.courseId??"dsa"),c=courseState(s,def.course.id),
+      list = reviewList({...s,...c}, def.lessons, now());
     return {
-      items: list.length ? list : [{ ...lessons[0], due: now(), mistakes: 0 }],
+      items: list.length ? list : [{ ...def.lessons[0], due: now(), mistakes: 0 }],
       intervals: [1, 3, 7, 14],
     };
   });
-  app.get("/api/shop", async () => ({ items: shop, chestTable }));
+  app.get("/api/shop", async () => ({ items: [...shop.filter(i=>i.type!=="skin"),...extendedShop], chestTable }));
   app.post("/api/shop/buy", async (req) => {
-    const { itemId } = z.object({ itemId: z.string() }).parse(req.body),
-      item = shop.find((i) => i.id === itemId);
+    const { itemId,requestId } = z.object({ itemId: z.string(),requestId:z.string().max(100).optional() }).parse(req.body),
+      item = [...shop,...extendedShop].find((i) => i.id === itemId);
     if (!item) throw fail("Vật phẩm không tồn tại.");
     return store.transaction(() => {
       const s = refreshGame(store.getState(), now());
-      purchase(s, item);
+      if(["energy","freeze"].includes(item.type)){
+        s.purchaseRequests??={};
+        if(requestId && Object.hasOwn(s.purchaseRequests,requestId)){
+          if(s.purchaseRequests[requestId].itemId!==itemId)throw fail("Mã mua đã dùng cho vật phẩm khác.");
+          return view(s);
+        }
+        purchase(s, item);if(requestId)Object.defineProperty(s.purchaseRequests,requestId,{value:{itemId},enumerable:true,writable:true,configurable:true});
+      }else purchaseExtended(s,itemId,{requestId,now:now()});
       store.putState(s);
       return view(s);
     });
@@ -866,7 +920,7 @@ export async function createApp({
   app.post("/api/quests/claim", async () =>
     store.transaction(() => {
       const s = refreshGame(store.getState(), now()),
-        q = quests(s, now());
+        c=courseSummary(s,getCourse(s.activeCourse),now()),q = quests({...s,...c,mandatoryLessons:c.mandatoryCount}, now());
       if (!q.every((v) => v.current >= v.target))
         throw fail("Hoàn thành đủ nhiệm vụ trước khi nhận.");
       const id = "quest:" + dayKey(now());
@@ -912,9 +966,11 @@ export async function createApp({
         lessonId: z.number().int().min(1).max(60),
         diagnostic: z.string().max(3000).optional(),
         code: z.string().max(10000).optional(),
+        courseId:courseIdSchema.default("dsa"),
       })
       .parse(req.body);
-    if (!unlocked(state(), b.lessonId)) throw fail("Buổi chưa mở khóa.", 403);
+    const def=getCourse(b.courseId);
+    if (!courseUnlocked(state(),def,b.lessonId)) throw fail("Buổi chưa mở khóa.", 403);
     if (
       store
         .list("attempts")
@@ -922,48 +978,52 @@ export async function createApp({
     )
       throw fail("Trợ giảng ẩn trong lượt kiểm tra.", 403);
     reserveAI();
-    return tutor({ ...b, lesson: lessons[b.lessonId - 1] });
+    return tutor({ ...b, lesson: def.lessonMaterial(def.lessons[b.lessonId - 1]) });
   });
-  app.get("/api/capstone", async () => {
-    const s = state();
+  app.get("/api/capstone", async req => {
+    const s = state(),def=getCourse(req.params.courseId??"dsa"),id=def.course.id,cs=id==="dsa"?{essayFields,capstoneProblems}:def;
+    const caps=store.list("capstones").filter(a=>a.courseId===id);
     return {
-      unlocked: view(s).capstoneUnlocked,
-      fields: essayFields,
-      latest: store.list("capstones")[0]
-        ? publicAttempt(store.list("capstones")[0])
+      courseId:id,title:cs.capstoneTitle??def.course.capstone?.title??"Lập kế hoạch học thông minh",
+      unlocked: courseSummary(s,def).capstoneUnlocked,
+      fields: cs.essayFields,
+      latest: caps[0]
+        ? publicAttempt(caps[0])
         : null,
       versions: store
         .list("drafts")
+        .filter(d=>d.courseId===id)
         .slice(0, 30)
         .map((d) => ({
           id: d.id,
           createdAt: d.createdAt,
           capstoneId: d.capstoneId,
         })),
-      problems: capstoneProblems.map((id) => ({
-        ...problems[id],
-        starters: { python: starter(id, "python"), cpp: starter(id, "cpp") },
-      })),
+      problems: cs.capstoneProblems.map(pid=>def.problemDetails(pid)),
     };
   });
-  app.post("/api/capstone", async () => {
-    if (!view(state()).capstoneUnlocked)
-      throw fail("Hoàn thành đủ 48 buổi bắt buộc.", 403);
-    const old = store.list("capstones").find((a) => a.status === "active");
+  app.post("/api/capstone", async req => {
+    const def=getCourse(req.params.courseId??"dsa");
+    if (!courseSummary(state(),def).capstoneUnlocked)
+      throw fail(`Hoàn thành đủ ${def.course.mandatoryLessons} buổi bắt buộc.`, 403);
+    const old = store.list("capstones").find((a) => a.courseId===def.course.id && a.status === "active");
     if (old) return publicAttempt(old);
-    const a = createCapstone(now());
+    const a = (def.course.id==="dsa"?createCapstone:def.createCapstone)(now());
+    a.courseId=def.course.id;
     store.put("capstones", a);
     return publicAttempt(a);
   });
-  app.post("/api/capstone/retake", async () => {
-    if (!view(state()).capstoneUnlocked)
+  app.post("/api/capstone/retake", async req => {
+    const def=getCourse(req.params.courseId??"dsa");
+    if (!courseSummary(state(),def).capstoneUnlocked)
       throw fail("Chưa mở bài cuối khóa.", 403);
-    const old = store.list("capstones").find((a) => a.status === "active");
+    const old = store.list("capstones").find((a) => a.courseId===def.course.id && a.status === "active");
     if (old) {
       old.status = "abandoned";
       store.put("capstones", old);
     }
-    const a = createCapstone(now());
+    const a = (def.course.id==="dsa"?createCapstone:def.createCapstone)(now());
+    a.courseId=def.course.id;
     store.put("capstones", a);
     return publicAttempt(a);
   });
@@ -984,7 +1044,7 @@ export async function createApp({
         customTests: z
           .array(
             z.object({
-              problemId: z.enum(["topo", "priority", "prefix"]),
+              problemId: z.string(),
               input: z.unknown(),
               expected: z.unknown(),
             }),
@@ -994,11 +1054,12 @@ export async function createApp({
       })
       .parse(req.body);
     return store.transaction(() => {
-      const a = cap(req.params.id);
+      const a = cap(req.params.id,req.params.courseId??"dsa");
+      const cs=a.courseId==="dsa"?{essayFields,capstoneProblems}:getCourse(a.courseId);
       if (a.status !== "active") throw fail("Bài đã nộp.");
       if (b.essay)
         for (const [key, value] of Object.entries(b.essay)) {
-          if (!essayFields.some((f) => f.id === key))
+          if (!cs.essayFields.some((f) => f.id === key))
             throw fail("Mục luận không hợp lệ.");
           a.essay[key] = value;
         }
@@ -1014,7 +1075,7 @@ export async function createApp({
         }
       if (b.codeDrafts)
         for (const [key, value] of Object.entries(b.codeDrafts)) {
-          if (!capstoneProblems.includes(key))
+          if (!cs.capstoneProblems.includes(key))
             throw fail("Bài code không hợp lệ.");
           a.codeDrafts[key] = { ...a.codeDrafts[key], ...value };
         }
@@ -1026,6 +1087,7 @@ export async function createApp({
       if (!previous || now() - previous.createdAt >= 30000)
         store.put("drafts", {
           id: randomUUID(),
+          courseId:a.courseId,
           capstoneId: a.id,
           createdAt: now(),
           essay: a.essay,
@@ -1038,23 +1100,25 @@ export async function createApp({
   app.get("/api/capstone/versions/:id", async (req) => {
     const d = store.get("drafts", req.params.id);
     if (!d) throw fail("Không tìm thấy bản nháp.", 404);
+    if(d.courseId!==(req.params.courseId??"dsa"))throw fail("Bản nháp thuộc khóa khác.",404);
     return d;
   });
   app.get("/api/capstone/:id", async (req) =>
-    publicAttempt(cap(req.params.id)),
+    publicAttempt(cap(req.params.id,req.params.courseId??"dsa")),
   );
   app.get("/api/capstones/:id", async (req) =>
-    publicAttempt(cap(req.params.id)),
+    publicAttempt(cap(req.params.id,req.params.courseId??"dsa")),
   );
   app.post("/api/capstones/:id/code", async (req) =>
-    scheduleCode(cap(req.params.id), codeSchema.parse(req.body), "capstones"),
+    scheduleCode(cap(req.params.id,req.params.courseId??"dsa"), codeSchema.parse(req.body), "capstones"),
   );
   app.post("/api/capstone/:id/code", async (req) =>
-    scheduleCode(cap(req.params.id), codeSchema.parse(req.body), "capstones"),
+    scheduleCode(cap(req.params.id,req.params.courseId??"dsa"), codeSchema.parse(req.body), "capstones"),
   );
   app.post("/api/capstone/:id/submit", async (req) =>
     store.transaction(() => {
-      const a = cap(req.params.id);
+      const a = cap(req.params.id,req.params.courseId??"dsa");
+      const def=getCourse(a.courseId),cs=a.courseId==="dsa"?{capstoneProblems,gradeCapstone}:def;
       if (a.status === "completed") return a.result;
       if (a.status !== "active") throw fail("Bài đã bỏ.");
       if (
@@ -1064,7 +1128,7 @@ export async function createApp({
       )
         throw fail("Code đang được chấm.", 409);
       if (
-        capstoneProblems.some(
+        cs.capstoneProblems.some(
           (pid) =>
             !a.codesPassed.includes(pid) &&
             a.jobIds
@@ -1076,32 +1140,37 @@ export async function createApp({
         throw fail("Bộ chấm chưa có kết quả. Chấm lại trước khi nộp.", 409);
       if (a.questions.some((q) => !a.answers[q.id]))
         throw fail("Trả lời đủ các câu kiểm chứng.");
-      const result = gradeCapstone(a);
+      const result = cs.gradeCapstone(a);
       if (!result.essayComplete) throw fail("Điền đủ năm phần bài luận.");
       a.result = result;
       a.status = "completed";
       store.put("capstones", a);
       const s = refreshGame(store.getState(), now());
-      s.capstoneScore = Math.max(s.capstoneScore, result.score);
+      const c=courseState(s,a.courseId);
+      c.capstoneScore = Math.max(c.capstoneScore, result.score);
       if (result.passed) {
-        s.capstonePassed = true;
-        if (!s.badges.includes("graduate")) s.badges.push("graduate");
+        c.capstonePassed = true;
+        const badge=a.courseId==="dsa"?"graduate":a.courseId+":graduate";
+        if (!s.badges.includes(badge)) s.badges.push(badge);
+        awardCourseCosmetic(s,a.courseId);
         if (
-          store.reward(s, "capstone", {
+          store.reward(s, (a.courseId==="dsa"?"":a.courseId+":")+"capstone", {
             xp: 200,
             gems: 100,
             reason: "Hoàn thành khóa",
             now: now(),
+            courseId:a.courseId,
           })
         )
-          recordXP(s, 200, now());
+          recordXP(s, s.lastReward.xp, now());
       }
+      persistCourse(s,a.courseId,c);
       store.putState(s);
       return result;
     }),
   );
   app.post("/api/capstone/:id/feedback", async (req) => {
-    const a = cap(req.params.id);
+    const a = cap(req.params.id,req.params.courseId??"dsa");
     if (a.status !== "completed") throw fail("Nhận xét chỉ mở sau khi nộp.");
     reserveAI();
     const feedback = await tutor({ essay: a.essay });
@@ -1109,6 +1178,23 @@ export async function createApp({
     store.put("capstones", a);
     return feedback;
   });
+  for(const route of capstoneAliases)app.route(route);
+  registerGamificationRoutes(app,{store,now});
+  registerKnowledgeRoutes(app,{store,now,reward:store.reward});
+  app.post("/api/knowledge/feedback",async req=>{
+    const b=z.object({courseId:z.enum(["dsa","ml"]),topicId:z.string(),text:z.string().min(1).max(20000)}).parse(req.body);
+    const topic=knowledgeById[b.topicId];if(!topic||topic.courseId!==b.courseId)throw fail("Chủ đề không thuộc khóa.");
+    if(store.list("attempts").some(a=>a.mode==="assessment"&&a.status==="active"))throw fail("Trợ giảng ẩn trong lượt kiểm tra.",403);
+    reserveAI();return tutor({essay:{topic:topic.title,rubric:JSON.stringify(topic.essay),answer:b.text}});
+  });
+  app.post("/api/courses/:courseId/chests/:unit/claim",async req=>store.transaction(()=>{
+    const def=getCourse(req.params.courseId),s=refreshGame(store.getState(),now()),c=courseState(s,def.course.id),unit=def.course.units.find(u=>u.id===Number(req.params.unit));
+    if(!unit)throw fail("Chặng không tồn tại.");
+    if(!def.lessons.filter(l=>l.unitId===unit.id).every(l=>c.progress[l.id]?.passed))throw fail("Hoàn thành chặng để mở hộp quà.");
+    const id=(def.course.id==="dsa"?"":def.course.id+":")+"chest:"+unit.id;if(s.claimed.includes(id))throw fail("Hộp quà đã mở.");
+    const reward=chestReward(id);if(reward.type==="freeze"&&s.freeze<2)s.freeze++;else store.reward(s,id,{gems:reward.type==="gems"?reward.amount:10,reason:"Hộp quà",courseId:def.course.id,now:now()});
+    s.claimed.push(id);store.putState(s);return {reward,state:view(s)};
+  }));
   app.get("/api/data/export", async () => ({
     version: DATA_VERSION,
     exportedAt: now(),
@@ -1118,6 +1204,7 @@ export async function createApp({
     ledger: store.db.prepare("SELECT * FROM ledger").all(),
     capstones: store.list("capstones"),
     drafts: store.list("drafts"),
+    knowledgeAttempts:store.list("knowledge_attempts"),
   }));
   app.post(
     "/api/data/import",
@@ -1132,10 +1219,10 @@ export async function createApp({
         );
       const b = z
         .object({
-          version: z.literal(DATA_VERSION),
+          version: z.union([z.literal(1),z.literal(DATA_VERSION)]),
           state: z
             .object({
-              version: z.literal(DATA_VERSION),
+              version: z.union([z.literal(1),z.literal(DATA_VERSION)]),
               profile: profileSchema.extend({
                 name: z.string().trim().max(32),
               }),
@@ -1178,6 +1265,12 @@ export async function createApp({
               }),
               capstonePassed: z.boolean(),
               capstoneScore: z.number().min(0).max(100),
+              activeCourse:z.enum(["dsa","ml"]).optional(),
+              courses:z.record(z.enum(["dsa","ml"]),z.object({
+                progress:z.record(z.string(),z.object({passed:z.boolean(),bestKnowledge:z.number().min(0).max(100)}).passthrough()),
+                started:z.array(z.number().int().positive()),language:z.enum(["python","cpp"]),
+                capstonePassed:z.boolean(),capstoneScore:z.number().min(0).max(100)
+              })).optional(),
             })
             .passthrough(),
           attempts: z.array(savedAttemptSchema),
@@ -1189,15 +1282,18 @@ export async function createApp({
               xp: z.number(),
               gems: z.number(),
               reason: z.string(),
+              course_id:z.string().nullable().optional(),
             }),
           ),
           capstones: z.array(
             savedAttemptSchema.extend({
               essay: z.record(z.string(), z.string()),
               customTests: z.array(z.unknown()),
+              courseId:z.enum(["dsa","ml"]).default("dsa"),
               tasks: z.record(z.string(), z.unknown()),
             }),
           ),
+          knowledgeAttempts:z.array(z.unknown()).default([]),
           drafts: z.array(
             z.object({
               id: z.string().uuid(),
@@ -1206,24 +1302,29 @@ export async function createApp({
               essay: z.record(z.string(), z.string()),
               codeDrafts: draftCodeSchema,
               customTests: z.array(z.unknown()),
+              courseId:z.enum(["dsa","ml"]).default("dsa"),
             }),
           ),
         })
         .parse(req.body);
       for (const a of [...b.attempts, ...b.capstones]) {
+        const def=getCourse(a.courseId);
         if (
           a.questions.some(
             (q) => !q.options.some((o) => o.id === q.answerId),
           ) ||
-          a.requiredProblems.some((id) => !problems[id]) ||
-          Object.keys(a.codeDrafts).some((id) => !problems[id])
+          a.requiredProblems.some((id) => !def.problems[id]) ||
+          Object.keys(a.codeDrafts).some((id) => !def.problems[id]) ||
+          ![def.VERSION,...(a.courseId==="dsa"?[LEGACY_VERSION]:[])].includes(a.version)
         )
           throw fail("Bản sao chứa câu hỏi hoặc bài code không hợp lệ.");
       }
+      if(b.knowledgeAttempts.some(a=>!validateSavedKnowledgeAttempt(a)))throw fail("Bản sao luyện thêm không khớp seed và phiên bản.");
       return store.transaction(() => {
-        for (const t of ["attempts", "jobs", "ledger", "capstones", "drafts"])
+        for (const t of ["attempts", "jobs", "ledger", "capstones", "drafts","knowledge_attempts"])
           store.db.exec(`DELETE FROM ${t}`);
-        store.putState(b.state);
+        b.state.version=DATA_VERSION;
+        store.putState(normalizeGamification(normalizeCourses(b.state),{retroactive:true,now:now()}));
         for (const j of b.jobs) {
           if (["running", "queued"].includes(j.status)) {
             j.status = "error";
@@ -1243,10 +1344,11 @@ export async function createApp({
           store.put("capstones", a);
         }
         for (const a of b.drafts) store.put("drafts", a);
+        for(const a of b.knowledgeAttempts)store.put("knowledge_attempts",a);
         for (const r of b.ledger)
           store.db
-            .prepare("INSERT INTO ledger VALUES (?,?,?,?,?)")
-            .run(r.id, r.created_at, r.xp, r.gems, r.reason);
+            .prepare("INSERT INTO ledger(id,created_at,xp,gems,reason,course_id) VALUES (?,?,?,?,?,?)")
+            .run(r.id, r.created_at, r.xp, r.gems, r.reason,r.course_id??"dsa");
         const restored = refreshGame(store.getState(), now());
         store.putState(restored);
         return view(restored);
@@ -1267,7 +1369,7 @@ export async function createApp({
     const tail = req.params["*"];
     if (!/^[a-zA-Z0-9_.-]+$/.test(tail) || tail.includes(".."))
       throw fail("Asset không tồn tại.", 404);
-    const path = resolve("dist/assets", tail);
+    const path = resolve(assetRoot,"assets", tail);
     if (!existsSync(path)) throw fail("Asset không tồn tại.", 404);
     return reply
       .type(mime[extname(path)] ?? "application/octet-stream")
@@ -1276,8 +1378,8 @@ export async function createApp({
   app.setNotFoundHandler((req, reply) => {
     if (req.url.startsWith("/api/") || req.url.startsWith("/sources/"))
       return reply.code(404).send({ error: "Không tìm thấy." });
-    if (existsSync("dist/index.html"))
-      return reply.type("text/html").send(readFileSync("dist/index.html"));
+    if (existsSync(resolve(assetRoot,"index.html")))
+      return reply.type("text/html").send(readFileSync(resolve(assetRoot,"index.html")));
     return reply.code(503).send({
       error: "Chạy npm run build trước hoặc npm run dev để phát triển.",
     });

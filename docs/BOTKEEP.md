@@ -1,5 +1,7 @@
 # Đưa BytePath lên Botkeep Founder Free
 
+**Phương án đang dùng:** Windows local qua `hoc.bytepath.workers.dev`. Bản mở rộng ML cần Chromium sandbox/Windows Job Object; cấu hình Botkeep Linux dưới đây chỉ phù hợp phần web/DSA, chưa chạy được runner ML. Xem [ML-RUNTIME.md](ML-RUNTIME.md) và [TUNNEL.md](TUNNEL.md).
+
 Source phát triển ở nhánh `main` của [khanhbes/Learning-Web](https://github.com/khanhbes/Learning-Web). GitHub Actions build và kiểm thử trước khi cập nhật nhánh `botkeep-deploy`, chứa source và frontend đã build. **Botkeep clone nhánh `botkeep-deploy`**, nên không cần upload ZIP vượt giới hạn 5 MB. Mẫu cấu hình cloud ở `.env.botkeep.example`; máy cá nhân tiếp tục chạy theo [LOCAL.md](LOCAL.md).
 
 Giữ nguyên mục tiêu miễn phí: website + SQLite + runner WebAssembly trên Botkeep; Gemini Free Tier cho trợ giảng. Không tải Ollama/model và không cần Docker trên máy hoặc Botkeep.

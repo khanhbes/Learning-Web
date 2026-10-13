@@ -1,30 +1,33 @@
 # BytePath
 
-Website học DSA tiếng Việt: 48 buổi bắt buộc, 12 buổi nâng cao, robot Byte, mô phỏng, bài tập, editor Python/C++, kiểm tra và bài luận cuối khóa. Học liệu chuyển từ 62 ảnh gốc trong `DSA/`; danh mục và SHA-256 ở `content/sources.json`. 30 bài phỏng vấn được phân bổ trong khóa; tổng ngân hàng có 61 mẫu code.
+Website học CNTT tiếng Việt, gồm **DSA (48 buổi bắt buộc + 12 nâng cao)** và **ML (40 + 12)**. DSA thực hành Python/C++; ML thực hành Python. Mỗi khóa có tiến độ, bài kiểm tra và bài luận cuối khóa riêng. Học liệu dựa trên 62 ảnh trong `study documents/DSA/` và 65 ảnh trong `study documents/ML/`; danh mục, ánh xạ và SHA-256 nằm ở `content/sources.json` và `content/ml/sources.json`.
 
-Bài học có minh họa SVG theo chủ đề, mô phỏng từng bước, bốn kiểu luyện tương tác và khu vực tự thao tác stack/hàng đợi vòng/bit. Vị trí học và bản nháp được lưu để tiếp tục. Xem [báo cáo bàn giao](docs/COMPLETION.md) và [thiết kế hoạt động trực quan](docs/DESIGN-NOTES.md).
+Bài học có minh họa SVG, mô phỏng từng bước, biểu đồ hồi quy/gradient/classification/clustering/PCA và nhiều dạng luyện tương tác. Trang Mẹo & Phỏng vấn có 40 mẹo, 65 chủ đề và thưởng kim cương theo hạn mức. Hồ sơ dùng chung XP, 30 cấp, 24 skin/mascot, gói X2 theo lượt và vật phẩm. Vị trí học và bản nháp được lưu để tiếp tục. Xem [báo cáo mở rộng](docs/EXPANSION-REPORT.md), [học liệu ML](docs/ML-CONTENT.md) và [thiết kế hoạt động trực quan](docs/DESIGN-NOTES.md).
 
 ## Cách chạy trên máy
 
-Máy cần Node.js 24 trở lên. Runner mặc định dùng WebAssembly, **không cần Docker**. Trong workspace:
+Máy cần Windows và Node.js 24 trở lên để chạy đầy đủ cả hai runner. Runner dùng WebAssembly, **không cần Docker**. Trong workspace:
 
 ```powershell
 npm.cmd ci
 if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 npm.cmd run runner:setup
+npm.cmd run ml:setup
 npm.cmd run build
 npm.cmd start
 ```
 
 Mở http://127.0.0.1:3001. Hoặc chạy `Start BytePath.cmd` / `Stop BytePath.cmd`: launcher tạo `.env` nếu chưa có, chuẩn bị dependency/runtime/build khi thiếu và đợi server sẵn sàng. Bản build và runtime đã được chuẩn bị trong workspace này. Chỉ tải dependency/runtime lần đầu; nội dung, editor, mô phỏng và runner có thể dùng offline sau đó. Gemini cần mạng. Hướng dẫn cấu hình API và vận hành ở [LOCAL.md](docs/LOCAL.md).
 
-## Đưa lên Botkeep
+## Truy cập online
 
 Nếu cần link public tạm thời từ máy này, dùng **Start Public BytePath.cmd** / **Stop Public BytePath.cmd** theo [TUNNEL.md](docs/TUNNEL.md). Máy phải bật và có mạng; link/mật khẩu ở `.data/public/access.txt`, không đưa lên GitHub.
 
+Địa chỉ hiện tại: **https://hoc.bytepath.workers.dev**. Backend vẫn chạy trên máy Windows; Cloudflare chuyển tiếp truy cập qua tunnel có mật khẩu.
+
 Xem [hướng dẫn Botkeep](docs/BOTKEEP.md) và `.env.botkeep.example`. Repository: [khanhbes/Learning-Web](https://github.com/khanhbes/Learning-Web). Nhánh `main` chứa source; workflow kiểm thử/build rồi tạo **`botkeep-deploy`** có frontend build sẵn. Chọn nhánh này trong source GitHub của Botkeep, install `npm ci --omit=dev`, startup `node --v8-pool-size=1 scripts/cloud-start.mjs`. Runtime được tải và xác minh khi khởi động lần đầu, không cần upload ZIP vượt 5 MB.
 
-Botkeep chạy cả giao diện, backend và SQLite. Một người dùng đăng nhập bằng mật khẩu riêng; đây chưa phải hệ thống nhiều tài khoản. Chưa tự động xuất bản lên tài khoản Botkeep của bạn.
+Botkeep có thể chạy giao diện, backend, SQLite và runner DSA. **Runner ML hiện dùng Windows Job Object nên chưa hỗ trợ Linux/Botkeep.** Bản đầy đủ đang dùng máy Windows và tunnel. Một người dùng đăng nhập bằng mật khẩu riêng; đây chưa phải hệ thống nhiều tài khoản. Chưa xuất bản lên tài khoản Botkeep của bạn.
 
 ## Chấm điểm
 
@@ -45,6 +48,8 @@ C++ dùng môi trường một luồng, không hỗ trợ exception/thread hay m
 
 Docker runner cũ vẫn có thể dùng nếu chủ động đặt `BYTEPATH_RUNNER=docker` và build image qua `npm run runner:build`. Website không tự chạy code học viên bằng Python/g++ trực tiếp trên host.
 
+ML dùng **Pyodide 314.0.7 / Python 3.14** trong Chromium headless có sandbox, kèm NumPy, pandas, SciPy, scikit-learn và matplotlib được khóa phiên bản. Windows Job Object giới hạn cả job ở 1 GB; khởi tạo tối đa 120 giây, thực thi 30 giây, output 2 MB. Chỉ nạp package cần dùng; mạng ngoài, filesystem host, cookie ứng dụng và API key không được cấp cho runner. Thiếu runtime hoặc vượt tài nguyên trả trạng thái cần chấm lại. Xem [chuẩn bị và giới hạn runner ML](docs/ML-RUNTIME.md).
+
 ## AI
 
 Mẫu `.env` mặc định chọn Gemini. Nhập `GEMINI_API_KEY` và đặt `GEMINI_FREE_TIER_CONFIRMED=1` sau khi xác nhận project Free Tier với billing tắt, rồi khởi động lại server. Khi chưa có key, gợi ý soạn sẵn theo ba cấp vẫn dùng được. Đặt `BYTEPATH_AI=off` để tắt AI; Ollama là lựa chọn phụ qua `ollama`. Gemini chỉ nhận ngữ cảnh khi bấm hỏi/nhận xét; key chỉ ở backend, không xuất trong backup hoặc bundle frontend.
@@ -56,6 +61,8 @@ Theo điều khoản Gemini Free Tier, nội dung gửi đi có thể dùng đ�
 ## Backup và phát triển
 
 Trong Hồ sơ, xuất JSON trước khi khôi phục/chuyển server. Bản sao chứa tiến độ, lịch sử đề, code, điểm, ledger và bản nháp; không chứa mật khẩu đăng nhập hoặc Gemini key. Import chỉ chạy khi không còn job đang chấm. Bản nháp có thêm bản giữ trong trình duyệt và tự thử đồng bộ lại khi backend trở lại.
+
+Backup v2 lưu riêng từng khóa. Backup v1 được chuyển vào DSA trong giao dịch, giữ lịch sử và vật phẩm; các phần thưởng đã nhận không được cấp lại.
 
 SQLite ở `.data/bytepath.sqlite`; khi sao chép file trực tiếp, dừng server trước và giữ dữ liệu WAL liên quan. Không xóa `.data` khi cập nhật source. Không đưa `.env`, `.data`, `node_modules` vào ZIP chia sẻ.
 
