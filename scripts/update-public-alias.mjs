@@ -64,10 +64,20 @@ function wrangler(args, verifyAuth = false) {
 }
 wrangler("whoami", true);
 wrangler("deploy --config '" + configPath.replaceAll("'", "''") + "'");
-const response = await fetch(state.publicOrigin + "/api/health", {
-  signal: AbortSignal.timeout(30000),
-});
-if (!response.ok || (await response.json()).mode !== "cloud")
+let healthy = false;
+for (let attempt = 0; attempt < 8; attempt++) {
+  try {
+    const response = await fetch(state.publicOrigin + "/api/health", {
+      signal: AbortSignal.timeout(5000),
+    });
+    healthy = response.ok && (await response.json()).mode === "cloud";
+  } catch {
+    /* A new workers.dev hostname may still be receiving its certificate. */
+  }
+  if (healthy) break;
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+}
+if (!healthy)
   throw Error(
     "The short address has not passed the live health check. Use the tunnel fallback URL.",
   );

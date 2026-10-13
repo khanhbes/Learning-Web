@@ -26,6 +26,8 @@ Log nằm trong `.data/public/`. Nếu startup lỗi, script đóng các tiến 
 
 ## Địa chỉ ngắn miễn phí
 
+Địa chỉ đang dùng: **https://hoc.bytepath.workers.dev**. Đăng nhập bằng mật khẩu riêng trong `.data/public/access.txt`; không ghi mật khẩu vào tài liệu hoặc repository.
+
 Có thể dùng một Cloudflare Worker làm cổng chuyển tiếp với địa chỉ `https://bytepath.<tên-tài-khoản>.workers.dev`. Cần đăng nhập tài khoản Cloudflare Free bằng `npx wrangler login`; không cần mua tên miền. Worker chỉ chuyển tiếp HTTP, còn SQLite, chấm code và Gemini vẫn chạy ở backend trên máy. Máy vẫn cần bật.
 
 Sau khi đã cấp địa chỉ, cấu hình riêng nằm trong `.data/public/worker.json` (accountId, name, deployedUpstream), và `state.json` có thêm `publicOrigin`. Không thêm mật khẩu hoặc Gemini key vào Worker. Chạy `node scripts/update-public-alias.mjs` để cập nhật cổng chuyển tiếp và kiểm tra `/api/health` thực tế. Script kiểm tra đăng nhập Wrangler trước khi deploy. Khi tunnel tạo URL mới, **Start Public BytePath.cmd** tự cập nhật Worker. Địa chỉ `workers.dev` giữ nguyên; `access.txt` có cả link ngắn và link tunnel dự phòng. Nếu đăng nhập Cloudflare hết hạn hoặc cập nhật thất bại, dùng link dự phòng, đăng nhập lại Wrangler rồi chạy script cập nhật.
