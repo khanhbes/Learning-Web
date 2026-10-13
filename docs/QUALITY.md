@@ -21,7 +21,7 @@ Ngân hàng gồm 61 mẫu, trong đó 30 bài phỏng vấn từ tài liệu. �
 
 Các lượt mới dùng phiên bản đề `2026.10.13-v2`, có fixture biên và tài nguyên cho cả 61 mẫu. Job lưu bộ fixture trước khi chạy; API không trả expected output của test ẩn. Lượt cũ `2026.10.12-v1` vẫn tái tạo bộ test cũ, không bị đổi tiêu chí khi cập nhật nội dung. Fixture nhóm performance cho các bài có miền nhỏ dùng giá trị lớn nhất trong đặc tả; nhóm này không chứng minh Big-O hay khả năng chạy với dữ liệu ngoài miền công bố.
 
-Test Gemini dùng phản hồi mô phỏng để kiểm tra thành công văn bản/JSON, quota, lỗi và timeout; không tuyên bố đã xác minh key của người dùng hoặc gửi dữ liệu đến project Gemini thật. Người dùng chọn cấu hình key và kiểm thử thật sau. Màn hình desktop/mobile được kiểm tra bằng Playwright; ảnh QA ở `output/playwright`. Báo cáo phạm vi bàn giao ở [COMPLETION.md](COMPLETION.md).
+Test Gemini dùng phản hồi mô phỏng để kiểm tra thành công văn bản/JSON, quota, lỗi và timeout. Sau khi người dùng cấu hình key ngày 13/10/2026, đã kiểm tra thêm một yêu cầu trợ giảng qua backend với API thật: HTTP 200, `available=true`, câu trả lời đúng ví dụ 3+5=8; báo cáo tại `output/gemini-live-verification.json`. Chưa kiểm thử rubric JSON với API thật; lời gọi thành công không xác minh trạng thái billing. Màn hình desktop/mobile được kiểm tra bằng Playwright; ảnh QA ở `output/playwright`. Báo cáo phạm vi bàn giao ở [COMPLETION.md](COMPLETION.md).
 
 ## Giới hạn
 

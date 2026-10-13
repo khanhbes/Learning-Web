@@ -1,6 +1,6 @@
 # Bàn giao BytePath — 13/10/2026
 
-Phương án hiện tại theo lựa chọn của người dùng: chạy local, chấm bằng test/checker có sẵn trên WebAssembly, Gemini chỉ trợ giảng và phản hồi. Không cần Docker hoặc Botkeep để học và chấm code. API key Gemini sẽ cấu hình và kiểm thử thật sau.
+Phương án hiện tại theo lựa chọn của người dùng: chạy local, chấm bằng test/checker có sẵn trên WebAssembly, Gemini chỉ trợ giảng và phản hồi. Không cần Docker hoặc Botkeep để học và chấm code. Ngày 13/10/2026, người dùng đã cấu hình key và một yêu cầu trợ giảng qua API thật đã trả lời thành công.
 
 ## Phạm vi đã hoàn thiện
 
@@ -32,6 +32,6 @@ Chạy `Start BytePath.cmd`, mở **http://127.0.0.1:3001**. Dừng bằng `Stop
 
 ## Phần để sau và giới hạn xác nhận
 
-Theo yêu cầu của người dùng, chưa gọi Gemini với key thật. Đã kiểm tra phản hồi thành công, JSON, quota và timeout bằng phản hồi mô phỏng; không khẳng định model thực đã được benchmark. Học và chấm khách quan vẫn dùng được khi thiếu AI.
+Đã gọi `/api/tutor` với key do người dùng cấu hình ngày 13/10/2026: HTTP 200, `available=true`, model `gemini-3.5-flash-lite`, giải thích đúng ví dụ cộng 3 và 5 trả 8. Báo cáo không chứa key tại `output/gemini-live-verification.json`. Phản hồi rubric JSON, quota và timeout được kiểm tra bằng phản hồi mô phỏng; chưa kiểm thử rubric với API thật hoặc benchmark toàn bộ chất lượng model. Học và chấm khách quan vẫn dùng được khi thiếu AI. Trạng thái billing dựa trên xác nhận của người dùng, không suy ra từ một lời gọi thành công.
 
 Thời lượng 45–60 phút là ước lượng thiết kế, chưa đo với người mới. Test hữu hạn xác nhận theo đặc tả và dữ liệu đã lưu, không chứng minh mọi code bất kỳ đúng. C++ chạy Clang 8/C++17 trên WebAssembly với giới hạn native đã công bố. Mô phỏng rất dài có thể rút gọn phần giữa và thông báo rõ. Nội dung minh họa/chuyển thể được gắn nhãn bổ sung, không giả là nguyên văn ảnh nguồn. Chi tiết ở [QUALITY.md](QUALITY.md).
