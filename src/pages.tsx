@@ -1,22 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import { useMotionPreference } from "./motionPreference";
 import { useApp } from "./context";
 import { api, download } from "./api";
 import { Byte, Icon, Button, ProgressBar, Modal, Empty } from "./components";
 import type { Unit, LessonSummary } from "./types";
 import { ProfileLevel, ProfileFrames } from "./Expansion";
 import ExpandedShop from "./ExpandedShop";
+import { CelebrationScene, LoadingScene } from "./Delight";
 export function Home() {
   const { state, course, notify, refresh } = useApp(),
     navigate = useNavigate();
   const next = course.lessons.find((l) => !l.progress?.passed && l.id <= (course.mandatoryCount || 48));
   const [unitId, setUnitId] = useState(next?.unitId || course.units.at(-2)?.id || 1),
-    [reward, setReward] = useState<any>(null);
-  const unit = course.units.find((u) => u.id === unitId)!;
+    [reward, setReward] = useState<any>(null),
+    [claiming, setClaiming] = useState(false);
+  const systemReduced = useMotionPreference(), reduced = systemReduced || state.profile.settings?.reducedMotion;
+  useEffect(() => { setUnitId(next?.unitId || course.units.at(-2)?.id || 1); }, [course.id]);
+  const lastUnitId = course.units.at(-1)?.id || 1;
+  const unit = course.units.find((u) => u.id === unitId) || course.units[0];
   const nodes = course.lessons.filter((l) => l.unitId === unitId);
   const offsets = [0, -70, -110, -65, 20, 70, 20, -40, 0];
   const completed = nodes.filter((l) => l.progress?.passed).length;
+  const chestRewardId = (course.id === "dsa" ? "" : course.id + ":") + "chest:" + unitId;
+  const chestClaimed = state.claimed.includes(chestRewardId);
   return (
     <div className="home">
       <div className="journey-heading">
@@ -133,7 +141,7 @@ export function Home() {
               {current && (
                 <motion.div
                   className="start-bubble"
-                  animate={{ y: [0, -4, 0] }}
+                  animate={reduced ? {} : { y: [0, -4, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   BẮT ĐẦU
@@ -199,23 +207,27 @@ export function Home() {
           <button
             className={`chest-button ${completed === nodes.length ? "ready" : ""}`}
             aria-label="Mở hộp quà chặng"
+            disabled={claiming || chestClaimed}
+            aria-busy={claiming}
             onClick={async () => {
+              setClaiming(true);
               try {
                 const r = await api("/courses/" + course.id + "/chests/" + unitId + "/claim", "POST");
-                setReward(r.reward);
+                const convertedGems = r.state.lastReward?.id === chestRewardId ? r.state.lastReward.gems : 0;
+                setReward({ ...r.reward, gems: r.reward.type === "gems" ? r.reward.amount : convertedGems, freeze: r.reward.type === "freeze" && !convertedGems ? 1 : 0 });
                 await refresh();
               } catch (e) {
                 notify((e as Error).message);
-              }
+              } finally { setClaiming(false); }
             }}
           >
             <Icon name="gift" size={48} />
-            {state.claimed.includes("chest:" + unitId) && (
+            {chestClaimed && (
               <Icon name="check" size={19} />
             )}
           </button>
           <small>
-            {state.claimed.includes("chest:" + unitId)
+            {chestClaimed
               ? "ĐÃ NHẬN QUÀ"
               : "HỘP QUÀ CHẶNG"}
           </small>
@@ -224,8 +236,8 @@ export function Home() {
       <div className="journey-bottom">
         <Button
           variant="outline"
-          onClick={() => setUnitId(Math.min(12, unitId + 1))}
-          disabled={unitId === 12}
+          onClick={() => setUnitId(Math.min(lastUnitId, unitId + 1))}
+          disabled={unitId === lastUnitId}
         >
           CHẶNG TIẾP <Icon name="right" size={18} />
         </Button>
@@ -239,20 +251,17 @@ export function Home() {
         </Link>
       </div>
       <Modal
-        open={!!reward}
-        onClose={() => setReward(null)}
+        open={claiming || !!reward}
+        onClose={claiming ? undefined : () => setReward(null)}
         title="Phần thưởng chặng"
+        className="reward-event-dialog"
       >
-        <div className="reward-modal">
-          <Byte mood="celebrate" size={180} />
-          <h2>Một chặng đường tuyệt vời!</h2>
-          <p>
-            {reward?.type === "gems"
-              ? `Bạn nhận được ${reward.amount} gem.`
-              : "Bạn nhận một vật phẩm bảo vệ streak (hoặc 10 gem khi túi đã đầy)."}
-          </p>
-          <Button onClick={() => setReward(null)}>TIẾP TỤC KHÁM PHÁ</Button>
-        </div>
+        {claiming ? <LoadingScene title="Đang mở hộp quà" detail="Một bất ngờ nhỏ dành cho chặng đường vừa qua." compact /> : <>
+          <CelebrationScene variant="gift" title="Thêm một chặng thật giỏi!" subtitle={reward?.freeze ? "Một vật phẩm bảo vệ streak đã vào túi của bạn." : "Kim cương đã được thêm vào bộ sưu tập."} gems={reward?.gems || undefined} compact>
+            {!!reward?.freeze && <div className="reward-open-summary"><Icon name="shield" size={27} /><strong>+{reward.freeze} bảo vệ streak</strong></div>}
+          </CelebrationScene>
+          <div className="reward-dialog-actions"><Button onClick={() => setReward(null)}>TIẾP TỤC KHÁM PHÁ<Icon name="right" size={19} /></Button></div>
+        </>}
       </Modal>
     </div>
   );
@@ -458,9 +467,11 @@ export function League() {
 }
 export function Quests() {
   const { state, refresh, notify } = useApp();
-  const [reward, setReward] = useState(false),
+  const [reward, setReward] = useState<number | null>(null),
+    [claiming, setClaiming] = useState(false),
     eligible = state.quests.every((q) => q.current >= q.target),
     claimed = state.claimed.includes("quest:" + state.today);
+  const systemReduced = useMotionPreference(), reduced = systemReduced || state.profile.settings?.reducedMotion;
   return (
     <div className="wide-page">
       <PageHeading
@@ -480,14 +491,16 @@ export function Quests() {
           <p>Hoàn thành cả ba nhiệm vụ trong ngày.</p>
           <Button
             disabled={!eligible || claimed}
+            busy={claiming}
             onClick={async () => {
+              setClaiming(true);
               try {
-                await api("/quests/claim", "POST", {});
+                const result = await api("/quests/claim", "POST", {});
+                setReward(result.lastReward?.id === "quest:" + state.today ? result.lastReward.gems : Math.max(0, result.gems - state.gems));
                 await refresh();
-                setReward(true);
               } catch (e) {
                 notify((e as Error).message);
-              }
+              } finally { setClaiming(false); }
             }}
           >
             {claimed ? "ĐÃ NHẬN QUÀ" : "NHẬN PHẦN THƯỞNG"}
@@ -496,7 +509,7 @@ export function Quests() {
       </div>
       <div className="quest-list">
         {state.quests.map((q) => (
-          <div className="quest-full" key={q.id}>
+          <motion.div className={`quest-full ${q.current >= q.target ? "quest-complete" : ""}`} key={q.id} initial={reduced ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .25 }}>
             <span className={`quest-symbol ${q.id}`}>
               <Icon name={q.icon} size={34} />
             </span>
@@ -510,7 +523,7 @@ export function Quests() {
               <ProgressBar value={q.current} max={q.target} />
             </div>
             {q.current >= q.target ? (
-              <Icon name="success" className="green-text" />
+              <motion.span className="quest-done-burst" initial={reduced ? false : { scale: .6 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 11 }} aria-label="Nhiệm vụ hoàn thành"><Icon name="success" className="green-text" /></motion.span>
             ) : (
               <Link
                 to={
@@ -526,22 +539,18 @@ export function Quests() {
                 <Icon name="next" />
               </Link>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
       <div className="soft-note">
         <Icon name="clock" /> Nhiệm vụ làm mới lúc 00:00 theo giờ Việt Nam. Phần
         thưởng không thay đổi điểm kiểm tra.
       </div>
-      <Modal open={reward} onClose={() => setReward(false)} title="Nhận gem">
-        <div className="reward-modal">
-          <Byte size={180} mood="celebrate" />
-          <h2>Bạn đã làm được!</h2>
-          <div className="big-gem">
-            <Icon name="gem" size={32} /> +15 gem
-          </div>
-          <Button onClick={() => setReward(false)}>TUYỆT VỜI</Button>
-        </div>
+      <Modal open={claiming || reward !== null} onClose={claiming ? undefined : () => setReward(null)} title="Quà nhiệm vụ ngày" className="reward-event-dialog">
+        {claiming ? <LoadingScene title="Đang chuẩn bị quà của bạn" detail="Ba nhiệm vụ nhỏ, một thói quen lớn." compact /> : <>
+          <CelebrationScene variant="gift" title="Bạn đã làm được cả ba!" subtitle="Mỗi ngày một chút. Kiến thức thêm vững vàng." gems={reward ?? undefined} compact />
+          <div className="reward-dialog-actions"><Button onClick={() => setReward(null)}>TUYỆT VỜI<Icon name="check" size={19} /></Button></div>
+        </>}
       </Modal>
     </div>
   );
@@ -581,6 +590,7 @@ const badgeDefs = [
 ];
 export function Profile() {
   const { state, refresh, notify, health, course } = useApp();
+  const systemReduced = useMotionPreference(), reduced = systemReduced || state.profile.settings?.reducedMotion;
   const [settings, setSettings] = useState(state.profile.settings || {});
   const pendingSettings = useRef(0);
   useEffect(() => { if (!pendingSettings.current) setSettings(state.profile.settings || {}); }, [state.profile.settings]);
@@ -670,17 +680,19 @@ export function Profile() {
         </div>
         <div className="badge-grid">
           {allBadges.map(([id, title, icon, desc]) => (
-            <div
+            <motion.div
               key={id}
               className={`badge-item ${state.badges.includes(id) ? "earned" : ""}`}
               title={desc}
+              whileHover={state.badges.includes(id) && !reduced ? { y: -4 } : undefined}
+              transition={{ type: "spring", stiffness: 350, damping: 22 }}
             >
               <div>
                 <Icon name={icon} size={31} />
               </div>
               <strong>{title}</strong>
               <small>{desc}</small>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -696,6 +708,7 @@ export function Profile() {
           <input type="checkbox" checked={!!settings.reducedMotion} onChange={e => void updateSetting("reducedMotion", e.target.checked)} />
           Giảm chuyển động
         </label>
+        <Link to="/effects" className="text-link effect-preview-link"><Icon name="sparkles" size={18} /> Xem thử hiệu ứng của Byte <Icon name="right" size={16} /></Link>
         <label>
           Tên hiển thị
           <input

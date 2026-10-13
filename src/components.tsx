@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import { useMotionPreference } from "./motionPreference";
 import {
   BookOpen,
   Code2,
@@ -141,15 +142,19 @@ export function Button({
   busy = false,
   ...props
 }: any) {
+  const reduced = useMotionPreference();
   return (
-    <button
+    <motion.button
       {...props}
       disabled={props.disabled || busy}
-      className={`btn ${variant} ${className}`}
+      aria-busy={busy || undefined}
+      className={`btn ${variant} ${busy ? 'bp-button-busy' : ''} ${className}`}
+      whileTap={reduced || busy || props.disabled ? undefined : { scale: .97 }}
+      transition={{ type: 'spring', stiffness: 550, damping: 28 }}
     >
-      {busy ? <Icon name="loading" className="spin" size={20} /> : null}
+      {busy && <span className="bp-button-dots" aria-hidden="true"><i /><i /><i /></span>}
       {children}
-    </button>
+    </motion.button>
   );
 }
 export { default as Byte } from './Mascot';
@@ -162,26 +167,29 @@ export function ProgressBar({
   max?: number;
   color?: string;
 }) {
+  const reduced = useMotionPreference();
+  const limit = Math.max(1, max), amount = Math.min(limit, Math.max(0, value));
   return (
     <div
       className={`progress-track ${color}`}
       role="progressbar"
-      aria-valuenow={value}
+      aria-valuenow={amount}
       aria-valuemin={0}
-      aria-valuemax={max}
+      aria-valuemax={limit}
     >
       <motion.div
         initial={false}
         animate={{
-          width: `${Math.min(100, Math.max(0, (value / max) * 100))}%`,
+          width: `${amount / limit * 100}%`,
         }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: reduced ? 0 : .55, ease: [0.2, .8, .25, 1] }}
       />
       <span />
     </div>
   );
 }
 export function Modal({ open, onClose, children, title, className = "" }: any) {
+  const reduced = useMotionPreference();
   useEffect(() => {
     if (!open) return;
     const previousFocus = document.activeElement as HTMLElement | null;
@@ -233,9 +241,10 @@ export function Modal({ open, onClose, children, title, className = "" }: any) {
       {open && (
         <motion.div
           className="modal-backdrop"
-          initial={{ opacity: 0 }}
+          initial={reduced ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: reduced ? 0 : .16 }}
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) onClose?.();
           }}
@@ -247,9 +256,10 @@ export function Modal({ open, onClose, children, title, className = "" }: any) {
             aria-modal="true"
             aria-label={title || "Thông báo"}
             className={`modal ${className}`}
-            initial={{ y: 30, scale: 0.97 }}
-            animate={{ y: 0, scale: 1 }}
-            exit={{ y: 20, opacity: 0 }}
+            initial={reduced ? false : { y: 20, scale: .95, opacity: 0 }}
+            animate={{ y: 0, scale: 1, opacity: 1 }}
+            exit={reduced ? { opacity: 0 } : { y: 12, scale: .98, opacity: 0 }}
+            transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 350, damping: 29 }}
           >
             {onClose && (
               <button

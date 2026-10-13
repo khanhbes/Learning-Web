@@ -28,6 +28,8 @@ import CapstonePage from "./CapstonePage";
 import SignIn from "./SignIn";
 import { CoursesPage, LearningHub, LevelCelebration } from "./Expansion";
 import KnowledgePage from "./KnowledgePage";
+import { LoadingScene, AnimatedNumber, AnimationPreview } from "./Delight";
+import { useMotionPreference } from "./motionPreference";
 import "./expansion.css";
 const nav = [
   ["/", "map", "Học"],
@@ -41,7 +43,7 @@ function CourseBoundary({capstone=false,legacy=false}:{capstone?:boolean;legacy?
   const target=legacy?"dsa":params.courseId;
   useEffect(()=>{if(target && courses.some(c=>c.id===target) && course.id!==target)void selectCourse(target).catch(e=>notify(e.message));},[target,course.id]);
   if(!target || !courses.some(c=>c.id===target))return <p>Không tìm thấy khóa học.</p>;
-  if(course.id!==target)return <p role="status">Đang mở khóa học…</p>;
+  if(course.id!==target)return <LoadingScene title="Đang mở khóa học…" detail="Byte đang chuẩn bị bài học và bản nháp của bạn." />;
   return capstone?<CapstonePage key={target}/>:<LessonPage key={target+params.id}/>;
 }
 function Sidebar() {
@@ -129,11 +131,11 @@ function Topbar() {
         <Link to="/quests" className="stat gift" title="Nhiệm vụ hôm nay"><Icon name="gift" /></Link>
         <Link to="/profile" className="stat flame" title="Chuỗi ngày học">
           <Icon name="flame" />
-          {state.streak}
+          <AnimatedNumber value={state.streak} duration={.45} />
         </Link>
         <Link to="/shop" className="stat gem" title="Gem của bạn">
           <Icon name="gem" />
-          {state.gems}
+          <AnimatedNumber value={state.gems} />
         </Link>
         <Link
           to="/shop"
@@ -141,7 +143,7 @@ function Topbar() {
           title="Năng lượng · kiểm tra luôn miễn phí"
         >
           <Icon name="zap" />
-          {state.energy}
+          <AnimatedNumber value={state.energy} duration={.45} />
           <small>/30</small>
         </Link>
       </div>
@@ -324,6 +326,7 @@ export default function App() {
     [toast, setToast] = useState("");
   const [needsLogin, setNeedsLogin] = useState(false);
   const location = useLocation();
+  const systemReduced = useMotionPreference();
   async function refresh() {
     const [s, catalog] = await Promise.all([api<AppState>("/state"), api<{courses: Course[]}>("/courses")]);
     const selected = s.activeCourse || s.profile.activeCourse || "dsa";
@@ -368,17 +371,13 @@ export default function App() {
     window.scrollTo({ top: 0 });
   }, [location.pathname]);
   useEffect(() => {
-    document.documentElement.classList.toggle("reduce-motion", !!state?.profile.settings?.reducedMotion);
-  }, [state?.profile.settings?.reducedMotion]);
+    document.documentElement.classList.toggle("reduce-motion", systemReduced || !!state?.profile.settings?.reducedMotion);
+  }, [systemReduced, state?.profile.settings?.reducedMotion]);
   if (needsLogin) return <SignIn onSuccess={refresh} />;
   if (!state || !course)
     return (
       <div className="boot">
-        <Byte size={140} mood="thinking" />
-        <h2>
-          {error ? "Byte chưa kết nối được" : "Chuẩn bị hành trình của bạn…"}
-        </h2>
-        <p>{error || "Đang mở các khóa học"}</p>
+        {error ? <><Byte size={140} mood="encouraging" /><h2>Byte chưa kết nối được</h2><p>{error}</p></> : <LoadingScene title="Chuẩn bị hành trình của bạn…" detail="Đang mở khóa học và tiến độ đã lưu." steps={['Một bước nhỏ hôm nay, một kỹ năng mới ngày mai.', 'Không cần vội. Byte luôn đợi bạn.', 'Hiểu ý tưởng trước, viết code sau.']} />}
         {error && (
           <Button onClick={() => window.location.reload()}>Thử lại</Button>
         )}
@@ -389,7 +388,7 @@ export default function App() {
     <AppContext.Provider
       value={{ state, course, courses, selectCourse, refresh, notify: setToast, health }}
     >
-      <MotionConfig reducedMotion={state.profile.settings?.reducedMotion ? "always" : "user"}>
+      <MotionConfig reducedMotion={systemReduced || state.profile.settings?.reducedMotion ? "always" : "never"}>
       {!immersive && <Sidebar />}
       <div className={immersive ? "immersive" : "app-content"}>
         {!immersive && <Topbar />}
@@ -401,6 +400,7 @@ export default function App() {
           }
         >
           <main>
+            <div className="bp-page-enter" key={location.pathname}>
             <Routes>
               <Route path="/" element={<Home key={course.id} />} />
               <Route path="/lesson/:id" element={<CourseBoundary legacy />} />
@@ -416,9 +416,11 @@ export default function App() {
               <Route path="/shop" element={<Shop />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/sources" element={<Sources />} />
+              <Route path="/effects" element={<AnimationPreview />} />
               <Route path="/capstone" element={<CourseBoundary capstone legacy />} />
               <Route path="*" element={<Home key={course.id} />} />
             </Routes>
+            </div>
           </main>
           {!immersive && location.pathname === "/" && <RightRail />}
         </div>

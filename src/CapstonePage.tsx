@@ -7,6 +7,7 @@ import { Byte, Button, Icon, Modal, ProgressBar, Empty } from "./components";
 import type { Attempt } from "./types";
 import CodePanel from "./CodePanelLazy";
 import QuizPane from "./QuizPane";
+import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 function ChurnChart({input}:{input:{p:number[];y:number[];threshold:number}}) {
   return <section className="ml-visualizer"><h3>Đọc kết quả trên khách hàng giả lập</h3><p>Mỗi cột là xác suất rời dịch vụ. Màu cam: nhãn thật 1; màu xanh: nhãn thật 0. Hãy giải thích các cảnh báo nhầm và trường hợp bỏ sót.</p><svg viewBox="0 0 560 260" role="img" aria-label="Biểu đồ xác suất churn trên tập test; đường ngang là ngưỡng dự đoán dương">
     <path d="M48 20v200h490" fill="none" stroke="#829880" strokeWidth="2"/>
@@ -22,6 +23,7 @@ export default function CapstonePage() {
     [attempt, setAttempt] = useState<Attempt | null>(null),
     [tab, setTab] = useState("essay"),
     [busy, setBusy] = useState(false),
+    [working, setWorking] = useState(""),
     [saved, setSaved] = useState("Đã lưu"),
     [tests, setTests] = useState("[]"),
     [feedback, setFeedback] = useState<any>(null),
@@ -60,6 +62,7 @@ export default function CapstonePage() {
   }, [course.id]);
   async function start(retake = false) {
     setBusy(true);
+    setWorking("start");
     try {
       const a = await api<Attempt>(
         prefix + (retake ? "/retake" : ""),
@@ -75,6 +78,7 @@ export default function CapstonePage() {
       notify((e as Error).message);
     } finally {
       setBusy(false);
+      setWorking("");
     }
   }
   useEffect(() => {
@@ -148,8 +152,7 @@ export default function CapstonePage() {
   if (!data)
     return (
       <div className="boot">
-        <Byte mood="thinking" />
-        <p>Đang chuẩn bị bài cuối khóa…</p>
+        <LoadingScene title="Đang mở bài cuối khóa…" detail="Byte đang lấy đề và bản nháp gần nhất của bạn." />
       </div>
     );
   if (!data.unlocked)
@@ -193,6 +196,7 @@ export default function CapstonePage() {
   async function submit() {
     if (!attempt) return;
     setBusy(true);
+    setWorking("submit");
     try {
       let customTests;
       try {
@@ -208,6 +212,7 @@ export default function CapstonePage() {
       });
       const r = await api(prefix + "/" + attempt.id + "/submit", "POST", {});
       setResult(r);
+      setTab("result");
       setAttempt({ ...attempt, status: "completed", result: r });
       localStorage.removeItem("bytepath-capstone-" + attempt.id);
       await refresh();
@@ -215,6 +220,7 @@ export default function CapstonePage() {
       notify((e as Error).message);
     } finally {
       setBusy(false);
+      setWorking("");
     }
   }
   return (
@@ -225,7 +231,8 @@ export default function CapstonePage() {
         description="Giải thích ý tưởng, viết code, kiểm chứng và nhìn lại cách mình đã giải bài."
         icon="graduate"
       />
-      {!attempt ? (
+      {busy && working === "start" && <LoadingScene compact title="Chuẩn bị tình huống của bạn…" detail="Đề và dữ liệu sẽ được cố định khi lượt làm bắt đầu." />}
+      {busy && working === "start" ? null : !attempt ? (
         <div className="capstone-brief">
           <Byte mood="celebrate" size={160} />
           <h2>Bạn đã sẵn sàng!</h2>
@@ -330,7 +337,9 @@ export default function CapstonePage() {
               </button>
             ))}
           </div>
-          {tab === "essay" ? (
+          {busy && working === "submit" ? (
+            <LoadingScene title="Đang xác nhận bài cuối khóa…" detail="Backend đang đối chiếu kiến thức, kết quả code và bộ test của bạn." />
+          ) : tab === "essay" ? (
             <div className="essay-editor">
               <div className="essay-note">
                 <Icon name="file" />
@@ -441,25 +450,25 @@ export default function CapstonePage() {
                 </Empty>
               ) : (
                 <>
-                  <div
-                    className={`capstone-score ${result.passed ? "passed" : ""}`}
-                  >
-                    <Byte
-                      size={150}
-                      mood={result.passed ? "celebrate" : "thinking"}
-                    />
-                    <div>
-                      <span className="eyebrow">
-                        {result.passed ? "ĐÃ ĐẠT" : "CHƯA ĐẠT"}
-                      </span>
+                  {result.passed ? (
+                    <CelebrationScene variant="capstone"
+                      title={`Bạn đã hoàn thành khóa ${course.id.toUpperCase()}!`}
+                      subtitle="Các kỹ năng bắt buộc đã được kiểm chứng."
+                      xp={result.reward?.xp}
+                      bonusXp={result.reward?.bonusXp}
+                      gems={result.reward?.gems}
+                    >
                       <h2>{result.score}/100</h2>
-                      <p>
-                        {result.passed
-                          ? `Bạn đã hoàn thành khóa ${course.id.toUpperCase()} nền tảng!`
-                          : "Dùng báo cáo để tìm phần cần cải thiện rồi thử đề mới."}
-                      </p>
+                    </CelebrationScene>
+                  ) : (
+                    <div className="capstone-score">
+                      <Byte size={130} mood="encouraging" />
+                      <SuccessFeedback correct={false} label="Cùng hoàn thiện thêm một chút">
+                        <h2>{result.score}/100</h2>
+                        <p>Dùng báo cáo để tìm phần cần cải thiện rồi thử đề mới.</p>
+                      </SuccessFeedback>
                     </div>
-                  </div>
+                  )}
                   <div className="rubric-table">
                     {[
                       ["Code", result.code, 60],
@@ -498,6 +507,7 @@ export default function CapstonePage() {
                     busy={busy}
                     onClick={async () => {
                       setBusy(true);
+                      setWorking("feedback");
                       try {
                         setFeedback(
                           await api(
@@ -510,11 +520,13 @@ export default function CapstonePage() {
                         notify((e as Error).message);
                       } finally {
                         setBusy(false);
+                        setWorking("");
                       }
                     }}
                   >
                     <Icon name="chat" size={19} /> BYTE NHẬN XÉT BÀI LUẬN
                   </Button>
+                  {busy && working === "feedback" && <LoadingScene compact title="Byte đang đọc bài luận…" detail="Nhận xét giúp bạn cải thiện lập luận, không thay đổi điểm chính thức." />}
                   {feedback && (
                     <div className="tutor-reply">
                       {feedback.feedback ? (

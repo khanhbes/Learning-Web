@@ -8,6 +8,7 @@ import { api } from "./api";
 import { useApp } from "./context";
 import { Button, Icon, Modal, Byte } from "./components";
 import type { Attempt, Problem, Language } from "./types";
+import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 (globalThis as any).MonacoEnvironment = { getWorker: () => new EditorWorker() };
 loader.config({ monaco });
 export default function CodePanel({
@@ -27,6 +28,8 @@ export default function CodePanel({
     [language, setLanguage] = useState<Language>(attempt.courseId === "ml" ? "python" : state.profile.language),
     [pid, setPid] = useState(problems[0]?.id),
     [busy, setBusy] = useState(false),
+    [runStage, setRunStage] = useState("submitting"),
+    [sampleRun, setSampleRun] = useState(false),
     [result, setResult] = useState<any>(null),
     [hint, setHint] = useState(0),
     [reference, setReference] = useState<any>(null),
@@ -50,6 +53,9 @@ export default function CodePanel({
   const code = attempt.codeDrafts[p.id]?.[language] ?? p.starters[language];
   async function run(publicOnly: boolean) {
     setBusy(true);
+    setResult(null);
+    setRunStage("submitting");
+    setSampleRun(publicOnly);
     setMobileTab("result");
     try {
       const { jobId } = await api(`/${base}/${attempt.id}/code`, "POST", {
@@ -58,11 +64,13 @@ export default function CodePanel({
         code,
         publicOnly,
       });
+      setRunStage("queued");
       let job: any;
       do {
         await new Promise((r) => setTimeout(r, 900));
         job = await api("/jobs/" + jobId);
         if (!alive.current) return;
+        setRunStage(job.status);
       } while (job.status === "queued" || job.status === "running");
       setResult(job.result);
       const updated = await api<Attempt>(
@@ -226,9 +234,7 @@ export default function CodePanel({
               value={code}
               theme="vs"
               loading={
-                <div className="editor-loading">
-                  <Icon name="loading" className="spin" /> Đang mở editor local…
-                </div>
+                <LoadingScene compact title="Đang mở editor…" detail="Chuẩn bị không gian để bạn viết ý tưởng." />
               }
               onChange={(value) =>
                 onChange({
@@ -282,41 +288,29 @@ export default function CodePanel({
             aria-live="polite"
           >
             {busy ? (
-              <div className="running-result">
-                <Icon name="loading" className="spin" />
-                <div>
-                  <strong>Đang kiểm tra lời giải…</strong>
-                  <p>
-                    Bài đang trong hàng đợi hoặc chạy test. Code và bản nháp vẫn
-                    được giữ.
-                  </p>
-                </div>
-              </div>
+              <LoadingScene
+                compact
+                title={runStage === "submitting" ? "Đang gửi lời giải…" : runStage === "queued" ? "Byte đang chờ đến lượt…" : runStage === "running" ? "Đang kiểm tra lời giải…" : "Đang nhận kết quả…"}
+                detail={runStage === "submitting" ? "Đang lưu code và tạo lượt chấm." : runStage === "queued" ? "Bài đã vào hàng đợi. Code và bản nháp vẫn được giữ." : runStage === "running" ? "Bộ chạy đang thực hiện test. Kết quả sẽ xuất hiện khi chấm xong." : "Đang đồng bộ báo cáo và lượt làm của bạn."}
+              />
             ) : result ? (
               <>
-                <div
-                  className={`result-status ${result.status === "accepted" ? "accepted" : result.status === "infrastructure_error" ? "pending" : "rejected"}`}
-                >
-                  <Icon
-                    name={
-                      result.status === "accepted"
-                        ? "success"
-                        : result.status === "infrastructure_error"
-                          ? "clock"
-                          : "error"
-                    }
+                {result.status === "accepted" && (
+                  <CelebrationScene compact variant="practice"
+                    title={sampleRun ? "Các test mẫu đã chạy đúng!" : "Lời giải đạt yêu cầu!"}
+                    subtitle={sampleRun ? "Nộp chấm toàn bộ để kiểm tra thêm trường hợp biên." : "Bộ kiểm thử của lượt nộp này đã xác nhận kết quả."}
                   />
-                  <div>
-                    <strong>
-                      {result.status === "accepted"
-                        ? "Lời giải đạt yêu cầu"
-                        : result.status === "infrastructure_error"
-                          ? "Chưa có kết quả"
-                          : "Còn điều cần sửa"}
-                    </strong>
-                    <p>{result.message}</p>
+                )}
+                {result.status === "infrastructure_error" ? (
+                  <div className="result-status pending">
+                    <Icon name="clock" />
+                    <div><strong>Chưa có kết quả</strong><p>{result.message}</p></div>
                   </div>
-                </div>
+                ) : result.status !== "accepted" ? (
+                  <SuccessFeedback correct={false} label="Cùng sửa thêm một chút nhé">
+                    <p>{result.message}</p>
+                  </SuccessFeedback>
+                ) : null}
                 {result.checks?.length > 0 && (
                   <div className="test-chips">
                     {result.checks.map((t: any) => (

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
+import { useMotionPreference as useReducedMotion } from './motionPreference';
 import { Icon } from './components';
 import { useApp } from './context';
 import type { Lesson } from './types';

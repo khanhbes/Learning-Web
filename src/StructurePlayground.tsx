@@ -1,5 +1,6 @@
 import { useReducer, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useMotionPreference as useReducedMotion } from "./motionPreference";
 import { initialPlayground, playgroundStep } from "../shared/playground.mjs";
 import { Button, Icon } from "./components";
 type PlaygroundState = {

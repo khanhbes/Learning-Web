@@ -1,23 +1,24 @@
 import { useContext } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
+import { useMotionPreference } from './motionPreference';
 import { AppContext } from './context';
 // The catalog is shared with the authoritative reward service.
 // @ts-ignore JavaScript content module
 import { cosmetics } from '../shared/cosmetics.mjs';
 
-export default function Mascot({ size = 160, mood = 'happy', skin, className = '' }: { size?: number; mood?: string; skin?: string; className?: string }) {
+export default function Mascot({ size = 160, mood = 'happy', skin, className = '', motionPaused = false }: { size?: number; mood?: string; skin?: string; className?: string; motionPaused?: boolean }) {
   const ctx = useContext(AppContext);
   const id = skin || ctx?.state.profile.skin || 'original';
   const item: any = cosmetics.find((c: any) => c.id === id) || cosmetics[0];
   const family = item.family || 'robot';
   const color = item.colors?.body || '#58cc02', accent = item.colors?.accent || '#46a302', light = item.colors?.light || '#e1f8c7';
-  const systemReduced = useReducedMotion(), reduced = systemReduced || ctx?.state.profile.settings?.reducedMotion;
+  const preference = useMotionPreference(), reduced = motionPaused || preference;
   const celebrate = mood === 'celebrate', rest = mood === 'sleep' || mood === 'rest', think = mood === 'thinking' || mood === 'think';
   const description = celebrate ? 'đang ăn mừng' : rest ? 'đang nghỉ' : think ? 'đang suy nghĩ' : mood === 'wave' ? 'đang chào bạn' : 'đồng hành cùng bạn';
   const animal = family !== 'robot';
   return <motion.div className={`byte mascot-${family} byte-${mood} ${className}`} style={{ width: size, height: size }}
-    animate={reduced || rest ? {} : { y: celebrate ? [0, -10, 0] : [0, -3, 0], rotate: celebrate ? [0, -3, 3, 0] : 0 }}
-    transition={{ duration: celebrate ? .8 : 3.4, repeat: celebrate ? 2 : Infinity, ease: 'easeInOut' }}>
+    animate={reduced || rest ? { y: 0, rotate: 0, scaleX: 1, scaleY: 1 } : { y: celebrate ? [0, 2, -15, 1, -5, 0] : [0, -3, 0], rotate: celebrate ? [0, -3, 4, -2, 0, 0] : 0, scaleX: celebrate ? [1, 1.04, .97, 1.04, 1, 1] : 1, scaleY: celebrate ? [1, .96, 1.03, .96, 1, 1] : 1 }}
+    transition={{ duration: reduced ? 0 : celebrate ? 1.15 : 3.4, repeat: reduced || rest ? 0 : celebrate ? 1 : Infinity, ease: 'easeInOut' }}>
     <svg viewBox="0 0 180 180" role="img" aria-label={`${item.name} ${description}`}>
       <ellipse cx="90" cy="166" rx="43" ry="7" fill="#dbe9d3" opacity=".7" />
       {animal ? <>
@@ -37,7 +38,7 @@ export default function Mascot({ size = 160, mood = 'happy', skin, className = '
         <rect x="33" y="45" width="113" height="76" rx={family === 'fox' ? 35 : 39} fill={color} />
         {family === 'fox' && <path d="M37 81q10 39 51 39q43 0 54-39l-36 14-17-12-17 12z" fill={light} />}
         <ellipse cx="50" cy="91" rx="10" ry="6" fill="#ffacbb" opacity=".65" /><ellipse cx="130" cy="91" rx="10" ry="6" fill="#ffacbb" opacity=".65" />
-        {rest || celebrate ? <g stroke="#343b3a" strokeWidth="4" fill="none" strokeLinecap="round"><path d={celebrate ? 'M58 79q7-10 14 0m34 0q7-10 14 0' : 'M58 80q7 6 14 0m34 0q7 6 14 0'} /></g> : <g fill="#343b3a"><ellipse cx={think ? 66 : 65} cy="79" rx="5" ry="8" /><ellipse cx={think ? 114 : 113} cy="79" rx="5" ry="8" /><circle cx="64" cy="76" r="2" fill="white" /><circle cx="112" cy="76" r="2" fill="white" /></g>}
+        {rest || celebrate ? <g stroke="#343b3a" strokeWidth="4" fill="none" strokeLinecap="round"><path d={celebrate ? 'M58 79q7-10 14 0m34 0q7-10 14 0' : 'M58 80q7 6 14 0m34 0q7 6 14 0'} /></g> : <motion.g fill="#343b3a" animate={reduced ? { scaleY: 1 } : { scaleY: [1, 1, .08, 1, 1] }} transition={{ duration: 4.2, times: [0,.74,.77,.8,1], repeat: reduced ? 0 : Infinity }} style={{ transformOrigin:'90px 79px' }}><ellipse cx={think ? 66 : 65} cy="79" rx="5" ry="8" /><ellipse cx={think ? 114 : 113} cy="79" rx="5" ry="8" /><circle cx="64" cy="76" r="2" fill="white" /><circle cx="112" cy="76" r="2" fill="white" /></motion.g>}
         <path d="m86 89 4 4 4-4z" fill="#aa636d" /><path d="M90 93v4m0 0q-6 5-10 0m10 0q6 5 10 0" stroke="#6a5155" strokeWidth="2.5" fill="none" strokeLinecap="round" />
         {family === 'cat' && <path d="M39 88H24m16 8-14 4m115-12h15m-16 8 14 4" stroke={accent} strokeWidth="2" strokeLinecap="round" />}
         {item.variant === 'outfit' && <><path d="M51 111q39 14 77 0l-5 37H57z" fill={accent} /><path d="m65 109 24 15 24-15-24 27z" fill={light} /><circle cx="89" cy="136" r="5" fill="#ffc800" /></>}
@@ -51,7 +52,7 @@ export default function Mascot({ size = 160, mood = 'happy', skin, className = '
         <rect x="25" y="57" width="16" height="34" rx="8" fill={accent} /><rect x="139" y="57" width="16" height="34" rx="8" fill={accent} />
         <rect x="33" y="32" width="114" height="80" rx="29" fill={color} /><path d="M55 42h44" stroke="white" strokeWidth="8" strokeLinecap="round" opacity=".25" />
         <rect x="44" y="52" width="92" height="47" rx="18" fill="#193b32" />
-        {rest || celebrate ? <path d={celebrate ? 'M59 77q7-11 14 0m32 0q7-11 14 0' : 'M59 75h14m32 0h14'} stroke={light} strokeWidth="5" fill="none" strokeLinecap="round" /> : <g fill={light}><rect x={think ? 65 : 61} y="65" width="12" height="17" rx="6" /><rect x={think ? 108 : 104} y="65" width="12" height="17" rx="6" /></g>}
+        {rest || celebrate ? <path d={celebrate ? 'M59 77q7-11 14 0m32 0q7-11 14 0' : 'M59 75h14m32 0h14'} stroke={light} strokeWidth="5" fill="none" strokeLinecap="round" /> : <motion.g fill={light} animate={reduced ? { scaleY: 1 } : { scaleY: [1, 1, .08, 1, 1] }} transition={{ duration: 4.2, times: [0,.74,.77,.8,1], repeat: reduced ? 0 : Infinity }} style={{ transformOrigin:'90px 73px' }}><rect x={think ? 65 : 61} y="65" width="12" height="17" rx="6" /><rect x={think ? 108 : 104} y="65" width="12" height="17" rx="6" /></motion.g>}
         <path d={mood === 'sad' ? 'M83 90q7-7 14 0' : 'M83 86q7 7 14 0'} stroke={light} strokeWidth="3" fill="none" strokeLinecap="round" />
         <ellipse cx="55" cy="85" rx="5" ry="3" fill="#ffb0a3" /><ellipse cx="125" cy="85" rx="5" ry="3" fill="#ffb0a3" />
         {id === 'scholar' && <><path d="m39 35 51-20 51 20-51 20z" fill="#37465e" /><path d="M141 35v24" stroke="#ffc800" strokeWidth="3" /><circle cx="141" cy="61" r="4" fill="#ffc800" /></>}

@@ -18,6 +18,7 @@ import HandsOnLab from "./HandsOnLab";
 import StructurePlayground from "./StructurePlayground";
 import MLVisualizer from "./MLVisualizer";
 import MLConceptScene from "./MLConceptScene";
+import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 const phases = [
   ["learn", "Hiểu"],
   ["visual", "Khám phá"],
@@ -271,8 +272,10 @@ export default function LessonPage() {
   if (!lesson || !attempt)
     return (
       <div className="boot">
-        <Byte mood="thinking" size={130} />
-        <p>{busy ? "Đang mở buổi học…" : "Chuẩn bị bài học…"}</p>
+        <LoadingScene
+          title={busy ? "Đang mở buổi học…" : "Chuẩn bị bài học…"}
+          detail="Byte đang lấy bài giảng và tìm lượt học bạn đã lưu."
+        />
         <Link to="/">Về hành trình</Link>
       </div>
     );
@@ -694,21 +697,23 @@ export default function LessonPage() {
         onClose={() => setResult(null)}
       >
         <div className="result-modal">
-          <Byte
-            size={150}
-            mood={result?.passed ? "celebrate" : "thinking"}
-            skin={state.profile.skin}
-          />
-          <span className="eyebrow">
-            {result?.mode === "assessment"
-              ? "KẾT QUẢ KIỂM TRA"
-              : "KẾT QUẢ LUYỆN TẬP"}
-          </span>
-          <h2>
-            {result?.passed
-              ? "Một bước tiến thật tốt!"
-              : "Cùng củng cố thêm một chút"}
-          </h2>
+          {result?.passed ? (
+            <CelebrationScene
+              variant={result.mode === "assessment" ? "lesson" : "practice"}
+              title={result.mode === "assessment" ? "Bạn đã vượt qua buổi này!" : "Thêm một ý tưởng vững vàng!"}
+              subtitle={result.mode === "assessment" ? "Kiến thức và code bắt buộc đều đạt." : "Cùng giữ những điều vừa học thật lâu nhé."}
+              xp={result.reward?.xp}
+              bonusXp={result.reward?.bonusXp}
+              gems={result.reward?.gems}
+            />
+          ) : (
+            <>
+              <Byte size={130} mood="encouraging" skin={state.profile.skin} />
+              <SuccessFeedback correct={false} label="Cùng củng cố thêm một chút">
+                <p>Nhìn lại phần cần ôn, rồi thử theo một cách khác.</p>
+              </SuccessFeedback>
+            </>
+          )}
           <div className="score-ring">
             <strong>
               {result?.knowledge}
@@ -723,7 +728,7 @@ export default function LessonPage() {
                 : "Code bắt buộc: chưa đạt"
               : "Kết quả luyện giúp bạn chuẩn bị trước khi kiểm tra."}
           </p>
-          {result?.reward?.xp > 0 && (
+          {!result?.passed && result?.reward?.xp > 0 && (
             <div className="reward-strip">
               <span>
                 <Icon name="star" />+{result.reward.xp} XP
@@ -733,7 +738,7 @@ export default function LessonPage() {
               </span>
             </div>
           )}
-          {result?.reward?.bonusXp > 0 && <p className="boost-result">X2: {result.reward.baseXp} XP g?c + {result.reward.bonusXp} XP th?m ? c?n {result.reward.boostRemaining} l??t</p>}
+          {result?.reward?.bonusXp > 0 && <p className="boost-result">X2: {result.reward.baseXp} XP gốc + {result.reward.bonusXp} XP thêm · còn {result.reward.boostRemaining} lượt</p>}
           <details className="answer-review">
             <summary>Xem giải thích từng câu</summary>
             {result?.details.map((d: any, i: number) => (
@@ -832,6 +837,7 @@ export default function LessonPage() {
             riêng tư.
           </p>
         )}
+        {asking && <LoadingScene compact title="Byte đang tìm cách giải thích…" detail="Câu trả lời đang được chuẩn bị theo nội dung buổi học." />}
         {tutorReply && (
           <div className="tutor-reply">
             <p>{tutorReply}</p>

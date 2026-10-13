@@ -1,5 +1,6 @@
 import { useEffect, useState, useId, useRef } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useMotionPreference as useReducedMotion } from "./motionPreference";
 import { api } from "./api";
 import { Button, Icon } from "./components";
 export default function Visualizer({

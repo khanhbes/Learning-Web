@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
+import { useMotionPreference } from './motionPreference';
 import { useApp } from './context';
 import { api } from './api';
 import { Byte, Icon, Button, Modal, ProgressBar } from './components';
+import { CelebrationScene } from './Delight';
 
 export function CourseArt({ ml = false }: { ml?: boolean }) {
   return <svg className="course-art" viewBox="0 0 340 190" role="img" aria-label={ml ? 'Dữ liệu được nhóm thành các cụm và một đường dự đoán' : 'Các nút dữ liệu được kết nối thành cây'}>
@@ -58,8 +60,9 @@ function chime() {
   setTimeout(() => void audio.close(), 1000);
 }
 export function LevelCelebration() {
-  const { state, refresh, notify } = useApp(), systemReduced = useReducedMotion(), [closing,setClosing] = useState(false);
+  const { state, refresh, notify } = useApp(), systemReduced = useMotionPreference(), [closing,setClosing] = useState(false);
   const [blocked, setBlocked] = useState(true);
+  const [phase, setPhase] = useState(0);
   useEffect(() => {
     const check = () => setBlocked(!!document.querySelector('[role="dialog"]:not(.level-event-modal)'));
     const observer = new MutationObserver(check);
@@ -69,13 +72,43 @@ export function LevelCelebration() {
   }, []);
   const events = (state.rewardEvents || []).filter(e => !e.seen), event = events[0];
   const reduced = systemReduced || state.profile.settings?.reducedMotion;
+  const visible = !!event && !blocked;
+  const toLevel = events.at(-1)?.toLevel ?? 1;
+  const leveledUp = events.some(e => e.toLevel > e.fromLevel);
+  useEffect(() => {
+    if (!visible) return;
+    setPhase(reduced ? 3 : 0);
+    if (reduced) return;
+    const timers = [720, 1250, 1920].map((delay, i) => window.setTimeout(() => setPhase(i + 1), delay));
+    return () => timers.forEach(window.clearTimeout);
+  }, [visible, event?.id, reduced]);
   async function seen() { setClosing(true); try { for (const e of events) await api('/reward-events/'+e.id+'/seen','POST',{}); await refresh(); } catch(e) { notify((e as Error).message); } finally { setClosing(false); } }
-  return <Modal open={!!event && !blocked} className="level-event-modal" title="Bạn đã lên cấp"><div className="level-celebration">
-    <span className="eyebrow">MỖI BƯỚC ĐỀU ĐƯỢC GHI NHẬN</span>
-    <div className="level-xp-bar" aria-label="Thanh kinh nghiệm đầy để lên cấp"><motion.span initial={reduced ? false : { width: '0%' }} animate={{ width: '100%' }} transition={{ duration: reduced ? 0 : .8, delay: reduced ? 0 : .1 }} /></div>
-    <motion.div initial={reduced ? false : { scale: .7 }} animate={{ scale: 1 }} transition={{ delay: reduced ? 0 : .35, type: 'spring', damping: 12 }} className="level-burst"><Byte size={180} mood="celebrate" /><motion.span initial={reduced ? false : { scale: 0,rotate:-30 }} animate={{ scale:1,rotate:0 }} transition={{ delay: reduced ? 0 : 1.2,type:'spring' }} className="new-level">{events.at(-1)?.toLevel}</motion.span></motion.div>
-    <h2>{events.length > 1 || event?.toLevel-event?.fromLevel > 1 ? 'Một hành trình, nhiều cột mốc!' : 'Bạn đã lên cấp!'}</h2><p>Cấp {event?.fromLevel} <Icon name="right" size={16} /> Cấp {events.at(-1)?.toLevel}</p>
-    <div className="level-gifts">{events.flatMap(e => e.rewards || []).map((r,i) => <motion.div key={i} initial={reduced ? false : { opacity:0,y:8 }} animate={{ opacity:1,y:0 }} transition={{ delay: reduced ? 0 : 1.5 + Math.min(i,4)*.1 }}><Icon name={r.type === 'gems' || r.type === 'gem' ? 'gem' : r.type === 'skin' ? 'heart' : r.type === 'frame' ? 'user' : 'gift'} size={22} /><span>{r.name || r.itemId || 'Kim cương'}{r.type === 'gems' || r.type === 'energy-voucher' ? '' : r.amount > 1 ? ` ×${r.amount}` : ''}</span></motion.div>)}</div>
-    <Button busy={closing} onClick={() => { if(state.profile.settings?.sound) { try {chime();} catch {} } void seen(); }}>NHẬN QUÀ & TIẾP TỤC<Icon name="gift" size={19} /></Button><button className="text-link" disabled={closing} onClick={() => void seen()}>Bỏ qua hiệu ứng</button>
-  </div></Modal>;
+  return <Modal open={visible} className="level-event-modal reward-event-dialog" title={leveledUp ? 'Bạn đã lên cấp' : 'Quà hoàn thành khóa học'}>
+    <CelebrationScene
+      variant={leveledUp ? 'level' : 'capstone'}
+      title={leveledUp ? toLevel - (event?.fromLevel ?? 1) > 1 ? 'Liên tiếp những cột mốc!' : 'Bạn đã lên cấp!' : 'Một hành trình trọn vẹn!'}
+      subtitle={leveledUp ? 'Kiến thức tăng lên. Bộ sưu tập cũng vậy.' : 'Diện mạo đặc biệt dành cho thành tích của bạn.'}
+      level={leveledUp ? toLevel : undefined}
+      compact
+      showSkip={false}
+    >
+      {leveledUp && <div className="level-story" data-phase={phase}>
+        <div className="level-story-label"><span>HÀNH TRÌNH KINH NGHIỆM</span><span aria-live="polite">{phase === 0 ? 'Đang tăng XP' : phase < 3 ? 'Cột mốc mới!' : 'Quà của bạn'}</span></div>
+        <div className="level-xp-bar" aria-label="Đã đủ kinh nghiệm để lên cấp">
+          <motion.span key={event?.id} initial={reduced ? false : { width: '0%' }} animate={{ width: '100%' }} transition={{ duration: reduced ? 0 : .7, ease: [.22,1,.36,1] }} />
+          <motion.i aria-hidden="true" initial={false} animate={reduced ? {} : { opacity: [0,.9,0], x: ['-20%','120%'] }} transition={{ duration: .7 }} />
+        </div>
+        <div className="level-story-number"><span>Cấp {event?.fromLevel}</span><Icon name="right" size={17} /><motion.strong key={phase > 0 ? 'new-level' : 'previous-level'} initial={reduced ? false : { scale: .8, y: 6 }} animate={{ scale: 1, y: 0 }} transition={{ type: 'spring', damping: 12, stiffness: 300 }}>Cấp {phase > 0 ? toLevel : event?.fromLevel}</motion.strong></div>
+      </div>}
+      <div className="level-gifts level-story-gifts" aria-label="Quà đã được thêm vào bộ sưu tập">
+        {events.flatMap(e => e.rewards || []).map((r,i) => <motion.div className="bp-reveal" key={`${r.level ?? ''}:${r.itemId ?? r.type}:${i}`} initial={reduced ? false : { opacity: 0, scale: .9, y: 14 }} animate={phase >= 3 || reduced ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: .9, y: 14 }} transition={{ delay: reduced ? 0 : Math.min(i,5)*.075, type: 'spring', damping: 18 }}>
+          <span className={`level-gift-icon ${r.type === 'skin' ? 'level-gift-mascot' : ''}`}>{r.type === 'skin' ? <Byte skin={r.itemId} size={55} mood="celebrate" /> : <Icon name={r.type === 'gems' || r.type === 'gem' ? 'gem' : r.type === 'frame' ? 'user' : 'gift'} size={24} />}</span>
+          <span>{r.name || r.itemId || 'Kim cương'}{r.type === 'gems' || r.type === 'energy-voucher' ? '' : r.amount > 1 ? ` ×${r.amount}` : ''}</span>
+          {r.level && <small>Cấp {r.level}</small>}
+        </motion.div>)}
+      </div>
+      <p className="level-reward-caption">Quà đã được lưu. Tiếp tục khám phá cùng Byte nhé!</p>
+    </CelebrationScene>
+    <div className="reward-dialog-actions"><Button busy={closing} onClick={() => { if(state.profile.settings?.sound) { try {chime();} catch {} } void seen(); }}>TIẾP TỤC KHÁM PHÁ<Icon name="right" size={19} /></Button><button className="text-link" disabled={closing} onClick={() => void seen()}>Bỏ qua hiệu ứng</button></div>
+  </Modal>;
 }

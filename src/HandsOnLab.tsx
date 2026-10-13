@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useMotionPreference as useReducedMotion } from "./motionPreference";
 import { api } from "./api";
 import { Button, Icon, Byte } from "./components";
 import { useApp } from "./context";

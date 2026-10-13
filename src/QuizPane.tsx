@@ -3,6 +3,7 @@ import { api } from "./api";
 import { useApp } from "./context";
 import { Button, Icon, ProgressBar } from "./components";
 import type { Attempt } from "./types";
+import { SuccessFeedback } from "./Delight";
 export default function QuizPane({
   attempt,
   onChange,
@@ -24,6 +25,7 @@ export default function QuizPane({
   const q = attempt.questions[index],
     graded = attempt.mode === "assessment" || attempt.mode === "capstone",
     selected = attempt.answers[q.id];
+  const visibleFeedback = !busy && feedback[q.id]?.optionId === selected ? feedback[q.id] : null;
   async function choose(id: string) {
     onChange({ ...attempt, answers: { ...attempt.answers, [q.id]: id } });
     if (!graded) {
@@ -33,7 +35,7 @@ export default function QuizPane({
           questionId: q.id,
           optionId: id,
         });
-        setFeedback((prev) => ({ ...prev, [q.id]: result }));
+        setFeedback((prev) => ({ ...prev, [q.id]: { ...result, optionId: id } }));
       } catch (e) {
         notify((e as Error).message);
       } finally {
@@ -57,7 +59,7 @@ export default function QuizPane({
       <div className="answer-options">
         {q.options.map((o, i) => (
           <button
-            className={`answer-option ${selected === o.id ? "selected" : ""} ${feedback[q.id] && selected === o.id ? (feedback[q.id].correct ? "correct" : "incorrect") : ""}`}
+            className={`answer-option ${selected === o.id ? "selected" : ""} ${visibleFeedback && selected === o.id ? (visibleFeedback.correct ? "correct" : "incorrect") : ""}`}
             key={o.id}
             disabled={busy || attempt.status !== "active"}
             onClick={() => choose(o.id)}
@@ -67,8 +69,8 @@ export default function QuizPane({
             {selected === o.id && (
               <Icon
                 name={
-                  feedback[q.id]
-                    ? feedback[q.id].correct
+                  visibleFeedback
+                    ? visibleFeedback.correct
                       ? "success"
                       : "error"
                     : "check"
@@ -79,21 +81,14 @@ export default function QuizPane({
           </button>
         ))}
       </div>
-      {feedback[q.id] && (
-        <div
-          className={`answer-feedback ${feedback[q.id].correct ? "correct" : "incorrect"}`}
-          aria-live="polite"
+      {visibleFeedback && (
+        <SuccessFeedback
+          key={q.id + selected}
+          correct={visibleFeedback.correct}
+          label={visibleFeedback.correct ? "Đúng rồi, bạn đã hiểu ý này!" : "Cùng nhìn lại một chút nhé."}
         >
-          <Icon name={feedback[q.id].correct ? "success" : "brain"} size={24} />
-          <div>
-            <strong>
-              {feedback[q.id].correct
-                ? "Đúng rồi!"
-                : "Cùng nhìn lại ý này nhé."}
-            </strong>
-            <p>{feedback[q.id].explanation}</p>
-          </div>
-        </div>
+          <p>{visibleFeedback.explanation}</p>
+        </SuccessFeedback>
       )}
       <div className="quiz-actions">
         <Button

@@ -1,5 +1,6 @@
 import { useState, useId } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useMotionPreference as useReducedMotion } from "./motionPreference";
 import type { Lesson } from "./types";
 
 const stories: Record<string, [string, string[], string]> = {

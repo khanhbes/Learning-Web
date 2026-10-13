@@ -4,6 +4,8 @@ Website học CNTT tiếng Việt, gồm **DSA (48 buổi bắt buộc + 12 nân
 
 Bài học có minh họa SVG, mô phỏng từng bước, biểu đồ hồi quy/gradient/classification/clustering/PCA và nhiều dạng luyện tương tác. Trang Mẹo & Phỏng vấn có 40 mẹo, 65 chủ đề và thưởng kim cương theo hạn mức. Hồ sơ dùng chung XP, 30 cấp, 24 skin/mascot, gói X2 theo lượt và vật phẩm. Vị trí học và bản nháp được lưu để tiếp tục. Xem [báo cáo mở rộng](docs/EXPANSION-REPORT.md), [học liệu ML](docs/ML-CONTENT.md) và [thiết kế hoạt động trực quan](docs/DESIGN-NOTES.md).
 
+Màn chờ có mascot chuyển động; qua bài, lên cấp và mở rương có màn ăn mừng riêng. Xem thử/phát lại tại **Hồ sơ → Xem thử hiệu ứng của Byte** (`/effects`). Có bỏ qua, giảm chuyển động và cài đặt âm thanh. Chi tiết ở [ANIMATION.md](docs/ANIMATION.md).
+
 ## Cách chạy trên máy
 
 Máy cần Windows và Node.js 24 trở lên để chạy đầy đủ cả hai runner. Runner dùng WebAssembly, **không cần Docker**. Trong workspace:
