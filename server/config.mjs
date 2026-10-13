@@ -14,11 +14,12 @@ export function configuration(env = process.env) {
     );
   if (
     cloud &&
-    ((env.BYTEPATH_PASSWORD?.length ?? 0) < 12 ||
+    ((env.BYTEPATH_PASSWORD?.length ?? 0) < 8 ||
+      (env.BYTEPATH_PASSWORD?.length ?? 0) > 256 ||
       env.BYTEPATH_PASSWORD === "replace-with-your-own-long-password")
   )
     throw new Error(
-      "Cloud mode requires BYTEPATH_PASSWORD with at least 12 characters.",
+      "Cloud mode requires BYTEPATH_PASSWORD with 8 to 256 characters.",
     );
   return {
     cloud,

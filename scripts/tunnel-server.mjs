@@ -9,17 +9,24 @@ export function validateTunnelState(state) {
   if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(state.origin ?? ""))
     throw new Error("Invalid Quick Tunnel origin.");
   if (
+    state.publicOrigin &&
+    !/^https:\/\/[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev$/.test(state.publicOrigin)
+  )
+    throw new Error("Invalid public Worker origin.");
+  if (
     typeof state.password !== "string" ||
-    state.password.length < 12 ||
+    state.password.length < 8 ||
     state.password.length > 256
   )
     throw new Error(
       "A private login password is required before exposing BytePath.",
     );
   if (
-    ![".data/bytepath.sqlite", ".data/public/tunnel-qa.sqlite", ".data/public/online.sqlite"].includes(
-      state.db,
-    )
+    ![
+      ".data/bytepath.sqlite",
+      ".data/public/tunnel-qa.sqlite",
+      ".data/public/online.sqlite",
+    ].includes(state.db)
   )
     throw new Error("Unexpected database path.");
   return state;
@@ -30,7 +37,9 @@ if (
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   const state = validateTunnelState(
-    JSON.parse(readFileSync(".data/public/state.json", "utf8").replace(/^\uFEFF/, "")),
+    JSON.parse(
+      readFileSync(".data/public/state.json", "utf8").replace(/^\uFEFF/, ""),
+    ),
   );
   Object.assign(process.env, {
     BYTEPATH_MODE: "cloud",
@@ -45,7 +54,9 @@ if (
     throw new Error(
       "Prepare the runner with npm run runner:setup before opening the tunnel.",
     );
-  const app = await createApp({ config: configuration(), log: true });
+  const config = configuration();
+  config.additionalOrigins = state.publicOrigin ? [state.publicOrigin] : [];
+  const app = await createApp({ config, log: true });
   await app.listen({ host: "127.0.0.1", port: 3002 });
   console.log("BytePath public ready: " + state.origin);
   for (const signal of ["SIGINT", "SIGTERM"])

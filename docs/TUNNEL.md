@@ -23,3 +23,15 @@ Log nằm trong `.data/public/`. Nếu startup lỗi, script đóng các tiến 
 ## Kiểm thử trước bàn giao
 
 `scripts/start-public.ps1 -Qa` dùng SQLite riêng để thử qua cùng tunnel; không dùng cho học thật. Kiểm thử Python/C++, Gemini và bản nháp trong QA; sau đó chọn hồ sơ online riêng hoặc cho phép dùng dữ liệu hiện có. Báo cáo ở `output/tunnel-*-verification.json`. Script kiểm thử không ghi mật khẩu, API key hoặc cookie vào báo cáo.
+
+## Địa chỉ ngắn miễn phí
+
+Có thể dùng một Cloudflare Worker làm cổng chuyển tiếp với địa chỉ `https://bytepath.<tên-tài-khoản>.workers.dev`. Cần đăng nhập tài khoản Cloudflare Free bằng `npx wrangler login`; không cần mua tên miền. Worker chỉ chuyển tiếp HTTP, còn SQLite, chấm code và Gemini vẫn chạy ở backend trên máy. Máy vẫn cần bật.
+
+Sau khi đã cấp địa chỉ, cấu hình riêng nằm trong `.data/public/worker.json` (accountId, name, deployedUpstream), và `state.json` có thêm `publicOrigin`. Không thêm mật khẩu hoặc Gemini key vào Worker. Chạy `node scripts/update-public-alias.mjs` để cập nhật cổng chuyển tiếp và kiểm tra `/api/health` thực tế. Script kiểm tra đăng nhập Wrangler trước khi deploy. Khi tunnel tạo URL mới, **Start Public BytePath.cmd** tự cập nhật Worker. Địa chỉ `workers.dev` giữ nguyên; `access.txt` có cả link ngắn và link tunnel dự phòng. Nếu đăng nhập Cloudflare hết hạn hoặc cập nhật thất bại, dùng link dự phòng, đăng nhập lại Wrangler rồi chạy script cập nhật.
+
+Dùng trong hạn mức [Workers Free](https://developers.cloudflare.com/workers/platform/pricing/); không nâng cấp gói trả phí. Đây là cổng chuyển tiếp nên không chuyển runner WASM lên Worker.
+
+## Đổi mật khẩu
+
+Đổi trường `password` trong `.data/public/state.json`, sau đó dừng và mở lại bản public để áp dụng. Mật khẩu dài 8–256 ký tự; phiên đăng nhập cũ hết hiệu lực sau khi đổi. Không đưa file này vào Git. `access.txt` được cập nhật lúc khởi động và vẫn là file riêng trên máy.

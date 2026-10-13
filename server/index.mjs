@@ -181,7 +181,7 @@ export async function createApp({
     if (
       origin &&
       !(config.cloud
-        ? origin === config.origin
+        ? [config.origin, ...(config.additionalOrigins ?? [])].includes(origin)
         : /^http:\/\/(127\.0\.0\.1|localhost):(3001|5173)$/.test(origin))
     )
       throw fail("Origin không được phép.", 403);

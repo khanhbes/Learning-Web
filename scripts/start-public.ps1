@@ -25,7 +25,11 @@ if ($listeners -and -not $publicAppProcess) { throw 'Port 3002 belongs to anothe
 if ($tunnelProcess -and $publicAppProcess -and $state.db -eq $database) {
     try { $existing = Invoke-RestMethod -Uri 'http://127.0.0.1:3002/api/health' -TimeoutSec 2 } catch { $existing = $null }
     if ($existing -and $existing.mode -eq 'cloud') {
-        Write-Host ('Public BytePath: ' + $state.origin)
+        if ($state.publicOrigin -and (Test-Path -LiteralPath (Join-Path $privateRoot 'worker.json'))) {
+            & node (Join-Path $PSScriptRoot 'update-public-alias.mjs')
+            if ($LASTEXITCODE -ne 0) { Write-Warning ('Could not update the short address. Use the tunnel fallback URL: ' + $state.origin) }
+        }
+        Write-Host ('Public BytePath: ' + $(if ($state.publicOrigin) { $state.publicOrigin } else { $state.origin }))
         Write-Host ('Login password is in ' + $accessPath)
         exit 0
     }
@@ -54,15 +58,18 @@ try {
         $tunnelRecord = $record.tunnel
     }
     if ($publicOrigin -notmatch '^https://[a-z0-9-]+\.trycloudflare\.com$') { throw 'Invalid tunnel URL; no application was exposed.' }
-    $loginPassword = if ($state -and $state.password.Length -ge 12) { $state.password } else {
+    $loginPassword = if ($state -and $state.password.Length -ge 8) { $state.password } else {
         $passwordBytes = New-Object byte[] 24
         $generator = [System.Security.Cryptography.RandomNumberGenerator]::Create()
         $generator.GetBytes($passwordBytes)
         $generator.Dispose()
         [Convert]::ToBase64String($passwordBytes).TrimEnd('=').Replace('+','-').Replace('/','_')
     }
-    @{origin=$publicOrigin;password=$loginPassword;db=$database} | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding utf8
-    @(('BytePath public URL: ' + $publicOrigin), '', ('Login password: ' + $loginPassword), '', 'Keep this file private. Run Stop Public BytePath.cmd to take the site offline.') | Set-Content -LiteralPath $accessPath -Encoding utf8
+    $nextState = @{origin=$publicOrigin;password=$loginPassword;db=$database}
+    if ($state.publicOrigin) { $nextState.publicOrigin = $state.publicOrigin }
+    $nextState | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding utf8
+    $displayOrigin = if ($nextState.publicOrigin) { $nextState.publicOrigin } else { $publicOrigin }
+    @(('BytePath public URL: ' + $displayOrigin), ('Tunnel fallback URL: ' + $publicOrigin), '', ('Login password: ' + $loginPassword), '', 'Keep this file private. Run Stop Public BytePath.cmd to take the site offline.') | Set-Content -LiteralPath $accessPath -Encoding utf8
     if ($database -eq '.data/bytepath.sqlite') { & (Join-Path $PSScriptRoot 'stop.ps1') }
     $publicAppProcess = Start-Process -FilePath (Get-Command node).Source -ArgumentList @('"' + $serverPath + '"') -WorkingDirectory $projectRoot -WindowStyle Hidden -RedirectStandardOutput (Join-Path $privateRoot 'server.log') -RedirectStandardError (Join-Path $privateRoot 'server-error.log') -PassThru
     @{tunnel=$tunnelRecord;server=@{pid=$publicAppProcess.Id;started=$publicAppProcess.StartTime.ToUniversalTime().ToString('o')}} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $recordPath -Encoding utf8
@@ -74,9 +81,16 @@ try {
         Start-Sleep -Milliseconds 500
     }
     if (-not $ready -or $ready.mode -ne 'cloud' -or -not $ready.runner.available) { throw 'Public BytePath did not become ready.' }
-    Write-Host ('Public BytePath: ' + $publicOrigin)
+    if ($nextState.publicOrigin -and (Test-Path -LiteralPath (Join-Path $privateRoot 'worker.json'))) {
+        & node (Join-Path $PSScriptRoot 'update-public-alias.mjs')
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning ('Could not update the short address. Use the tunnel fallback URL: ' + $publicOrigin)
+            Write-Warning 'Run node scripts/update-public-alias.mjs after signing in with npx wrangler login.'
+        }
+    }
+    Write-Host ('Public BytePath: ' + $displayOrigin)
     Write-Host ('Login password is in ' + $accessPath)
-    Write-Host 'Keep this computer awake and connected. The URL changes after stopping and starting the tunnel.'
+    Write-Host 'Keep this computer awake and connected. The tunnel fallback URL changes after stopping and starting.'
 } catch {
     & (Join-Path $PSScriptRoot 'stop-public.ps1')
     throw

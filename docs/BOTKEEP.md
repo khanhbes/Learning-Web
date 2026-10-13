@@ -25,7 +25,7 @@ GEMINI_FREE_TIER_CONFIRMED=1
 GEMINI_DAILY_LIMIT=20
 ```
 
-Origin không có dấu `/` cuối. Không dùng các giá trị minh họa làm mật khẩu thật. Không đưa key vào source hoặc chat. Nếu cần tắt AI: `BYTEPATH_AI=off`.
+Origin không có dấu `/` cuối. Ứng dụng chấp nhận mật khẩu 8–256 ký tự; mẫu ở trên khuyến nghị ít nhất 12 ký tự. Không dùng các giá trị minh họa làm mật khẩu thật. Không đưa key vào source hoặc chat. Nếu cần tắt AI: `BYTEPATH_AI=off`.
 
 6. Start workload, đọc Console. Lần đầu cần mạng để tải runtime; nếu tải lỗi, script báo nguyên nhân và không mở server chấm thiếu runtime. Sau thông báo `BytePath cloud ready`, mở domain, đăng nhập, chọn Python/C++ và tên. Trong Hồ sơ, kiểm tra runner sẵn sàng. Chạy mẫu bài cộng trước khi học tiếp.
 
