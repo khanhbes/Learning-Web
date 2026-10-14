@@ -18,7 +18,7 @@ if (
     "A valid private Worker configuration and public address are required.",
   );
 
-if (worker.deployedUpstream === state.origin) {
+if (worker.deployedUpstream === state.origin && !process.argv.includes('--force')) {
   console.log("Short address is already configured: " + state.publicOrigin);
   process.exit(0);
 }

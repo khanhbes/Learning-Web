@@ -13,7 +13,7 @@ function Get-VerifiedPublicProcess {
 }
 function Stop-VerifiedPublicProcess {
     param($Process)
-    if ($Process) {
+    if ($Process -and -not $Process.HasExited) {
         $Process.Kill()
         if (-not $Process.WaitForExit(5000)) { throw 'BytePath process has not stopped yet.' }
     }

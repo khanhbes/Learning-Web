@@ -14,6 +14,22 @@ Launcher kiểm tra cả backend trên máy và đầu tunnel HTTPS. Nếu tiế
 
 Máy phải bật, có Internet và không sleep để web hoạt động. Quick Tunnel là phương án tạm thời, không có cam kết uptime; hostname đổi khi tạo tunnel mới. Xem [tài liệu Cloudflare](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
 
+## Tự phục hồi tùy chọn
+
+Monitor nền mặc định chưa bật. Khi người dùng đồng ý cho phép tự sửa kết nối, chạy:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-public.ps1 -UseExistingProgress -EnableRecovery
+```
+
+Monitor kiểm tra mỗi phút; sau ba lần lỗi liên tiếp, chỉ xử lý khi Internet đã có lại. Nếu tunnel khỏe nhưng Worker lỗi, nó cập nhật alias riêng. Nếu cần khởi động lại, nó đọc SQLite ở chế độ readonly và hoãn khi job đang queued/running còn có tiến trình server hoặc cổng đang lắng nghe. Khi server đã chết và cổng trống, các job bị gián đoạn được backend chuyển thành lỗi hạ tầng để chấm lại, không đánh trượt. Nếu không thể đọc trạng thái job, monitor hoãn sửa. Khởi động lại vẫn có thể gây gián đoạn ngắn; đây không phải bảo đảm uptime.
+
+Lỗi phục hồi có backoff 2/5/10/30 phút. Không gọi Gemini, không chấm lại bài, không cài service hoặc task tự mở lúc Windows boot. Các PID được kiểm tra tên tiến trình, đường dẫn script và thời điểm bắt đầu trước khi dừng.
+
+**Stop Public BytePath.cmd** đánh dấu dừng trước khi đóng monitor, tiến trình phục hồi, server và tunnel; monitor không tự bật lại web sau thao tác Stop. Lựa chọn bật monitor được giữ cho lần Start sau. Log riêng ở `.data/public/watchdog.log` và `.data/public/recovery-last.log`. Wrangler phải còn đăng nhập để tự cập nhật alias; monitor không tự mở màn đăng nhập hoặc mua dịch vụ.
+
+Kiểm thử chính sách và đọc job: `node --test tests/public-recovery.test.mjs tests/tunnel.test.mjs`. Trên Windows, `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/public-stop.integration.ps1` kiểm tra Stop trong cửa sổ tạo tiến trình/ghi PID bằng server giả riêng trong `output/`, không dừng website thật.
+
 ## Quyền truy cập và dữ liệu
 
 Backend giữ Gemini key từ `.env`, không đưa key vào frontend hoặc URL. Bản public yêu cầu mật khẩu, cookie Secure/HttpOnly/SameSite và Origin đúng. Đây là **một hồ sơ cá nhân dùng chung**, không phải hệ thống tài khoản riêng cho nhiều học viên. Người có mật khẩu có thể học, dùng quota AI và sửa tiến độ của hồ sơ đó.
