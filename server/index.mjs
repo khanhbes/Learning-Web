@@ -87,6 +87,7 @@ const profileSchema = z.object({
   language: languageSchema,
   dailyGoal: z.number().int().min(20).max(200),
   skin: z.string().optional(),
+  mascotVersion:z.literal(1).optional(),
   activeCourse: courseIdSchema.optional(),
   settings: z.object({sound:z.boolean().optional(),reducedMotion:z.boolean().optional()}).optional(),
   avatarFrame:z.string().max(100).nullable().optional(),
@@ -1385,7 +1386,16 @@ export async function createApp({
     ".svg": "image/svg+xml",
     ".png": "image/png",
     ".json": "application/json",
+    ".wasm": "application/wasm",
+    ".riv": "application/octet-stream",
   };
+  app.get("/mascots/bitty/*",async(req,reply)=>{
+    const tail=req.params["*"];
+    if(!/^(?:props\/)?[a-zA-Z0-9_.-]+\.(svg|riv|json)$/.test(tail)||tail.includes(".."))throw fail("Mascot asset không tồn tại.",404);
+    const path=resolve(assetRoot,"mascots","bitty",tail);
+    if(!existsSync(path))throw fail("Mascot asset chưa sẵn sàng.",404);
+    return reply.header("Cache-Control","no-cache").type(mime[extname(path)]).send(readFileSync(path));
+  });
   app.get("/assets/*", async (req, reply) => {
     const tail = req.params["*"];
     if (!/^[a-zA-Z0-9_.-]+$/.test(tail) || tail.includes(".."))

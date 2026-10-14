@@ -1,0 +1,9 @@
+.bitty-art { display: inline-block; flex: 0 0 auto; vertical-align: middle; isolation: isolate; contain: layout style; }
+.bitty-vector { display: block; width: 100%; height: 100%; overflow: visible; }
+.bitty-vector text { font-family: "Nunito", system-ui, sans-serif; }
+.bitty-art [data-layer], .bitty-art .bitty-prop, .bitty-art .bitty-rays { transform-box: view-box; }
+.bitty-art image { pointer-events: none; }
+.bitty-art[data-motion-paused="true"] .bitty-confetti { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .bitty-art .bitty-confetti { display: none; }
+}

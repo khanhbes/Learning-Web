@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   Routes,
   Route,
@@ -32,6 +32,11 @@ import { LoadingScene, AnimatedNumber, AnimationPreview } from "./Delight";
 import { useMotionPreference } from "./motionPreference";
 import "./expansion.css";
 import { courseInfo, courseLanguages, currentLanguage, languageFlag, languageName } from './courseUI';
+import { MascotProvider } from './bitty/MascotProvider';
+import MascotSignals from './bitty/MascotSignals';
+import PageTransition from './bitty/PageTransition';
+import { NotFoundScene, OfflineScene } from './bitty/SystemScene';
+const BittyStudio=lazy(()=>import('./bitty/BittyStudio'));
 const nav = [
   ["/", "map", "Học"],
   ["/learn", "target", "Luyện"],
@@ -164,7 +169,7 @@ function Welcome() {
       <div className="welcome">
         <span className="eyebrow">MỘT HÀNH TRÌNH MỚI</span>
         <Byte size={150} mood="wave" />
-        <h1>Chào bạn, mình là Byte!</h1>
+        <h1>Chào bạn, mình là Bitty!</h1>
         <p>
           Cùng khám phá công nghệ bằng những bước nhỏ, hình ảnh và thao tác nhé.
         </p>
@@ -380,10 +385,7 @@ export default function App() {
   if (!state || !course)
     return (
       <div className="boot">
-        {error ? <><Byte size={140} mood="encouraging" /><h2>Byte chưa kết nối được</h2><p>{error}</p></> : <LoadingScene title="Chuẩn bị hành trình của bạn…" detail="Đang mở khóa học và tiến độ đã lưu." steps={['Một bước nhỏ hôm nay, một kỹ năng mới ngày mai.', 'Không cần vội. Byte luôn đợi bạn.', 'Hiểu ý tưởng trước, viết code sau.']} />}
-        {error && (
-          <Button onClick={() => window.location.reload()}>Thử lại</Button>
-        )}
+        {error ? <OfflineScene message={error} onRetry={()=>window.location.reload()}/> : <LoadingScene title="Chuẩn bị hành trình của bạn…" detail="Đang mở khóa học và tiến độ đã lưu." steps={['Một bước nhỏ hôm nay, một kỹ năng mới ngày mai.', 'Không cần vội. Bitty luôn đợi bạn.', 'Hiểu ý tưởng trước, viết code sau.']} />}
       </div>
     );
   const immersive = /\/(?:lesson)\//.test(location.pathname);
@@ -392,6 +394,8 @@ export default function App() {
       value={{ state, course, courses, selectCourse, refresh, notify: setToast, health }}
     >
       <MotionConfig reducedMotion={systemReduced || state.profile.settings?.reducedMotion ? "always" : "never"}>
+      <MascotProvider transitionKey={location.pathname} ambient={!immersive&&!location.pathname.includes('capstone')&&!['/mascot','/effects'].includes(location.pathname)}>
+      <MascotSignals/>
       {!immersive && <Sidebar />}
       <div className={immersive ? "immersive" : "app-content"}>
         {!immersive && <Topbar />}
@@ -403,7 +407,7 @@ export default function App() {
           }
         >
           <main>
-            <div className="bp-page-enter" key={location.pathname}>
+            <PageTransition transitionKey={location.pathname} variant={location.pathname==='/'?'mascot_wipe':location.pathname.includes('capstone')?'iris_circle':location.pathname==='/league'?'jump_through':location.pathname==='/shop'?'curtain_pixel':location.pathname==='/profile'?'celebration_fade':'slide_card'}>
             <Routes>
               <Route path="/" element={<Home key={course.id} />} />
               <Route path="/lesson/:id" element={<CourseBoundary legacy />} />
@@ -420,10 +424,11 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/sources" element={<Sources />} />
               <Route path="/effects" element={<AnimationPreview />} />
+              <Route path="/mascot" element={<Suspense fallback={<LoadingScene title="Đang chuẩn bị Bitty…"/>}><BittyStudio/></Suspense>} />
               <Route path="/capstone" element={<CourseBoundary capstone legacy />} />
-              <Route path="*" element={<Home key={course.id} />} />
+              <Route path="*" element={<NotFoundScene />} />
             </Routes>
-            </div>
+            </PageTransition>
           </main>
           {!immersive && location.pathname === "/" && <RightRail />}
         </div>
@@ -461,6 +466,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      </MascotProvider>
       </MotionConfig>
     </AppContext.Provider>
   );

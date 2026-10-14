@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "./api";
 import { useApp } from "./context";
 import { Button, Icon, ProgressBar } from "./components";
 import type { Attempt } from "./types";
 import { SuccessFeedback } from "./Delight";
 import { GitScenarioPreview } from './GitWorkbench';
+import { useMascot } from './bitty/MascotProvider';
+import Mascot from './bitty/Mascot';
 export default function QuizPane({
   attempt,
   onChange,
@@ -23,24 +25,38 @@ export default function QuizPane({
     [feedback, setFeedback] = useState<Record<string, any>>({}),
     [busy, setBusy] = useState(false);
   const { notify } = useApp();
+  const mascot = useMascot();
+  const alive = useRef(true), inFlight = useRef(false), wrongChain = useRef(0), animatedFeedback = useRef(new Set<string>());
+  useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
   const q = attempt.questions[index],
     graded = attempt.mode === "assessment" || attempt.mode === "capstone",
     selected = attempt.answers[q.id];
   const visibleFeedback = !busy && feedback[q.id]?.optionId === selected ? feedback[q.id] : null;
   async function choose(id: string) {
+    if (inFlight.current || attempt.status !== 'active') return;
     onChange({ ...attempt, answers: { ...attempt.answers, [q.id]: id } });
     if (!graded) {
+      inFlight.current = true;
       setBusy(true);
       try {
         const result = await api(`/attempts/${attempt.id}/answer`, "POST", {
           questionId: q.id,
           optionId: id,
         });
+        if (!alive.current) return;
         setFeedback((prev) => ({ ...prev, [q.id]: { ...result, optionId: id } }));
+        const eventId = `quiz:${attempt.id}:${q.id}:${id}`;
+        if (typeof result.correct === 'boolean' && !animatedFeedback.current.has(eventId)) {
+          animatedFeedback.current.add(eventId);
+          mascot.say(result.correct ? 'correct' : 'wrong', { id: eventId });
+          wrongChain.current = result.correct ? 0 : wrongChain.current + 1;
+          if (wrongChain.current >= 3) mascot.say('cheer', { id: `${eventId}:encourage` });
+        }
       } catch (e) {
         notify((e as Error).message);
       } finally {
-        setBusy(false);
+        inFlight.current = false;
+        if (alive.current) setBusy(false);
       }
     }
   }
@@ -53,6 +69,7 @@ export default function QuizPane({
         </span>
       </div>
       <ProgressBar value={index + 1} max={attempt.questions.length} />
+      {!graded && <div style={{ display: 'flex', justifyContent: 'flex-end', height: 64, marginTop: 6, pointerEvents: 'none' }}><Mascot size={86} /></div>}
       <h2>{q.prompt}</h2>
       {q.input !== undefined && (
         q.input&&typeof q.input==='object'&&'initial' in q.input?<GitScenarioPreview input={q.input}/>:<pre className="quiz-input">{JSON.stringify(q.input, null, 2)}</pre>

@@ -10,6 +10,7 @@ const animal = (family, name, body, accent, level) => [
   { id: `${family}-rare`, name: ({ cat: "Mèo trăng", fox: "Cáo thu", rabbit: "Thỏ mây", axolotl: "Axolotl sao" })[family], family, variant: "rare", colors: { body, accent, light: "#fff9f0" }, price: null, unlock: { type: "level", level }, type: "skin", description: `Quà độc quyền khi đạt cấp ${level}.` },
 ];
 export const cosmetics = [
+  {id:"bitty",name:"Bitty",family:"bitty",variant:"base",colors:{body:"#76DEC1",accent:"#3AA58E",light:"#FFF9E9"},price:0,unlock:{type:"free"},type:"skin",description:"Mèo robot tròn trịa: cùng bạn học, debug và ăn mừng."},
   robot("original", "Byte xanh lá", "#78c800", "#2b7a26", 0, { type: "free" }),
   robot("ocean", "Byte đại dương", "#54bde8", "#247daf", 100),
   robot("sunset", "Byte hoàng hôn", "#ffa454", "#e26b25", 200),

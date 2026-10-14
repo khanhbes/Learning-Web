@@ -4,6 +4,7 @@ export interface Profile {
   language: Language;
   dailyGoal: number;
   skin: string;
+  mascotVersion?:1;
   avatarFrame?: string;
   activeCourse?: string;
   settings?: { sound?: boolean; reducedMotion?: boolean };
@@ -21,6 +22,7 @@ export interface AppState {
   rewardEvents?: any[];
   consumables?: Record<string, number>;
   activeBoost?: { itemId: string; charges: number; totalCharges: number } | null;
+  lastReward?:{id:string;xp:number;baseXp:number;bonusXp:number;gems:number;courseId?:string|null};
   avatarFrames?: string[];
   profile: Profile;
   xp: number;

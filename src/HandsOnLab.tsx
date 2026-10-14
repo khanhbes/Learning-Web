@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { useMotionPreference as useReducedMotion } from "./motionPreference";
 import { api } from "./api";
-import { Button, Icon, Byte } from "./components";
+import { Button, Icon } from "./components";
 import { useApp } from "./context";
 import type { Attempt } from "./types";
 import { currentLanguage } from './courseUI';
 import { GitScenarioPreview } from './GitWorkbench';
+import { useMascot } from './bitty/MascotProvider';
+import Mascot from './bitty/Mascot';
 export default function HandsOnLab({
   attempt,
   onChange,
@@ -19,6 +21,9 @@ export default function HandsOnLab({
   const [index, updateIndex] = useState(attempt.lab?.cursor ?? 0),
     [busy, setBusy] = useState(false);
   const dragged = useRef("");
+  const alive = useRef(true), inFlight = useRef(false), wrongChain = useRef(0), animatedFeedback = useRef(new Set<string>());
+  const mascot = useMascot();
+  useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
   const reduced = useReducedMotion();
   const { state, course, refresh, notify } = useApp();
   const lab = attempt.lab,
@@ -56,22 +61,34 @@ export default function HandsOnLab({
     update(order);
   }
   async function check() {
+    if (inFlight.current || attempt.mode === 'assessment' || attempt.mode === 'capstone' || attempt.status !== 'active') return;
+    inFlight.current = true;
     setBusy(true);
     try {
       const result = await api(`/attempts/${attempt.id}/lab`, "POST", {
         questionId: q.id,
         value,
       });
+      if (!alive.current) return;
       onChange({
         ...attempt,
         lab: result.attempt.lab,
         updatedAt: result.attempt.updatedAt,
       });
+      const response = result.attempt?.lab?.responses?.[q.id];
+      const eventId = `lab:${attempt.id}:${q.id}:${JSON.stringify(value).slice(0, 180)}`;
+      if (typeof response?.correct === 'boolean' && !animatedFeedback.current.has(eventId)) {
+        animatedFeedback.current.add(eventId);
+        mascot.say(response.correct ? 'correct' : 'wrong', { id: eventId });
+        wrongChain.current = response.correct ? 0 : wrongChain.current + 1;
+        if (wrongChain.current >= 3) mascot.say('cheer', { id: `${eventId}:encourage` });
+      }
       await refresh();
     } catch (e) {
       notify((e as Error).message);
     } finally {
-      setBusy(false);
+      inFlight.current = false;
+      if (alive.current) setBusy(false);
     }
   }
   return (
@@ -82,16 +99,7 @@ export default function HandsOnLab({
           <h1>Thử bằng đôi tay của bạn</h1>
           <p>Sắp bước, ghép ý nghĩa, chạy tay và sửa lỗi. Thử lại thoải mái.</p>
         </div>
-        <Byte
-          size={105}
-          mood={
-            currentFeedback?.correct
-              ? "celebrate"
-              : currentFeedback
-                ? "encouraging"
-                : "thinking"
-          }
-        />
+        <Mascot size={105} />
       </div>
       <div className="lab-tabs" role="tablist" aria-label="Hoạt động tương tác">
         {lab.questions.map((item: any, i: number) => (

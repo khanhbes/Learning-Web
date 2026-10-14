@@ -4,6 +4,7 @@ import Mascot from './Mascot';
 import { Icon } from './components';
 import { Link } from 'react-router-dom';
 import { useMotionPreference } from './motionPreference';
+import { useMascot } from './bitty/MascotProvider';
 export { useMotionPreference } from './motionPreference';
 import './delight.css';
 
@@ -65,7 +66,7 @@ export function LoadingScene({ title = 'Byte đang chuẩn bị…', detail, com
     <div className="bp-loading-art" aria-hidden="true">
       <span className="bp-loading-orbit bp-orbit-a" /><span className="bp-loading-orbit bp-orbit-b" />
       <span className="bp-loading-tile bp-tile-code">&lt;/&gt;</span><span className="bp-loading-tile bp-tile-star">✦</span>
-      <div className="bp-loading-mascot"><Mascot size={compact ? 90 : 150} mood="thinking" motionPaused={reduced || !visible} /></div>
+      <div className="bp-loading-mascot"><Mascot size={compact ? 90 : 150} mood="loading" motionPaused={reduced || !visible} /></div>
       <span className="bp-loading-floor" />
     </div>
     <div className="bp-loading-copy"><h3>{title}</h3>{detail && <p>{detail}</p>}
@@ -83,9 +84,10 @@ type CelebrationProps = {
 };
 
 export function CelebrationScene({ variant, title, subtitle, xp, bonusXp, gems, level, children, compact = false, showSkip = true, onSkip }: CelebrationProps) {
+  const actor=useMascot();
   const preference = useMotionPreference(), [finished, setFinished] = useState(false);
   const reduced = preference || finished;
-  const finish = () => { setFinished(true); onSkip?.(); };
+  const finish = () => { setFinished(true); if(actor.active&&['lesson_complete','perfect_score','level_up','badge_unlock'].includes(actor.state))actor.stop(actor.active.id); onSkip?.(); };
   return <section className={`bp-celebration bp-${variant} ${compact ? 'bp-celebration-compact' : ''} ${reduced ? 'bp-still bp-finished' : ''}`} aria-label={title}>
     <div className="bp-celebration-art">
       <div className="bp-celebration-halo" aria-hidden="true" /><div className="bp-celebration-ring" aria-hidden="true" />
@@ -128,6 +130,6 @@ export function AnimationPreview() {
     <div className="bp-preview-stage" id="effect-stage" role="tabpanel" aria-labelledby={`effect-${scene}`} key={`${scene}:${replay}`}>
       {scene==='loading'?<LoadingScene title="Byte đang chuẩn bị hành trình…" detail="Sẵn sàng cho một điều mới hôm nay?" steps={['Mỗi bước nhỏ đều có ý nghĩa.', 'Bạn học theo tốc độ của mình.', 'Xem ý tưởng chuyển động, rồi thử bằng code.']}/>:<CelebrationScene variant={scene as CelebrationProps['variant']} title={titles[scene]} subtitle="Số thưởng bên dưới là dữ liệu minh họa." xp={scene==='lesson'?50:undefined} gems={scene==='gift'?15:undefined} level={scene==='level'?5:undefined}/>}
     </div>
-    <div className="bp-preview-footer"><button type="button" className="btn outline" onClick={()=>setReplay(n=>n+1)}><Icon name="refresh" size={18}/>XEM LẠI</button><Link to="/profile" className="text-link"><Icon name="settings" size={16}/>{reduced?'Chế độ giảm chuyển động đang bật':'Cài đặt chuyển động và âm thanh'}</Link></div>
+    <div className="bp-preview-footer"><button type="button" className="btn outline" onClick={()=>setReplay(n=>n+1)}><Icon name="refresh" size={18}/>XEM LẠI</button><Link to="/mascot" className="text-link">27 biểu cảm của Bitty <Icon name="right" size={16}/></Link><Link to="/profile" className="text-link"><Icon name="settings" size={16}/>{reduced?'Chế độ giảm chuyển động đang bật':'Cài đặt chuyển động và âm thanh'}</Link></div>
   </div>;
 }

@@ -22,6 +22,8 @@ import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 import DAVisualizer from './DAVisualizer';
 import GitWorkbench from './GitWorkbench';
 import { currentLanguage, gitCourse } from './courseUI';
+import { useMascot } from './bitty/MascotProvider';
+import { LessonCompleteModal } from './bitty/RewardOverlays';
 const phases = [
   ["learn", "Hiểu"],
   ["visual", "Khám phá"],
@@ -30,6 +32,7 @@ const phases = [
   ["assessment", "Kiểm tra"],
 ];
 export default function LessonPage() {
+  const mascot = useMascot();
   const { id } = useParams(),
     [params] = useSearchParams(),
     navigate = useNavigate(),
@@ -57,6 +60,19 @@ export default function LessonPage() {
   const current = useRef(attempt);
   current.current = attempt;
   const isReview = params.get("mode") === "review";
+  useEffect(() => {
+    if (!result && attempt?.status === 'active' && ['assessment', 'capstone'].includes(attempt.mode))
+      mascot.cancelAll('cancelled');
+  }, [attempt?.id, attempt?.mode, attempt?.status, !!result, mascot.cancelAll]);
+  useEffect(() => {
+    if (!lesson || !attempt || attempt.mode === 'assessment' || attempt.mode === 'capstone') return;
+    mascot.say('wave', { id: `lesson:${course.id}:${lesson.id}:hello` });
+  }, [lesson?.id, attempt?.id, attempt?.mode, course.id, mascot.say]);
+  useEffect(() => {
+    if (attempt?.mode === 'assessment' || attempt?.mode === 'capstone') return;
+    mascot.setBoolean('isThinking', asking);
+    return () => mascot.setBoolean('isThinking', false);
+  }, [asking, attempt?.mode, mascot.setBoolean]);
   async function start(mode: string, retake = false) {
     setBusy(true);
     try {
@@ -132,7 +148,7 @@ export default function LessonPage() {
     };
   }, [id, course.id]);
   useEffect(() => {
-    if (!attempt || attempt.status !== "active") return;
+    if (!attempt || attempt.status !== "active" || busy) return;
     localStorage.setItem(
       "bytepath-attempt-" + attempt.id,
       JSON.stringify({
@@ -175,6 +191,9 @@ export default function LessonPage() {
       clearTimeout(timer);
     };
   }, [
+    attempt?.id,
+    attempt?.status,
+    busy,
     attempt?.answers,
     attempt?.codeDrafts,
     attempt?.lab?.drafts,
@@ -237,6 +256,8 @@ export default function LessonPage() {
       await start("practice", true);
     setPhase(p);
     setBlock(0);
+    if (p === 'visual')
+      mascot.say('teach_point', { id: `lesson:${course.id}:${lesson.id}:visual` });
   }
   async function submit() {
     if (!attempt) return;
@@ -697,9 +718,11 @@ export default function LessonPage() {
           </div>
         )}
       </div>
-      <Modal
+      <LessonCompleteModal
         open={!!result}
         title="Kết quả bài làm"
+        result={result ?? { passed: false, knowledge: 0 }}
+        eventId={attempt.id}
         onClose={() => setResult(null)}
       >
         <div className="result-modal">
@@ -711,6 +734,7 @@ export default function LessonPage() {
               xp={result.reward?.xp}
               bonusXp={result.reward?.bonusXp}
               gems={result.reward?.gems}
+              onSkip={() => mascot.stop(`lesson:${attempt.id}:${result.knowledge === 100 ? 'perfect' : 'complete'}`)}
             />
           ) : (
             <>
@@ -785,7 +809,7 @@ export default function LessonPage() {
             </Button>
           </div>
         </div>
-      </Modal>
+      </LessonCompleteModal>
       <Modal
         open={tutorOpen}
         onClose={() => setTutorOpen(false)}

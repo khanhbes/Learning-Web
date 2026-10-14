@@ -4,7 +4,8 @@ import { motion } from 'motion/react';
 import { useMotionPreference } from './motionPreference';
 import { useApp } from './context';
 import { api } from './api';
-import { Byte, Icon, Button, Modal, ProgressBar } from './components';
+import { Byte, Icon, Button, ProgressBar } from './components';
+import { LevelUpOverlay } from './bitty/RewardOverlays';
 import { CelebrationScene } from './Delight';
 import { courseInfo } from './courseUI';
 
@@ -90,7 +91,7 @@ export function LevelCelebration() {
     return () => timers.forEach(window.clearTimeout);
   }, [visible, event?.id, reduced]);
   async function seen() { setClosing(true); try { for (const e of events) await api('/reward-events/'+e.id+'/seen','POST',{}); await refresh(); } catch(e) { notify((e as Error).message); } finally { setClosing(false); } }
-  return <Modal open={visible} className="level-event-modal reward-event-dialog" title={leveledUp ? 'Bạn đã lên cấp' : 'Quà hoàn thành khóa học'}>
+  return <LevelUpOverlay open={visible} level={toLevel} eventId={events.map(e => e.id).join(':') || undefined} variant={leveledUp ? 'level' : 'badge'} title={leveledUp ? 'Bạn đã lên cấp' : 'Quà hoàn thành khóa học'}>
     <CelebrationScene
       variant={leveledUp ? 'level' : 'capstone'}
       title={leveledUp ? toLevel - (event?.fromLevel ?? 1) > 1 ? 'Liên tiếp những cột mốc!' : 'Bạn đã lên cấp!' : 'Một hành trình trọn vẹn!'}
@@ -117,5 +118,5 @@ export function LevelCelebration() {
       <p className="level-reward-caption">Quà đã được lưu. Tiếp tục khám phá cùng Byte nhé!</p>
     </CelebrationScene>
     <div className="reward-dialog-actions"><Button busy={closing} onClick={() => { if(state.profile.settings?.sound) { try {chime();} catch {} } void seen(); }}>TIẾP TỤC KHÁM PHÁ<Icon name="right" size={19} /></Button><button className="text-link" disabled={closing} onClick={() => void seen()}>Bỏ qua hiệu ứng</button></div>
-  </Modal>;
+  </LevelUpOverlay>;
 }

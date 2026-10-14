@@ -21,6 +21,13 @@ export function normalizeGamification(s, { now = Date.now(), retroactive = false
   s.activationRequests ??= {};
   s.activeBoost ??= null;
   s.profile ??= {};
+  // The new free mascot is granted once without changing academic rewards.
+  // Explicitly chosen legacy skins remain equipped; the old default migrates.
+  if(!s.inventory.includes("bitty"))s.inventory.push("bitty");
+  if(s.profile.mascotVersion!==1){
+    if(!s.profile.skin||s.profile.skin==="original")s.profile.skin="bitty";
+    s.profile.mascotVersion=1;
+  }
   s.profile.sound ??= false;
   s.profile.reducedMotion ??= false;
   s.level = levelProgress(s.xp);

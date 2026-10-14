@@ -4,11 +4,12 @@ import { cosmetics, boostPacks, extendedShop } from "../shared/cosmetics.mjs";
 import { levelProgress, normalizeGamification, syncLevelRewards, applyXPBoost, purchaseExtended, activateConsumable, acknowledgeRewardEvents, awardCourseCosmetic } from "../server/gamification.mjs";
 const fresh = () => normalizeGamification({ xp: 0, gems: 10000, energy: 5, energyAt: 0, inventory: ["original"], profile: {} });
 
-test("24 original cosmetics have precise shop/level/course unlocks", () => {
-  assert.equal(cosmetics.length, 24);
-  assert.equal(new Set(cosmetics.map((c) => c.id)).size, 24);
+test("Bitty and 24 original cosmetics have precise shop/level/course unlocks", () => {
+  assert.equal(cosmetics.length, 25);
+  assert.equal(new Set(cosmetics.map((c) => c.id)).size, 25);
+  assert.equal(cosmetics.find(c=>c.id==="bitty").unlock.type,"free");
   assert.equal(cosmetics.filter((c) => c.family === "robot").length, 12);
-  assert.equal(cosmetics.filter((c) => c.family !== "robot").length, 12);
+  assert.equal(cosmetics.filter((c) => ["cat","fox","rabbit","axolotl"].includes(c.family)).length, 12);
   assert.equal(cosmetics.filter((c) => c.unlock.type === "level").length, 6);
   assert.equal(cosmetics.filter((c) => c.unlock.type === "course").length, 2);
   assert.deepEqual(boostPacks.map((b) => [b.charges,b.price]), [[2,40],[5,90],[10,160]]);

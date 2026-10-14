@@ -2,17 +2,23 @@ import { useContext } from 'react';
 import { motion } from 'motion/react';
 import { useMotionPreference } from './motionPreference';
 import { AppContext } from './context';
+import Bitty from './bitty/Mascot';
+import type { MascotTimeline } from '../shared/mascot-motion.mjs';
 // The catalog is shared with the authoritative reward service.
 // @ts-ignore JavaScript content module
 import { cosmetics } from '../shared/cosmetics.mjs';
 
 export default function Mascot({ size = 160, mood = 'happy', skin, className = '', motionPaused = false }: { size?: number; mood?: string; skin?: string; className?: string; motionPaused?: boolean }) {
   const ctx = useContext(AppContext);
-  const id = skin || ctx?.state.profile.skin || 'original';
+  const id = skin || ctx?.state.profile.skin || 'bitty';
   const item: any = cosmetics.find((c: any) => c.id === id) || cosmetics[0];
   const family = item.family || 'robot';
   const color = item.colors?.body || '#58cc02', accent = item.colors?.accent || '#46a302', light = item.colors?.light || '#e1f8c7';
   const preference = useMotionPreference(), reduced = motionPaused || preference;
+  if(item.id==='bitty'){
+    const moods:Record<string,MascotTimeline>={happy:'idle_breathe',wave:'wave_hello',celebrate:'lesson_complete',sleep:'idle_sleep',rest:'idle_sleep',thinking:'teach_think',think:'teach_think',explaining:'teach_talk',encouraging:'cheer_encourage',sad:'streak_lost',correct:'answer_correct',wrong:'answer_wrong',offline:'offline',loading:'loading'};
+    return <Bitty size={size} state={moods[mood]??'idle_breathe'} className={`byte mascot-bitty ${className}`} motionPaused={reduced} followQueue={size>=90&&!motionPaused}/>;
+  }
   const celebrate = mood === 'celebrate', rest = mood === 'sleep' || mood === 'rest', think = mood === 'thinking' || mood === 'think';
   const description = celebrate ? 'đang ăn mừng' : rest ? 'đang nghỉ' : think ? 'đang suy nghĩ' : mood === 'wave' ? 'đang chào bạn' : 'đồng hành cùng bạn';
   const animal = family !== 'robot';

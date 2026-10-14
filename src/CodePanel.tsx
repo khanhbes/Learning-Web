@@ -11,6 +11,7 @@ import type { Attempt, Problem, Language } from "./types";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 import { courseLanguages, currentLanguage, editorLanguageName, gitCourse, pythonDataCourse, languageName } from './courseUI';
 import { GitFrameView, GitScenarioPreview } from './GitWorkbench';
+import { useMascot } from './bitty/MascotProvider';
 (globalThis as any).MonacoEnvironment = { getWorker: () => new EditorWorker() };
 loader.config({ monaco });
 export default function CodePanel({
@@ -37,7 +38,9 @@ export default function CodePanel({
     [reference, setReference] = useState<any>(null),
     [mobileTab, setMobileTab] = useState("problem");
   const alive = useRef(true),
-    current = useRef(attempt);
+    current = useRef(attempt), inFlight = useRef(false);
+  const mascot = useMascot();
+  const protectedAttempt = graded || attempt.mode === 'assessment' || attempt.mode === 'capstone';
   current.current = attempt;
   useEffect(
     () => () => {
@@ -50,6 +53,11 @@ export default function CodePanel({
     setResult(null);
     setHint(0);
   }, [pid]);
+  useEffect(() => {
+    if (protectedAttempt) return;
+    mascot.setBoolean('isCoding', true);
+    return () => mascot.setBoolean('isCoding', false);
+  }, [protectedAttempt, mascot.setBoolean]);
   const p = problems.find((p) => p.id === pid) || problems[0];
   if (!p) return null;
   const code = attempt.codeDrafts[p.id]?.[language] ?? p.starters[language] ?? '';
@@ -58,6 +66,9 @@ export default function CodePanel({
     onChange({...current.current,codeDrafts:{...current.current.codeDrafts,[p.id]:{...current.current.codeDrafts[p.id],[language]:value}}});
   }
   async function run(publicOnly: boolean) {
+    if (inFlight.current || attempt.status !== 'active') return;
+    inFlight.current = true;
+    let loadingId: string | undefined;
     setBusy(true);
     setResult(null);
     setRunStage("submitting");
@@ -70,6 +81,8 @@ export default function CodePanel({
         code,
         publicOnly,
       });
+      if (!alive.current) return;
+      loadingId = mascot.say('loading', { id: `code:${jobId}:loading` });
       setRunStage("queued");
       let job: any;
       do {
@@ -79,9 +92,18 @@ export default function CodePanel({
         setRunStage(job.status);
       } while (job.status === "queued" || job.status === "running");
       setResult(job.result);
+      mascot.stop(loadingId);
+      loadingId = undefined;
+      // Infrastructure failures are never presented as learner mistakes.
+      // Assessment feedback stays neutral until the complete attempt is graded.
+      if (!protectedAttempt && job.result?.status === 'accepted')
+        mascot.say(publicOnly ? 'almost' : 'correct', { id: `code:${jobId}:accepted` });
+      else if (!protectedAttempt && job.result?.status && job.result.status !== 'infrastructure_error')
+        mascot.say('cheer', { id: `code:${jobId}:retry` });
       const updated = await api<Attempt>(
         `/${base.endsWith("capstones") ? base.replace(/capstones$/, "capstone") : base}/${attempt.id}`,
       );
+      if (!alive.current) return;
       onChange({
         ...current.current,
         codesPassed: updated.codesPassed,
@@ -91,6 +113,8 @@ export default function CodePanel({
     } catch (e) {
       notify((e as Error).message);
     } finally {
+      inFlight.current = false;
+      if (loadingId) mascot.stop(loadingId);
       if (alive.current) setBusy(false);
     }
   }
@@ -100,6 +124,7 @@ export default function CodePanel({
         {problems.map((problem) => (
           <button
             key={problem.id}
+            disabled={busy}
             className={p.id === problem.id ? "active" : ""}
             onClick={() => {
               setPid(problem.id);
@@ -135,7 +160,7 @@ export default function CodePanel({
           className={`problem-pane mobile-${mobileTab === "problem" ? "show" : "hide"}`}
         >
           <span className="eyebrow">
-            {graded ? "BÀI CODE BẮT BUỘC" : "PHÒNG THỰC HÀNH"}
+            {protectedAttempt ? "BÀI CODE BẮT BUỘC" : "PHÒNG THỰC HÀNH"}
           </span>
           <h2>{p.title}</h2>
           <p>{p.statement}</p>
@@ -164,12 +189,15 @@ export default function CodePanel({
             {pythonDataCourse(course)&&<p>NumPy, pandas và các thư viện cần thiết được tải trong môi trường dữ liệu cách ly; dùng SQLite qua sqlite3 khi đề yêu cầu. Trả JSON theo đúng đặc tả; hình minh họa không quyết định điểm.</p>}
             </>}
           </details>
-          {!graded && (
+          {!protectedAttempt && (
             <div className="hint-area">
               <Button
                 variant="soft"
                 disabled={hint >= 3}
-                onClick={() => setHint(Math.min(3, hint + 1))}
+                onClick={() => {
+                  setHint(Math.min(3, hint + 1));
+                  mascot.say('hint', { id: `hint:${attempt.id}:${p.id}:${hint + 1}` });
+                }}
               >
                 <Icon name="brain" size={19} /> GỢI Ý {Math.min(3, hint + 1)}/3
               </Button>
@@ -207,6 +235,7 @@ export default function CodePanel({
             </span>
             <select
               aria-label="Ngôn ngữ code"
+              disabled={busy}
               value={language}
               onChange={(e) => setLanguage(e.target.value as Language)}
             >
@@ -269,7 +298,7 @@ export default function CodePanel({
               <Icon name="shield" size={15} /> {shell?'Kho Git mô phỏng':'Chạy trong môi trường riêng'}
             </span>
             <div>
-              {!graded && (
+              {!protectedAttempt && (
                 <Button variant="outline" busy={busy} onClick={() => run(true)}>
                   <Icon name="play" size={17} /> CHẠY MẪU
                 </Button>

@@ -1,0 +1,112 @@
+.bitty-page-transition {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+}
+
+.bitty-transition-scene {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.bitty-transition-scene[data-transition-settled='true'] {
+  clip-path: none !important;
+}
+
+.bitty-page-transition[data-motion-reduced='true'] .bitty-transition-scene {
+  transform: none !important;
+  clip-path: none !important;
+}
+
+.bitty-transition-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  overflow: clip;
+}
+
+.bitty-transition-wipe {
+  display: flex;
+  align-items: flex-start;
+  padding-top: clamp(28px, 8vh, 100px);
+}
+
+.bitty-wipe-sheet {
+  position: absolute;
+  inset: 0 12% 0 0;
+  background: var(--bitty-transition-surface, #e7f5d6);
+  border-radius: 0 38% 38% 0;
+}
+
+.bitty-transition-character {
+  display: block;
+  position: relative;
+  width: 108px;
+  height: 108px;
+  margin-left: auto;
+  margin-right: 8%;
+}
+
+.bitty-transition-character > img, .bitty-transition-character > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.bitty-page-transition[data-direction='-1'] .bitty-wipe-sheet {
+  inset: 0 0 0 12%;
+  border-radius: 38% 0 0 38%;
+}
+
+.bitty-page-transition[data-direction='-1'] .bitty-transition-wipe .bitty-transition-character {
+  margin-left: 8%;
+  margin-right: auto;
+}
+
+.bitty-transition-jump {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: clamp(16px, 8vh, 100px);
+}
+
+.bitty-transition-jump-wash {
+  background: var(--bitty-transition-surface, #e7f5d6);
+}
+
+.bitty-transition-jump .bitty-transition-character {
+  margin: 0;
+}
+
+.bitty-transition-pixels {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.bitty-transition-pixels > i {
+  background: var(--bitty-transition-surface, #e7f5d6);
+  transform-origin: top center;
+}
+
+.bitty-transition-pixels > i:nth-child(3n + 1) {
+  transform-origin: bottom center;
+}
+
+.bitty-transition-celebration {
+  background: var(--bitty-transition-surface, #f1f9e8);
+  border-radius: 30px;
+}
+
+[data-theme='dark'] .bitty-page-transition, .dark .bitty-page-transition {
+  --bitty-transition-surface: #263e2d;
+}
+
+/* The OS setting settles decorative layers even before React receives change. */
+@media (prefers-reduced-motion: reduce) {
+  .bitty-transition-decor { display: none; }
+  .bitty-transition-scene { transform: none !important; clip-path: none !important; }
+}
