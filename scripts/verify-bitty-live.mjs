@@ -27,7 +27,7 @@ const staged=readFileSync('output/ml-dist/index.html','utf8');
 const entry=staged.match(/<script[^>]+src="([^"]+)"/)?.[1];assert.ok(entry&&html.includes(entry));
 const assetEntry=await fetch(origin+entry);assert.equal(assetEntry.status,200);
 const bundle=await assetEntry.text();
-const chunks=[...new Set([...bundle.matchAll(/assets\/RiveMascot[^"']+\.js/g)].map(m=>'/'+m[0]))];
+const chunks=[...new Set([...bundle.matchAll(/(?:\.\/|\/?assets\/)(RiveMascot-[\w-]+\.js)/g)].map(m=>'/assets/'+m[1]))];
 assert.equal(chunks.length,1,'Lazy Rive adapter available');
 const riveJsResponse=await fetch(origin+chunks[0]);assert.equal(riveJsResponse.status,200);
 const riveJs=await riveJsResponse.text();
