@@ -1,0 +1,428 @@
+[
+  {
+    "id": "LINEAR-825279808",
+    "courseId": "linear",
+    "prefix": "825279808",
+    "file": "825279808_1569558898517490_8913684421194538313_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825279808_1569558898517490_8913684421194538313_n.jpg",
+    "url": "/sources/linear/825279808_1569558898517490_8913684421194538313_n.jpg",
+    "sha256": "3533dd308412607abc7ea8c4ced3cfc428ae8c84441b4cce64bffc0c4eb570ce",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 1,
+    "title": "Bìa cẩm nang Đại số tuyến tính",
+    "topic": "Bìa cẩm nang Đại số tuyến tính",
+    "topics": [
+      "Giới thiệu",
+      "Roadmap"
+    ],
+    "lessonIds": [
+      1,
+      28
+    ],
+    "reviewIds": [
+      1,
+      28
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-825353325",
+    "courseId": "linear",
+    "prefix": "825353325",
+    "file": "825353325_1706971043697358_6461597115696952027_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825353325_1706971043697358_6461597115696952027_n.jpg",
+    "url": "/sources/linear/825353325_1706971043697358_6461597115696952027_n.jpg",
+    "sha256": "80e681ba055f7d8a4834815dca98ed8a2b44b4d0c00a4e951d6eebba887c2fa4",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 2,
+    "title": "Ma trận",
+    "topic": "Ma trận",
+    "topics": [
+      "Kích thước",
+      "Loại ma trận",
+      "Cộng",
+      "Nhân",
+      "Chuyển vị"
+    ],
+    "lessonIds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "reviewIds": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-825329698",
+    "courseId": "linear",
+    "prefix": "825329698",
+    "file": "825329698_1568177351992153_2514150792731522345_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825329698_1568177351992153_2514150792731522345_n.jpg",
+    "url": "/sources/linear/825329698_1568177351992153_2514150792731522345_n.jpg",
+    "sha256": "807ea237aed35d3f5b28908a530600984e9a462581cf3ec827cb558f53ff8149",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 3,
+    "title": "Định thức, định thức con và phần bù đại số",
+    "topic": "Định thức, định thức con và phần bù đại số",
+    "topics": [
+      "Định thức",
+      "Minor",
+      "Cofactor",
+      "Nghịch đảo"
+    ],
+    "lessonIds": [
+      10,
+      11,
+      12,
+      14
+    ],
+    "reviewIds": [
+      10,
+      11,
+      12,
+      14
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-825279889",
+    "courseId": "linear",
+    "prefix": "825279889",
+    "file": "825279889_1115895257561677_6709189742309353420_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825279889_1115895257561677_6709189742309353420_n.jpg",
+    "url": "/sources/linear/825279889_1115895257561677_6709189742309353420_n.jpg",
+    "sha256": "bff6b5185211b5eecd5118609ceb30184a537faa51116400e789a6853ce481b5",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 4,
+    "title": "Khử Gauss và Gauss–Jordan",
+    "topic": "Khử Gauss và Gauss–Jordan",
+    "topics": [
+      "Biến đổi hàng",
+      "Khử",
+      "Thế ngược",
+      "RREF"
+    ],
+    "lessonIds": [
+      13,
+      14,
+      15,
+      16,
+      18
+    ],
+    "reviewIds": [
+      13,
+      14,
+      15,
+      16,
+      18
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-829096615",
+    "courseId": "linear",
+    "prefix": "829096615",
+    "file": "829096615_2125081614711972_1867409906605560558_n.jpg",
+    "path": "study documents/Đại số tuyến tính/829096615_2125081614711972_1867409906605560558_n.jpg",
+    "url": "/sources/linear/829096615_2125081614711972_1867409906605560558_n.jpg",
+    "sha256": "12faa7917556a3127361723494998108cac42729f4edbd6b718637caa1c38fb5",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 5,
+    "title": "Hạng ma trận và dạng bậc thang",
+    "topic": "Hạng ma trận và dạng bậc thang",
+    "topics": [
+      "Rank",
+      "REF",
+      "RREF"
+    ],
+    "lessonIds": [
+      16,
+      17,
+      18,
+      19,
+      21
+    ],
+    "reviewIds": [
+      16,
+      17,
+      18,
+      19,
+      21
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-828086003",
+    "courseId": "linear",
+    "prefix": "828086003",
+    "file": "828086003_28031538823191371_7384782474130657320_n.jpg",
+    "path": "study documents/Đại số tuyến tính/828086003_28031538823191371_7384782474130657320_n.jpg",
+    "url": "/sources/linear/828086003_28031538823191371_7384782474130657320_n.jpg",
+    "sha256": "1032367985d5ea4a0bf1afeb4f7657e3e5cc46dcfcc12bfe64236f2e0769bdd7",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 6,
+    "title": "Hệ phương trình tuyến tính",
+    "topic": "Hệ phương trình tuyến tính",
+    "topics": [
+      "Ax=b",
+      "Nhất quán",
+      "Nghiệm duy nhất",
+      "Vô số nghiệm"
+    ],
+    "lessonIds": [
+      15,
+      18,
+      21,
+      27
+    ],
+    "reviewIds": [
+      15,
+      18,
+      21,
+      27
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-825340842",
+    "courseId": "linear",
+    "prefix": "825340842",
+    "file": "825340842_29566913896231694_1389414208509943794_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825340842_29566913896231694_1389414208509943794_n.jpg",
+    "url": "/sources/linear/825340842_29566913896231694_1389414208509943794_n.jpg",
+    "sha256": "7c7d43b5a4b10ea9c7c9391a9af98a8110f6de97f65218c833e9a045fa895050",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 7,
+    "title": "Không gian vector và độc lập tuyến tính",
+    "topic": "Không gian vector và độc lập tuyến tính",
+    "topics": [
+      "Vector",
+      "Tổ hợp tuyến tính",
+      "Span",
+      "Cơ sở",
+      "Rank-nullity"
+    ],
+    "lessonIds": [
+      1,
+      2,
+      3,
+      4,
+      19,
+      20,
+      21,
+      22,
+      29,
+      30
+    ],
+    "reviewIds": [
+      1,
+      2,
+      3,
+      4,
+      19,
+      20,
+      21,
+      22,
+      29,
+      30
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-825268409",
+    "courseId": "linear",
+    "prefix": "825268409",
+    "file": "825268409_2511850889322723_7791500154470356641_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825268409_2511850889322723_7791500154470356641_n.jpg",
+    "url": "/sources/linear/825268409_2511850889322723_7791500154470356641_n.jpg",
+    "sha256": "deed678a6b52d27e8128ffee477e74e08042b48f72f321ef41475b76ce926b26",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 8,
+    "title": "Trị riêng và vector riêng",
+    "topic": "Trị riêng và vector riêng",
+    "topics": [
+      "Eigenvalue",
+      "Eigenvector",
+      "Đa thức đặc trưng"
+    ],
+    "lessonIds": [
+      24,
+      25,
+      28,
+      32,
+      33,
+      34,
+      36
+    ],
+    "reviewIds": [
+      24,
+      25,
+      28,
+      32,
+      33,
+      34,
+      36
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-825340721",
+    "courseId": "linear",
+    "prefix": "825340721",
+    "file": "825340721_1660390478937171_1512150940054127876_n.jpg",
+    "path": "study documents/Đại số tuyến tính/825340721_1660390478937171_1512150940054127876_n.jpg",
+    "url": "/sources/linear/825340721_1660390478937171_1512150940054127876_n.jpg",
+    "sha256": "6d2bca05ad782883c8405b8a496e3cc276b5a6fc5a9a3ae50842f688ee4c6ca3",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 9,
+    "title": "Định lý Cayley–Hamilton",
+    "topic": "Định lý Cayley–Hamilton",
+    "topics": [
+      "Đa thức ma trận",
+      "Nghịch đảo",
+      "Lũy thừa"
+    ],
+    "lessonIds": [
+      25,
+      26,
+      28
+    ],
+    "reviewIds": [
+      25,
+      26,
+      28
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  },
+  {
+    "id": "LINEAR-828483383",
+    "courseId": "linear",
+    "prefix": "828483383",
+    "file": "828483383_1095819619509816_4193978796386114407_n.jpg",
+    "path": "study documents/Đại số tuyến tính/828483383_1095819619509816_4193978796386114407_n.jpg",
+    "url": "/sources/linear/828483383_1095819619509816_4193978796386114407_n.jpg",
+    "sha256": "15c4390e0fddb68e28a4ca92cce52aef3245d29d1bcdba31493d1b693d5e4074",
+    "pack": "vietnamese-handbook",
+    "packTitle": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "collection": "Cẩm nang Đại số tuyến tính tiếng Việt",
+    "page": 10,
+    "title": "Tổng ôn cuối kỳ",
+    "topic": "Tổng ôn cuối kỳ",
+    "topics": [
+      "Ma trận",
+      "Định thức",
+      "Hệ tuyến tính",
+      "Chéo hóa",
+      "Không gian vector"
+    ],
+    "lessonIds": [
+      7,
+      14,
+      21,
+      23,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ],
+    "reviewIds": [
+      7,
+      14,
+      21,
+      23,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ],
+    "interviewIds": [],
+    "uses": [
+      "lesson",
+      "review"
+    ],
+    "reviewed": true
+  }
+]

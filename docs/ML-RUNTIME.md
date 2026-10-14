@@ -1,4 +1,4 @@
-# Chuẩn bị và vận hành runner ML
+# Chuẩn bị và vận hành runner Python cho ML, DA, AI Agent và Đại số
 
 Chạy trong workspace trên Windows với Node.js 24 trở lên:
 
@@ -19,6 +19,10 @@ Browser chỉ nhận asset runtime có checksum qua route whitelist; request kh�
 Thiếu runtime, checksum sai, thiếu package, oracle bất nhất hoặc trình duyệt gián đoạn trả **Chưa có kết quả — cần chấm lại**. Bản nháp còn nguyên; không cấp điểm fail vì lỗi hạ tầng và không mất X2. Runtime không chạy code học viên trực tiếp trên host để thay thế. Linux chưa hỗ trợ Job Object; runner ML sẽ báo chưa sẵn sàng thay vì tự bỏ giới hạn.
 
 Sau khi chuẩn bị, runtime/chấm dùng offline. Gemini cần mạng, cấu hình trong `.env` server và được giới hạn lượt; không đưa key vào frontend, source hoặc backup.
+
+AI Agent dùng các fixture về quan sát, trạng thái, đường đi, công cụ giả lập và đánh giá; không gọi dịch vụ AI để tạo đáp án tính điểm. Đại số dùng số thực, kích thước nhỏ, sai số công khai và checker thuộc tính cho vector riêng, cơ sở, QR, PCA hoặc nghiệm hệ. Hai khóa tái sử dụng runtime này; không tải thêm model hoặc chạy Docker.
+
+Kiểm chứng hai khóa mới: `node scripts/verify-agent-linear-runtime.mjs` chạy lời giải chuẩn với 20 seed và các trường hợp biên cho mỗi mẫu, rồi thử lời giải đúng/sai qua bộ chấm thật. `node scripts/verify-agent-linear-flow.mjs` kiểm tra buổi đầu và ba chức năng cuối khóa qua API trên hồ sơ trong bộ nhớ. Các buổi ở giữa chỉ được mở bằng fixture trong script smoke này; kiểm thử API riêng xác minh toàn bộ mở khóa tuần tự. Báo cáo ở `output/agent-linear-runtime-report.json` và `output/agent-linear-real-api-report.json`.
 
 Kiểm chứng môi trường thật:
 

@@ -9,6 +9,7 @@ import CodePanel from "./CodePanelLazy";
 import QuizPane from "./QuizPane";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 import { courseInfo, mandatoryLessons, gitCourse } from './courseUI';
+import CourseProjectPreview from './CourseProjectPreview';
 function ChurnChart({input}:{input:{p:number[];y:number[];threshold:number}}) {
   return <section className="ml-visualizer"><h3>Đọc kết quả trên khách hàng giả lập</h3><p>Mỗi cột là xác suất rời dịch vụ. Màu cam: nhãn thật 1; màu xanh: nhãn thật 0. Hãy giải thích các cảnh báo nhầm và trường hợp bỏ sót.</p><svg viewBox="0 0 560 260" role="img" aria-label="Biểu đồ xác suất churn trên tập test; đường ngang là ngưỡng dự đoán dương">
     <path d="M48 20v200h490" fill="none" stroke="#829880" strokeWidth="2"/>
@@ -318,6 +319,7 @@ export default function CapstonePage() {
           </div>
           {course.id === "ml" && (attempt as any).tasks?.["ml-confusion"] && <ChurnChart input={(attempt as any).tasks["ml-confusion"]} />}
           {course.id==='da'&&(attempt as any).tasks?.['da-clean-orders']?.rows&&<DataProjectTable input={(attempt as any).tasks['da-clean-orders']}/>}
+          {['agent','linear'].includes(course.id)&&attempt.tasks&&<CourseProjectPreview key={course.id+attempt.id} courseId={course.id} tasks={attempt.tasks}/>}
           <div className="tabs capstone-tabs">
             {[
               ["essay", "Bài luận"],

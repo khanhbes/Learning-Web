@@ -157,7 +157,7 @@ export interface Lesson extends LessonSummary {
   corrections: any[];
   problems: Problem[];
   helpers: Partial<Record<Language, string>>;
-  visualization?: string | { kind: string; problemId?: string; initial?: any; commands?: string[]; caption?: string };
+  visualization?: string | { kind: string; problemId?: string; initial?: any; commands?: string[]; caption?: string; mode?: string; input?: unknown; notice?: string; scene?: string };
   visualData?: any;
   recall?: { prompt: string; options: string[]; answer: string };
   itinerary?: { title: string; minutes: number }[];

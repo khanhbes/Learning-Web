@@ -10,10 +10,23 @@ import { CelebrationScene } from './Delight';
 import { courseInfo } from './courseUI';
 
 export function CourseArt({ courseId = 'dsa' }: { courseId?: string }) {
-  const labels:Record<string,string>={dsa:'Các nút dữ liệu kết nối thành cây',ml:'Điểm dữ liệu và đường dự đoán',da:'Bảng dữ liệu chuyển thành biểu đồ doanh thu',git:'Nhánh tính năng gặp nhánh chính ở một commit hợp nhất'};
+  const labels:Record<string,string>={dsa:'Các nút dữ liệu kết nối thành cây',ml:'Điểm dữ liệu và đường dự đoán',da:'Bảng dữ liệu chuyển thành biểu đồ doanh thu',git:'Nhánh tính năng gặp nhánh chính ở một commit hợp nhất',agent:'Agent quan sát, dùng công cụ và kiểm chứng kết quả',linear:'Vector và lưới tọa độ biến đổi bởi một ma trận'};
   return <svg className="course-art" viewBox="0 0 340 190" role="img" aria-label={labels[courseId]||'Hành trình học cùng Byte'}>
-    <circle cx="170" cy="97" r="85" fill={{ml:'#e8efff',da:'#e0f6f3',git:'#fff0e6'}[courseId]||'#e9f8dc'} />
-    {courseId==='da'?<>
+    <circle cx="170" cy="97" r="85" fill={{ml:'#e8efff',da:'#e0f6f3',git:'#fff0e6',agent:'#ecf1fb',linear:'#edf8e5'}[courseId]||'#e9f8dc'} />
+    {courseId==='agent'?<>
+      <path d="M74 94h58m76 0h54M170 68V45m0 100v-23" fill="none" stroke="#a9badd" strokeWidth="5" strokeLinecap="round"/>
+      <rect x="132" y="61" width="76" height="66" rx="23" fill="#7990d6"/><rect x="144" y="78" width="52" height="28" rx="11" fill="white"/><circle cx="159" cy="90" r="4" fill="#7990d6"/><circle cx="181" cy="90" r="4" fill="#7990d6"/><path d="M158 114h24" stroke="#c9d3f0" strokeWidth="4" strokeLinecap="round"/>
+      <circle cx="64" cy="94" r="24" fill="white" stroke="#b9c8e4" strokeWidth="3"/><path d="m54 94 7 7 13-15" fill="none" stroke="#58b537" strokeWidth="4" strokeLinecap="round"/>
+      <rect x="259" y="71" width="47" height="47" rx="14" fill="white" stroke="#b9c8e4" strokeWidth="3"/><path d="m272 87-5 7 5 7m20-14 5 7-5 7m-7-17-4 20" fill="none" stroke="#8d9fc8" strokeWidth="3" strokeLinecap="round"/>
+      <rect x="144" y="18" width="52" height="31" rx="10" fill="white"/><path d="M157 29h25m-25 10h16" stroke="#abc093" strokeWidth="4" strokeLinecap="round"/>
+      <rect x="143" y="144" width="54" height="30" rx="10" fill="#9ecb79"/><path d="m159 158 6 6 13-14" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round"/>
+    </>:courseId==='linear'?<>
+      <path d="M61 45v109h215M98 45v109m37-109v109m37-109v109m37-109v109m37-109v109M61 63h215M61 99h215M61 135h215" stroke="#cedfc1" strokeWidth="2" fill="none"/>
+      <path d="m111 135 95-23 36-63-95 23z" fill="#80c353" fillOpacity=".25" stroke="#75b94e" strokeWidth="3"/>
+      <path d="m111 135 95-23m-95 23 36-63" stroke="#63af3c" strokeWidth="5" strokeLinecap="round"/><path d="m194 106 12 6-9 10m-48-38-2-12-12 7" fill="none" stroke="#63af3c" strokeWidth="4" strokeLinecap="round"/>
+      <rect x="224" y="126" width="70" height="47" rx="12" fill="white"/><path d="M235 137v25m45-25v25" stroke="#a1b993" strokeWidth="2"/><text x="247" y="145" fill="#6a9356" fontSize="12" fontWeight="900">2 1</text><text x="247" y="160" fill="#6a9356" fontSize="12" fontWeight="900">0 1</text>
+      <circle cx="111" cy="135" r="6" fill="#6b9a4e"/>
+    </>:courseId==='da'?<>
       <rect x="42" y="36" width="143" height="116" rx="12" fill="white" stroke="#b6ddd5" strokeWidth="3"/><path d="M43 68h141M43 96h141M43 124h141M85 37v114M137 37v114" stroke="#d9ebe5" strokeWidth="2"/><path d="M54 51h20m21 0h30m22 0h23" stroke="#2c9f8a" strokeWidth="6" strokeLinecap="round"/>{[82,110,138].map((y,i)=><g key={y}><circle cx="65" cy={y} r="5" fill="#58cc02"/><path d={`M98 ${y}h21M147 ${y}h${14+i*3}`} stroke="#9cbeb6" strokeWidth="4" strokeLinecap="round"/></g>)}
       <rect x="165" y="77" width="137" height="91" rx="15" fill="white" stroke="#9bd6c9" strokeWidth="3"/><path d="M183 90v60h103" fill="none" stroke="#b4cec3" strokeWidth="2"/>{[27,43,62].map((h,i)=><rect key={h} x={197+i*29} y={148-h} width="20" height={h} rx="5" fill={['#8ed0bd','#46b49c','#2b927e'][i]}/>)}<path d="m200 46 27 10-27 10" fill="none" stroke="#ffc800" strokeWidth="6" strokeLinecap="round"/>
     </>:courseId==='git'?<>

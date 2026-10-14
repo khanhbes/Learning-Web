@@ -17,8 +17,14 @@ function independentExpected(q) {
   if (q.itemId === "ml-interview-34" && input) return input.requests/input.seconds;
   return q.expected;
 }
-test("Four-course tips and interview topics map to documents and contain unscored essays", () => {
-  assert.equal(tips.length,68); assert.equal(topics.length,105);
+test("All course tips and interview topics map to documents and contain unscored essays", () => {
+  const originalCourses=new Set(['dsa','ml','da','git']);
+  assert.equal(tips.filter(t=>originalCourses.has(t.courseId)).length,68);
+  assert.equal(topics.filter(t=>originalCourses.has(t.courseId)).length,105);
+  for(const id of ['agent','linear']){
+    assert.ok(tips.filter(t=>t.courseId===id).length>=12);
+    assert.ok(topics.filter(t=>t.courseId===id).length>=16);
+  }
   assert.equal(tips.filter(t=>t.courseId==="ml").length,20);
   assert.equal(topics.filter(t=>t.courseId==="ml").length,35);
   assert.equal(tips.filter(t=>t.courseId==="da").length,16);assert.equal(tips.filter(t=>t.courseId==="git").length,12);

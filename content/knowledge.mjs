@@ -4,6 +4,8 @@ import { lessons as dsaLessons } from "./curriculum.mjs";
 import { getCourse } from "./registry.mjs";
 import { knowledgeTipRows as daTipRows,knowledgeInterviewRows as daRows,knowledgeLessonIds as daLessonIds } from "./da/knowledge.mjs";
 import { knowledgeTipRows as gitTipRows,knowledgeInterviewRows as gitRows } from "./git/knowledge.mjs";
+import { knowledgeTipRows as agentTipRows,knowledgeInterviewRows as agentRows } from "./agent/knowledge.mjs";
+import { knowledgeTipRows as linearTipRows,knowledgeInterviewRows as linearRows } from "./linear/knowledge.mjs";
 
 export const KNOWLEDGE_VERSION = "knowledge-2026.10-v1";
 const dsaSources = JSON.parse(readFileSync(new URL("./sources.json", import.meta.url), "utf8"));
@@ -139,8 +141,8 @@ function makeItem(row, courseId, type, index) {
     ],
   };
 }
-export const tips = [...dsaTipRows.map((r, i) => makeItem(r, "dsa", "tip", i)), ...mlTipRows.map((r, i) => makeItem(r, "ml", "tip", i)),...daTipRows.map((r,i)=>makeItem(r,"da","tip",i)),...gitTipRows.map((r,i)=>makeItem(r,"git","tip",i))];
-export const topics = [...dsaRows.map((r, i) => makeItem(r, "dsa", "interview", i)), ...mlRows.map((r, i) => makeItem(r, "ml", "interview", i)),...daRows.map((r,i)=>makeItem(r,"da","interview",i)),...gitRows.map((r,i)=>makeItem(r,"git","interview",i))];
+export const tips = [...dsaTipRows.map((r, i) => makeItem(r, "dsa", "tip", i)), ...mlTipRows.map((r, i) => makeItem(r, "ml", "tip", i)),...daTipRows.map((r,i)=>makeItem(r,"da","tip",i)),...gitTipRows.map((r,i)=>makeItem(r,"git","tip",i)),...agentTipRows.map((r,i)=>makeItem(r,"agent","tip",i)),...linearTipRows.map((r,i)=>makeItem(r,"linear","tip",i))];
+export const topics = [...dsaRows.map((r, i) => makeItem(r, "dsa", "interview", i)), ...mlRows.map((r, i) => makeItem(r, "ml", "interview", i)),...daRows.map((r,i)=>makeItem(r,"da","interview",i)),...gitRows.map((r,i)=>makeItem(r,"git","interview",i)),...agentRows.map((r,i)=>makeItem(r,"agent","interview",i)),...linearRows.map((r,i)=>makeItem(r,"linear","interview",i))];
 export const knowledgeItems = [...tips, ...topics];
 export const knowledgeById = Object.fromEntries(knowledgeItems.map((item) => [item.id, item]));
 const mlInterviewLessons = [1,50,48,48,50,39,49,50,51,50,12,10,17,12,11,16,17,21,28,28,36,39,38,39,39,50,19,48,51,38,50,51,50,38,37];
@@ -157,7 +159,7 @@ const references = {
 };
 for (const item of knowledgeItems) {
   const index = Number(item.id.split("-").at(-1)) - 1;
-  item.lessonId = item.courseId === "dsa" ? dsaLessons.find((lesson) => lesson.problemIds.includes(item.problemId))?.id ?? 1 : item.courseId==="ml" ? (item.type === "tip" ? mlTipLessons[index] : mlInterviewLessons[index]) : item.courseId==="da" ? daLessonIds[item.topic]??1 : getCourse("git").lessons.find(l=>l.sourcePrefixes.some(p=>item.sourcePrefixes.includes(p)))?.id??1;
+  item.lessonId = item.courseId === "dsa" ? dsaLessons.find((lesson) => lesson.problemIds.includes(item.problemId))?.id ?? 1 : item.courseId==="ml" ? (item.type === "tip" ? mlTipLessons[index] : mlInterviewLessons[index]) : item.courseId==="da" ? daLessonIds[item.topic]??1 : getCourse(item.courseId).knowledgeLessonIds?.[item.topic]??getCourse(item.courseId).lessons.find(l=>l.sourcePrefixes.some(p=>item.sourcePrefixes.includes(p)))?.id??1;
   if (item.courseId==="ml" && references[item.topic]) item.references = [{ title: "Tài liệu chính thức", url: references[item.topic] }];
   if (item.courseId==="ml" && ["r2","forest","random-forest","temperature","leakage","split"].includes(item.topic)) item.labels.push("Hiệu đính");
 }

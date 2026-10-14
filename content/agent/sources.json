@@ -1,0 +1,330 @@
+[
+  {
+    "id": "AGENT-825278729",
+    "courseId": "agent",
+    "prefix": "825278729",
+    "file": "825278729_1504699535013813_4585128883775434495_n.jpg",
+    "path": "study documents/AI Agent/825278729_1504699535013813_4585128883775434495_n.jpg",
+    "url": "/sources/agent/825278729_1504699535013813_4585128883775434495_n.jpg",
+    "sha256": "f86e387cd7bc2c5282076f04d78bedcd601200b00cece3b23e455749e2b25b6e",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 1,
+    "title": "AI Agent là gì?",
+    "topic": "AI Agent là gì?",
+    "topics": [
+      "AI Agent là gì?"
+    ],
+    "lessonIds": [
+      1,
+      2,
+      8,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      31,
+      32
+    ],
+    "reviewIds": [
+      1,
+      2,
+      8,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      31,
+      32
+    ],
+    "interviewIds": [
+      "agent-interview-01",
+      "agent-interview-02",
+      "agent-interview-15",
+      "agent-interview-16",
+      "agent-interview-17",
+      "agent-interview-18",
+      "agent-interview-19",
+      "agent-interview-20",
+      "agent-interview-21"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Sơ đồ LLM là ví dụ kiến trúc; công cụ/retrieval/code Python được bổ sung."
+  },
+  {
+    "id": "AGENT-828872594",
+    "courseId": "agent",
+    "prefix": "828872594",
+    "file": "828872594_927459283429939_5726998595597755712_n.jpg",
+    "path": "study documents/AI Agent/828872594_927459283429939_5726998595597755712_n.jpg",
+    "url": "/sources/agent/828872594_927459283429939_5726998595597755712_n.jpg",
+    "sha256": "fe70e9429e871938076f90eb53f706be813e2c40b5d016bdf05c22370aa10295",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 2,
+    "title": "Simple Reflex Agents",
+    "topic": "Simple Reflex Agents",
+    "topics": [
+      "Simple Reflex Agents"
+    ],
+    "lessonIds": [
+      3
+    ],
+    "reviewIds": [
+      3
+    ],
+    "interviewIds": [
+      "agent-interview-03"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  },
+  {
+    "id": "AGENT-825352858",
+    "courseId": "agent",
+    "prefix": "825352858",
+    "file": "825352858_1613105476878329_8959778058369760026_n.jpg",
+    "path": "study documents/AI Agent/825352858_1613105476878329_8959778058369760026_n.jpg",
+    "url": "/sources/agent/825352858_1613105476878329_8959778058369760026_n.jpg",
+    "sha256": "a64602d36d52a339207ba29f7b163aa74d40446f205029810dd8dbbcef4f1e8a",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 3,
+    "title": "Model-Based Reflex Agents",
+    "topic": "Model-Based Reflex Agents",
+    "topics": [
+      "Model-Based Reflex Agents"
+    ],
+    "lessonIds": [
+      4,
+      5,
+      30
+    ],
+    "reviewIds": [
+      4,
+      5,
+      30
+    ],
+    "interviewIds": [
+      "agent-interview-04",
+      "agent-interview-05"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  },
+  {
+    "id": "AGENT-826047760",
+    "courseId": "agent",
+    "prefix": "826047760",
+    "file": "826047760_2304517710282439_7265730120711346234_n.jpg",
+    "path": "study documents/AI Agent/826047760_2304517710282439_7265730120711346234_n.jpg",
+    "url": "/sources/agent/826047760_2304517710282439_7265730120711346234_n.jpg",
+    "sha256": "00ccd39db79bcdaa141c7ddcf241b81f8a431ee34122c76a8e81259ef5df174f",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 4,
+    "title": "Goal-Based Agents",
+    "topic": "Goal-Based Agents",
+    "topics": [
+      "Goal-Based Agents"
+    ],
+    "lessonIds": [
+      6,
+      25
+    ],
+    "reviewIds": [
+      6,
+      25
+    ],
+    "interviewIds": [
+      "agent-interview-06",
+      "agent-interview-22"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  },
+  {
+    "id": "AGENT-825340443",
+    "courseId": "agent",
+    "prefix": "825340443",
+    "file": "825340443_1861625018588286_5091842926425269210_n.jpg",
+    "path": "study documents/AI Agent/825340443_1861625018588286_5091842926425269210_n.jpg",
+    "url": "/sources/agent/825340443_1861625018588286_5091842926425269210_n.jpg",
+    "sha256": "c7c62f0891cfb2811a726eea1a80e9bbb880728fe73cd07a77cd450ed5d311fe",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 5,
+    "title": "Utility-Based Agents",
+    "topic": "Utility-Based Agents",
+    "topics": [
+      "Utility-Based Agents"
+    ],
+    "lessonIds": [
+      7,
+      26
+    ],
+    "reviewIds": [
+      7,
+      26
+    ],
+    "interviewIds": [
+      "agent-interview-07",
+      "agent-interview-23"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  },
+  {
+    "id": "AGENT-825279868",
+    "courseId": "agent",
+    "prefix": "825279868",
+    "file": "825279868_1405993614289777_4729313073852332956_n.jpg",
+    "path": "study documents/AI Agent/825279868_1405993614289777_4729313073852332956_n.jpg",
+    "url": "/sources/agent/825279868_1405993614289777_4729313073852332956_n.jpg",
+    "sha256": "b802e3127b08a6a2dca5b23033f374852cfec7e5b2ccb7bbff8ad604141a5ad9",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 6,
+    "title": "Learning Agents",
+    "topic": "Learning Agents",
+    "topics": [
+      "Learning Agents"
+    ],
+    "lessonIds": [
+      9,
+      10,
+      27
+    ],
+    "reviewIds": [
+      9,
+      10,
+      27
+    ],
+    "interviewIds": [
+      "agent-interview-08",
+      "agent-interview-09"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  },
+  {
+    "id": "AGENT-825267646",
+    "courseId": "agent",
+    "prefix": "825267646",
+    "file": "825267646_934561295959936_7258621509643713052_n.jpg",
+    "path": "study documents/AI Agent/825267646_934561295959936_7258621509643713052_n.jpg",
+    "url": "/sources/agent/825267646_934561295959936_7258621509643713052_n.jpg",
+    "sha256": "150a1ed5640194b2b837dbc94267de427dc8887c68762ba9edbd6b0becbfae34",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 7,
+    "title": "Multi-Agent Systems",
+    "topic": "Multi-Agent Systems",
+    "topics": [
+      "Multi-Agent Systems"
+    ],
+    "lessonIds": [
+      11,
+      12,
+      13,
+      16,
+      28
+    ],
+    "reviewIds": [
+      11,
+      12,
+      13,
+      16,
+      28
+    ],
+    "interviewIds": [
+      "agent-interview-10",
+      "agent-interview-11",
+      "agent-interview-12",
+      "agent-interview-24"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  },
+  {
+    "id": "AGENT-825273549",
+    "courseId": "agent",
+    "prefix": "825273549",
+    "file": "825273549_1068373579126688_3584326782499620098_n.jpg",
+    "path": "study documents/AI Agent/825273549_1068373579126688_3584326782499620098_n.jpg",
+    "url": "/sources/agent/825273549_1068373579126688_3584326782499620098_n.jpg",
+    "sha256": "a46855ed47543c7aaab5b88a5f7da0f924b71053daa169920221a37ce074cbd6",
+    "pack": "agent-taxonomy",
+    "packTitle": "Tổng quan và bảy kiến trúc agent",
+    "collection": "Tài liệu AI Agent",
+    "page": 8,
+    "title": "Hierarchical Agents",
+    "topic": "Hierarchical Agents",
+    "topics": [
+      "Hierarchical Agents"
+    ],
+    "lessonIds": [
+      14,
+      15,
+      29
+    ],
+    "reviewIds": [
+      14,
+      15,
+      29
+    ],
+    "interviewIds": [
+      "agent-interview-13",
+      "agent-interview-14"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung."
+  }
+]

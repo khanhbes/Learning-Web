@@ -4,6 +4,8 @@ import * as dsaSolutions from "./solutions.mjs";
 import * as ml from "./ml/index.mjs";
 import * as da from "./da/index.mjs";
 import * as git from "./git/index.mjs";
+import * as agent from "./agent/index.mjs";
+import * as linear from "./linear/index.mjs";
 import { readFileSync } from "node:fs";
 import { corrections } from "./sources-map.mjs";
 const dsaSources=JSON.parse(readFileSync(new URL("./sources.json",import.meta.url),"utf8"));
@@ -17,7 +19,11 @@ export const courseRegistry={
   da:{...da,sourceDirectory:"DA",course:{...da.course,languages:["python"],runtime:"pyodide",description:"Từ câu hỏi kinh doanh đến bảng sạch, SQL, biểu đồ và kết luận có bằng chứng."},sources:da.sourceCatalog.map(s=>({...s,collection:s.packTitle??s.collection,topic:s.title??s.topic,url:"/sources/da/"+s.file})),
     helpers:{python:"# solve(data) nhận bảng JSON và trả kết quả JSON.\n# Bài SQL dùng sqlite3 với database :memory: trong môi trường cách ly."}},
   git:{...git,sourceDirectory:"Git Github",course:{...git.course,languages:["shell"],runtime:"git-sim",description:"Tự tay stage, commit, tạo nhánh, gộp thay đổi và cộng tác qua repository mô phỏng."},sources:git.sourceCatalog.map(s=>({...s,collection:s.packTitle??s.collection,topic:s.title??s.topic,url:"/sources/git/"+s.file})),
-    helpers:{shell:"# Mỗi dòng là một lệnh trong Git mô phỏng.\n# Không chạy shell, truy cập mạng hoặc thay repository thật."}}
+    helpers:{shell:"# Mỗi dòng là một lệnh trong Git mô phỏng.\n# Không chạy shell, truy cập mạng hoặc thay repository thật."}},
+  agent:{...agent,sourceDirectory:"AI Agent",course:{...agent.course,languages:["python"],runtime:"pyodide",description:"Điều khiển agent qua quan sát, bộ nhớ, mục tiêu và công cụ giả lập có thể kiểm chứng."},sources:agent.sourceCatalog.map(s=>({...s,collection:s.packTitle??s.collection,topic:s.title??s.topic,url:"/sources/agent/"+s.file})),
+    helpers:{python:"# solve(data) nhận fixture JSON và trả kết quả JSON.\n# Công cụ và kết quả giả lập; không cần API key hay gọi mạng."}},
+  linear:{...linear,sourceDirectory:"Đại số tuyến tính",course:{...linear.course,languages:["python"],runtime:"pyodide",description:"Nhìn vector, ma trận và hệ phương trình chuyển động; kiểm chứng từng phép tính bằng Python."},sources:linear.sourceCatalog.map(s=>({...s,collection:s.packTitle??s.collection,topic:s.title??s.topic,url:"/sources/linear/"+s.file})),
+    helpers:{python:"# solve(data) nhận JSON; có thể dùng NumPy trong môi trường cách ly.\n# Return số/list/dict; ndarray cần .tolist(), không trả NaN/Infinity."}}
 };
 export function getCourse(id="dsa") {
   const c=Object.hasOwn(courseRegistry,id)?courseRegistry[id]:null;

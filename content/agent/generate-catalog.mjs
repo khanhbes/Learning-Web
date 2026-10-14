@@ -1,0 +1,13 @@
+import {readdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {notes} from './reading.mjs';
+import {knowledgeInterviewRows} from './knowledge.mjs';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const directory=path.join(root,'study documents','AI Agent');
+const pages=[['825278729','AI Agent là gì?',1],['828872594','Simple Reflex Agents',2],['825352858','Model-Based Reflex Agents',3],['826047760','Goal-Based Agents',4],['825340443','Utility-Based Agents',5],['825279868','Learning Agents',6],['825267646','Multi-Agent Systems',7],['825273549','Hierarchical Agents',8]];
+const catalog=pages.map(([prefix,title,page])=>{const file=readdirSync(directory).find(f=>f.startsWith(prefix+'_'));if(!file)throw new Error('Missing source '+prefix);const lessonIds=notes.flatMap((n,i)=>n.page===page?[i+1]:[]);return{id:'AGENT-'+prefix,courseId:'agent',prefix,file,path:'study documents/AI Agent/'+file,url:'/sources/agent/'+file,sha256:createHash('sha256').update(readFileSync(path.join(directory,file))).digest('hex'),pack:'agent-taxonomy',packTitle:'Tổng quan và bảy kiến trúc agent',collection:'Tài liệu AI Agent',page,title,topic:title,topics:[title],lessonIds,reviewIds:lessonIds,interviewIds:knowledgeInterviewRows.flatMap((r,i)=>r[8]===prefix?['agent-interview-'+String(i+1).padStart(2,'0')]:[]),uses:['lesson','review','interview'],note:page===1?'Sơ đồ LLM là ví dụ kiến trúc; công cụ/retrieval/code Python được bổ sung.':'Nguồn cho phân loại cổ điển; thuật toán Python và fixture là bổ sung.'};});
+if(readdirSync(directory).filter(f=>/\.(jpg|jpeg|png)$/i.test(f)).length!==catalog.length)throw new Error('Uncatalogued source image');
+writeFileSync(path.join(root,'content/agent/sources.json'),JSON.stringify(catalog,null,2)+'\n');
+console.log('AI Agent: '+catalog.length+' images catalogued with SHA-256.');

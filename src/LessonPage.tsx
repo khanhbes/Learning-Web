@@ -20,6 +20,8 @@ import MLVisualizer from "./MLVisualizer";
 import MLConceptScene from "./MLConceptScene";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
 import DAVisualizer from './DAVisualizer';
+import AgentVisualizer from './AgentVisualizer';
+import LinearVisualizer from './LinearVisualizer';
 import GitWorkbench from './GitWorkbench';
 import { currentLanguage, gitCourse } from './courseUI';
 import { useMascot } from './bitty/MascotProvider';
@@ -411,6 +413,8 @@ export default function LessonPage() {
                 )}
                 {course.id === "ml" && <MLConceptScene lesson={lesson} />}
                 {course.id === "da" && [0,2,4].includes(block) && <DAVisualizer lesson={lesson} compact />}
+                {course.id === "agent" && [0,2,4].includes(block) && <AgentVisualizer lesson={lesson} compact />}
+                {course.id === "linear" && [0,2,4].includes(block) && <LinearVisualizer lesson={lesson} compact />}
                 {gitCourse(course) && [0,2].includes(block) && <GitWorkbench lesson={lesson} compact />}
                 <p className="teaching-text">{lesson.blocks[block].text}</p>
                 {block === 0 && (
@@ -533,7 +537,7 @@ export default function LessonPage() {
                     </select>
                   </label>
                 )}
-                {gitCourse(course)?<GitWorkbench lesson={lesson}/>:course.id==='da'?<DAVisualizer lesson={lesson}/>:course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
+                {gitCourse(course)?<GitWorkbench lesson={lesson}/>:course.id==='da'?<DAVisualizer lesson={lesson}/>:course.id==='agent'?<AgentVisualizer lesson={lesson}/>:course.id==='linear'?<LinearVisualizer lesson={lesson}/>:course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
                   key={visualProblemId || main.id}
                   problemId={visualProblemId || main.id}
                   defaultVariant={
