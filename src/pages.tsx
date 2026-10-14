@@ -9,10 +9,11 @@ import type { Unit, LessonSummary } from "./types";
 import { ProfileLevel, ProfileFrames } from "./Expansion";
 import ExpandedShop from "./ExpandedShop";
 import { CelebrationScene, LoadingScene } from "./Delight";
+import { courseRunner, courseLanguages, languageName, mandatoryLessons, courseIconName } from './courseUI';
 export function Home() {
   const { state, course, notify, refresh } = useApp(),
     navigate = useNavigate();
-  const next = course.lessons.find((l) => !l.progress?.passed && l.id <= (course.mandatoryCount || 48));
+  const next = course.lessons.find((l) => !l.progress?.passed && l.id <= (mandatoryLessons(course)));
   const [unitId, setUnitId] = useState(next?.unitId || course.units.at(-2)?.id || 1),
     [reward, setReward] = useState<any>(null),
     [claiming, setClaiming] = useState(false);
@@ -45,9 +46,9 @@ export function Home() {
         </Link>
       </div>
       <div className="course-progress">
-        <ProgressBar value={state.completed} max={course.mandatoryCount || 48} />
+        <ProgressBar value={state.completed} max={mandatoryLessons(course)} />
         <span>
-          <b>{state.completed}</b> / {course.mandatoryCount || 48} buổi
+          <b>{state.completed}</b> / {mandatoryLessons(course)} buổi
         </span>
       </div>
       <div className={`unit-banner ${unit.color}`}>
@@ -351,7 +352,7 @@ export function PracticeHub() {
       {course.units.map((u) => (
         <section key={u.id} className="practice-unit">
           <h2>
-            <Icon name={u.icon} size={23} /> {u.title}
+            <Icon name={courseIconName(u.icon)} size={23} /> {u.title}
           </h2>
           {course.lessons
             .filter((l) => l.unitId === u.id && l.kind !== "exam")
@@ -365,7 +366,7 @@ export function PracticeHub() {
                 </span>
                 <div>
                   <h3>{l.title}</h3>
-                  <small>{l.problemIds.length} bài code · {course.id === "ml" ? "Python" : "Python / C++"}</small>
+                  <small>{l.problemIds.length} bài thực hành · {courseLanguages(course).map(l=>languageName[l]).join(' / ')}</small>
                 </div>
                 {l.unlocked ? (
                   <Link className="text-link" to={`/courses/${course.id}/lesson/${l.id}?phase=code`}>
@@ -609,11 +610,11 @@ export function Profile() {
   const allBadges = [
     ...badgeDefs,
     ...course.units
-      .filter((u) => u.range[0] <= (course.mandatoryCount || 48))
+      .filter((u) => u.range[0] <= (mandatoryLessons(course)))
       .map((u) => [
         "chapter-" + u.id,
         "Chặng " + u.id,
-        u.icon,
+        courseIconName(u.icon),
         "Hoàn thành " + u.title,
       ]),
   ];
@@ -656,14 +657,14 @@ export function Profile() {
             </span>
             <span>
               <Icon name="book" />
-              {state.completed}/{course.mandatoryCount || 48} buổi
+              {state.completed}/{mandatoryLessons(course)} buổi
             </span>
           </div>
         </div>
       </div>
       <div className="profile-progress">
         <h3>Mức hoàn thành khóa</h3>
-        <ProgressBar value={state.completed} max={course.mandatoryCount || 48} />
+        <ProgressBar value={state.completed} max={mandatoryLessons(course)} />
         <p>
           Điểm khóa hiện tại: <b>{state.courseScore}/100</b> · Bài cuối khóa:{" "}
           {state.capstonePassed
@@ -787,8 +788,8 @@ export function Profile() {
         </div>
         <div className="system-health">
           <span>
-            <i className={(course.id === "ml" ? health?.mlRunner?.available : health?.runner?.available) ? "online" : "offline"} /> Bộ
-            chạy code {course.id.toUpperCase()}: {(course.id === "ml" ? health?.mlRunner?.available : health?.runner?.available) ? "Sẵn sàng" : "Chưa sẵn sàng"}
+            <i className={courseRunner(health,course)?.available ? "online" : "offline"} /> Bộ
+            chạy {course.id.toUpperCase()}: {courseRunner(health,course)?.available ? "Sẵn sàng" : "Chưa sẵn sàng"}
           </span>
           <span>
             <i className={health?.ai.available ? "online" : "offline"} /> Trợ
@@ -828,9 +829,9 @@ export function Sources() {
     api("/sources?courseId=" + course.id).then(setData);
   }, [course.id]);
   const names: Record<string, string> = {
-    interview: "30 bài phỏng vấn",
-    notes: "Ghi chú DSA",
-    patterns: "Pattern DSA",
+    interview: "Bài phỏng vấn",
+    notes: "Ghi chú",
+    patterns: "Mẫu giải bài",
     roadmap: "Roadmap & tư duy",
   };
   return (
@@ -838,7 +839,7 @@ export function Sources() {
       <PageHeading
         eyebrow="NỀN TẢNG CỦA KHÓA HỌC"
         title={"Thư viện " + course.id.toUpperCase()}
-        description={`${course.id === "ml" ? 65 : 62} ảnh gốc và nội dung hiệu đính có thể đối chiếu.`}
+        description={`${data?.sources?.length ?? course.sourceCount ?? 'Các'} ảnh gốc và nội dung hiệu đính có thể đối chiếu.`}
         icon="bookmark"
       />
       <div className="tabs">
@@ -860,7 +861,7 @@ export function Sources() {
           <div className="search-field">
             <Icon name="search" size={20} />
             <input
-              placeholder="Tìm cây, đồ thị, mảng, DP…"
+              placeholder="Tìm chủ đề hoặc mã tài liệu…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />

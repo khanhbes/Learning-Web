@@ -87,7 +87,14 @@ export function generateQuestions(lesson, mode, seed, definition = null) {
   for (let i = rows.length; i < n; i++) {
     const taskIds =
       lesson.kind === "exam" ? lesson.problemIds : [lesson.problemIds[0]];
-    const pid = taskIds[i % taskIds.length],
+    const pid = taskIds[i % taskIds.length];
+    if(definition?.traceQuestion) {
+      const trace=definition.traceQuestion(pid,`${seed}:trace:${i}`);
+      rows.push(question(`q-${i}`,trace.prompt,JSON.stringify(trace.answer),trace.wrongAnswers.map(v=>JSON.stringify(v)),trace.explanation,rng));
+      rows.at(-1).input=trace.input;rows.at(-1).problemId=pid;
+      continue;
+    }
+    const
       input = inputFor(pid, `${seed}:trace:${i}`),
       correct = JSON.stringify(answerFor(pid, input)),
       wrong = [1, 2, 3, 4]

@@ -63,17 +63,19 @@ async function executeIsolated({code,inputs,packages=["numpy","pandas","scikit-l
  }catch(e){return {status:e.message==="BYTEPATH_EXECUTION_TIMEOUT"?"runtime_error":"infrastructure_error",message:e.message==="BYTEPATH_EXECUTION_TIMEOUT"?"Chương trình vượt thời gian chạy 30 giây.":"Chưa có kết quả — cần chấm lại. "+e.message,phase,diagnostic};}
  finally{try{await owned?.stop();}catch{}try{await timed(context?.close()??Promise.resolve(),2000,"cleanup");}catch{}try{await timed(owned?.browser.close()??Promise.resolve(),2000,"cleanup");}catch{}}
 }
-export async function runML({problemId,language,code,seed,publicOnly=false,version,fixtures}){
- if(language!=="python")return {status:"compile_error",message:"Khóa ML dùng Python."};
- if(version && version!==ml.VERSION)return {status:"infrastructure_error",message:"Không có checker đúng phiên bản đề; cần chấm lại."};
+export async function runML({problemId,language,code,seed,publicOnly=false,version,fixtures},definition=ml){
+ if(language!=="python")return {status:"compile_error",message:"Bài này dùng Python."};
+ if(version && version!==definition.VERSION)return {status:"infrastructure_error",message:"Không có checker đúng phiên bản đề; cần chấm lại."};
  const health=await mlRunnerHealth();if(!health.available)return {status:"infrastructure_error",message:health.message};
- const tests=fixtures??ml.testsFor(problemId,seed,{publicOnly,version}),begin=Date.now();
+ if(!Object.hasOwn(definition.problems,problemId))return {status:"infrastructure_error",message:"Không tìm thấy mẫu bài và checker; cần chấm lại."};
+ const tests=fixtures??definition.testsFor(problemId,seed,{publicOnly,version}),begin=Date.now();
+ if(!Array.isArray(tests)||tests.length===0)return {status:"infrastructure_error",message:"Thiếu bộ test đã xác minh; cần chấm lại."};
  let expected;
- try{expected=tests.map(t=>ml.oracle(problemId,t.input));if(expected.some((v,i)=>!ml.checkOutput(problemId,tests[i].input,v)))throw Error("Oracle/checker không nhất quán");}
+ try{expected=tests.map(t=>definition.oracle(problemId,t.input));if(expected.some((v,i)=>!definition.checkOutput(problemId,tests[i].input,v)))throw Error("Oracle/checker không nhất quán");}
  catch{return {status:"infrastructure_error",message:"Oracle chưa nhất quán; cần chấm lại."};}
- const result=await executeML({code,inputs:tests.map(t=>t.input),packages:ml.problems[problemId]?.packages??["numpy","pandas","scikit-learn"]});
+ const result=await executeML({code,inputs:tests.map(t=>t.input),packages:definition.problems[problemId]?.packages??(definition.course?.id==="da"?[]:["numpy","pandas","scikit-learn"])});
  if(result.status!=="executed")return result;
  let outputs;try{outputs=JSON.parse(result.output);if(!Array.isArray(outputs)||outputs.length!==tests.length)throw Error();}catch{return {status:"rejected",message:"solve(data) cần trả giá trị JSON cho mỗi bộ dữ liệu.",stdout:result.stdout};}
- const checks=tests.map((t,i)=>({name:t.name??`Test ${i+1}`,group:t.group??"hidden",passed:ml.checkOutput(problemId,t.input,outputs[i]),...(t.group==="sample"?{input:t.input,expected:expected[i],actual:outputs[i]}:{})}));
- return {status:checks.every(c=>c.passed)?"accepted":"rejected",passed:checks.filter(c=>c.passed).length,total:checks.length,checks,elapsedMs:Date.now()-begin,stdout:result.stdout,stderr:result.stderr,version:ml.VERSION};
+ const checks=tests.map((t,i)=>({id:t.id??i+1,name:t.name??`Test ${i+1}`,group:t.group??"hidden",passed:definition.checkOutput(problemId,tests[i].input,outputs[i]),...(t.group==="sample"?{input:t.input,expected:expected[i],actual:outputs[i]}:{})}));
+ return {status:checks.every(c=>c.passed)?"accepted":"rejected",passed:checks.filter(c=>c.passed).length,total:checks.length,checks,elapsedMs:Date.now()-begin,stdout:result.stdout,stderr:result.stderr,version:definition.VERSION};
 }

@@ -9,6 +9,15 @@ assert.equal(login.status,200,'Public password login');const cookie=login.header
 const get=async path=>{const r=await fetch(origin+path,{headers:{cookie,Origin:origin}});assert.equal(r.status,200,path);return r.json();};
 const courses=await get('/api/courses'),backup=await get('/api/data/export'),health=await get('/api/health'),knowledge=await get('/api/knowledge?courseId=ml');
 assert.equal(courses.courses.find(c=>c.id==='ml').mandatoryCount,40);assert.equal(courses.courses.find(c=>c.id==='dsa').mandatoryCount,48);
+assert.equal(courses.courses.find(c=>c.id==='da').mandatoryCount,28);assert.equal(courses.courses.find(c=>c.id==='git').mandatoryCount,24);
+const additions={};
+for(const [id,count]of[['da',16],['git',12]]){
+ const k=await get('/api/knowledge?courseId='+id),sources=await get('/api/sources?courseId='+id);
+ assert.equal(k.tips.length,count);assert.equal(k.topics.length,20);assert.equal(sources.sources.length,10);
+ for(const source of sources.sources){const r=await fetch(origin+source.url,{headers:{cookie,Origin:origin}});assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/image\/jpeg/);}
+ additions[id]={tips:count,interviews:20,sources:10};
+}
+assert.equal(health.gitRunner.available,true);
 const stagedHtml=readFileSync('output/ml-dist/index.html','utf8');
 const modulePath=stagedHtml.match(/<script[^>]+src="([^"]+)"/)?.[1];
 assert.ok(modulePath,'Staged frontend entry');
@@ -23,8 +32,10 @@ assert.deepEqual(backup.state.courses.dsa.started,old.started,'DSA started retai
 if(before.state.courses)for(const [id,progress] of Object.entries(before.state.courses))assert.deepEqual(backup.state.courses[id],progress,`${id} course data retained`);
 assert.equal(backup.state.profile.name,before.state.profile.name);assert.equal(backup.state.xp,before.state.xp);
 assert.equal(backup.attempts.length,before.attempts.length);assert.equal(backup.jobs.length,before.jobs.length);
+for(const key of ['attempts','jobs','capstones','drafts','knowledgeAttempts'])assert.deepEqual(backup[key]??[],before[key]??[],`${key} contents retained`);
 for(const r of before.ledger)assert.ok(backup.ledger.some(n=>n.id===r.id),'Historical reward retained');
 for(const id of before.state.inventory)assert.ok(backup.state.inventory.includes(id),'Inventory retained');
 const anonymous=await fetch(origin+'/api/courses');assert.equal(anonymous.status,401);
-writeFileSync(reportPath,JSON.stringify({origin,passwordLogin:true,privateApisProtected:true,testedFrontendPublished:true,dataVersion:2,DSAProgressRetained:true,allCourseDataRetained:!!before.state.courses,XPUnchanged:true,inventoryRetained:true,historyRetained:true,ML:{mandatory:40,advanced:12,interviews:35,tips:20,runner:true},aiAvailable:health.ai.available},null,2));
+const anonymousImport=await fetch(origin+'/api/data/import',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:'{}'});assert.equal(anonymousImport.status,401,'Backup import remains protected');
+writeFileSync(reportPath,JSON.stringify({origin,passwordLogin:true,privateApisProtected:true,testedFrontendPublished:true,dataVersion:2,DSAProgressRetained:true,allCourseDataRetained:!!before.state.courses,XPUnchanged:true,inventoryRetained:true,historyRetained:true,ML:{mandatory:40,advanced:12,interviews:35,tips:20,runner:true},DA:{mandatory:28,advanced:8,...additions.da},Git:{mandatory:24,advanced:6,simulation:true,...additions.git},aiAvailable:health.ai.available},null,2));
 console.log(JSON.stringify({origin,online:true,privateApisProtected:true,DSAProgressRetained:true,MLReady:true,dataVersion:2}));

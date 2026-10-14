@@ -19,6 +19,9 @@ import StructurePlayground from "./StructurePlayground";
 import MLVisualizer from "./MLVisualizer";
 import MLConceptScene from "./MLConceptScene";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
+import DAVisualizer from './DAVisualizer';
+import GitWorkbench from './GitWorkbench';
+import { currentLanguage, gitCourse } from './courseUI';
 const phases = [
   ["learn", "Hiểu"],
   ["visual", "Khám phá"],
@@ -362,7 +365,7 @@ export default function LessonPage() {
                   />
                   <h1>{lesson.blocks[block].title}</h1>
                 </div>
-                {course.id !== "ml" && block !== 2 &&
+                {course.id === "dsa" && block !== 2 &&
                   block !== 5 &&
                   !lesson.blocks[block].problemId && (
                     <ConceptScene
@@ -371,7 +374,7 @@ export default function LessonPage() {
                       complexity={block === 4}
                     />
                   )}
-                {course.id !== "ml" && block === 2 && (
+                {course.id === "dsa" && block === 2 && (
                   <Visualizer
                     problemId={main.id}
                     defaultVariant={
@@ -379,13 +382,15 @@ export default function LessonPage() {
                     }
                   />
                 )}
-                {course.id !== "ml" && lesson.blocks[block].problemId && (
+                {course.id === "dsa" && lesson.blocks[block].problemId && (
                   <Visualizer
                     key={lesson.blocks[block].problemId}
                     problemId={lesson.blocks[block].problemId!}
                   />
                 )}
                 {course.id === "ml" && <MLConceptScene lesson={lesson} />}
+                {course.id === "da" && [0,2,4].includes(block) && <DAVisualizer lesson={lesson} compact />}
+                {gitCourse(course) && [0,2].includes(block) && <GitWorkbench lesson={lesson} compact />}
                 <p className="teaching-text">{lesson.blocks[block].text}</p>
                 {block === 0 && (
                   <details className="recall-panel">
@@ -425,10 +430,11 @@ export default function LessonPage() {
                 {lesson.blocks[block].code && (
                   <pre className="lesson-code-example">
                     <code>
-                      {lesson.blocks[block].code?.[state.profile.language]}
+                      {lesson.blocks[block].code?.[currentLanguage(course,state.profile.language)]}
                     </code>
                   </pre>
                 )}
+                {lesson.blocks[block].commandSnippet&&<pre className="lesson-code-example"><code>{lesson.blocks[block].commandSnippet}</code></pre>}
                 {block === 0 && (
                   <div className="learning-objectives">
                     <h4>Sau buổi này, bạn sẽ…</h4>
@@ -475,7 +481,7 @@ export default function LessonPage() {
                     }
                   >
                     {block === lesson.blocks.length - 1
-                      ? "XEM THUẬT TOÁN CHẠY"
+                      ? "KHÁM PHÁ TỪNG BƯỚC"
                       : "TIẾP TỤC"}{" "}
                     <Icon name="right" size={18} />
                   </Button>
@@ -506,7 +512,7 @@ export default function LessonPage() {
                     </select>
                   </label>
                 )}
-                {course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
+                {gitCourse(course)?<GitWorkbench lesson={lesson}/>:course.id==='da'?<DAVisualizer lesson={lesson}/>:course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
                   key={visualProblemId || main.id}
                   problemId={visualProblemId || main.id}
                   defaultVariant={
@@ -518,13 +524,13 @@ export default function LessonPage() {
                         : "insertion"
                   }
                 />}
-                {course.id !== "ml" && lesson.id === 23 && (
+                {course.id === "dsa" && lesson.id === 23 && (
                   <details>
                     <summary>So sánh Merge Sort và Quick Sort</summary>
                     <Visualizer problemId="sort" defaultVariant="merge" />
                   </details>
                 )}
-                {course.id !== "ml" && <StructurePlayground pack={lesson.pack} />}
+                {course.id === "dsa" && <StructurePlayground pack={lesson.pack} />}
                 <div className="algorithm-steps">
                   <h3>Cách tiếp cận</h3>
                   {lesson.steps.map((s, i) => (

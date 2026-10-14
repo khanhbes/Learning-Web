@@ -4,7 +4,7 @@ const block = z.object({
   title: text,
   text,
   label: text,
-  code: z.object({ python: text, cpp: text.optional() }).optional(),
+  code: z.object({ python: text.optional(), cpp: text.optional(), shell: text.optional() }).refine(v=>Object.values(v).some(Boolean),"Code cần ít nhất một ngôn ngữ.").optional(),
   problemId: text.optional(),
 });
 export const lessonSchema = z.object({

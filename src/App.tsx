@@ -11,7 +11,7 @@ import {
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { api } from "./api";
 import { AppContext, useApp } from "./context";
-import type { AppState, Course } from "./types";
+import type { AppState, Course, Language } from "./types";
 import { Byte, Icon, Button, Modal, ProgressBar } from "./components";
 import {
   Home,
@@ -31,6 +31,7 @@ import KnowledgePage from "./KnowledgePage";
 import { LoadingScene, AnimatedNumber, AnimationPreview } from "./Delight";
 import { useMotionPreference } from "./motionPreference";
 import "./expansion.css";
+import { courseInfo, courseLanguages, currentLanguage, languageFlag, languageName } from './courseUI';
 const nav = [
   ["/", "map", "Học"],
   ["/learn", "target", "Luyện"],
@@ -93,14 +94,16 @@ function Sidebar() {
 }
 function Topbar() {
   const { state, course, courses, selectCourse, refresh, notify } = useApp();
+  const navigate=useNavigate();
+  const languages=courseLanguages(course),language=currentLanguage(course,state.profile.language);
   return (
     <header className="topbar">
       <Link to="/" className="mobile-brand">
         bytepath.
       </Link>
       <label className="course-switch" aria-label="Khóa đang học">
-        <Icon name={course.id === "ml" ? "brain" : "code"} size={21} />
-        <select value={course.id} onChange={e => void selectCourse(e.target.value).catch(e => notify(e.message))}>
+        <Icon name={courseInfo(course).icon} size={21} />
+        <select value={course.id} onChange={e => {const target=e.target.value;navigate('/');void selectCourse(target).catch(error => notify(error.message));}}>
           {courses.map(c => <option key={c.id} value={c.id}>{c.id.toUpperCase()} · {c.title}</option>)}
         </select>
       </label>
@@ -108,13 +111,13 @@ function Topbar() {
         <button
           className="language-chip"
           title="Đổi ngôn ngữ lập trình"
-          disabled={course.id === "ml"}
+          disabled={languages.length<2}
           onClick={async () => {
             try {
               await api("/profile", "PUT", {
                 ...state.profile,
                 language:
-                  state.profile.language === "python" ? "cpp" : "python",
+                  languages[(languages.indexOf(language)+1)%languages.length],
               });
               await refresh();
             } catch (e) {
@@ -122,10 +125,10 @@ function Topbar() {
             }
           }}
         >
-          <span className={`language-flag ${state.profile.language}`}>
-            {state.profile.language === "python" ? "Py" : "C+"}
+          <span className={`language-flag ${language}`}>
+            {languageFlag[language]}
           </span>
-          <span>{state.profile.language === "python" ? "Python" : "C++"}</span>
+          <span>{languageName[language]}</span>
           <Icon name="next" size={14} />
         </button>
         <Link to="/quests" className="stat gift" title="Nhiệm vụ hôm nay"><Icon name="gift" /></Link>
@@ -151,9 +154,9 @@ function Topbar() {
   );
 }
 function Welcome() {
-  const { state, refresh, notify } = useApp();
+  const { state, course, refresh, notify } = useApp();
   const [name, setName] = useState("");
-  const [language, setLanguage] = useState<"python" | "cpp">("python");
+  const [language, setLanguage] = useState<Language>(currentLanguage(course,state.profile.language));
   const [goal, setGoal] = useState(50);
   const [busy, setBusy] = useState(false);
   return (
@@ -163,8 +166,7 @@ function Welcome() {
         <Byte size={150} mood="wave" />
         <h1>Chào bạn, mình là Byte!</h1>
         <p>
-          Cùng biến những thuật toán khó hiểu thành những bước thật đơn giản
-          nhé.
+          Cùng khám phá công nghệ bằng những bước nhỏ, hình ảnh và thao tác nhé.
         </p>
         <label>
           Tên bạn là gì?
@@ -177,18 +179,18 @@ function Welcome() {
           />
         </label>
         <div className="welcome-languages">
-          {(["python", "cpp"] as const).map((l) => (
+          {courseLanguages(course).map((l) => (
             <button
               key={l}
               className={`choice ${language === l ? "chosen" : ""}`}
               onClick={() => setLanguage(l)}
             >
               <span className={`language-flag ${l}`}>
-                {l === "python" ? "Py" : "C+"}
+                {languageFlag[l]}
               </span>
-              <strong>{l === "python" ? "Python" : "C++"}</strong>
+              <strong>{languageName[l]}</strong>
               <small>
-                {l === "python" ? "Dễ bắt đầu" : "Theo tài liệu gốc"}
+                {l === "python" ? "Dễ bắt đầu" : l==='shell'?'Kho thực hành an toàn':"Theo tài liệu gốc"}
               </small>
               {language === l && <Icon name="check" size={20} />}
             </button>
@@ -213,7 +215,7 @@ function Welcome() {
             try {
               await api("/profile", "PUT", {
                 name: name.trim(),
-                language,
+                language:currentLanguage(course,language),
                 dailyGoal: goal,
               });
               await refresh();
@@ -336,7 +338,8 @@ export default function App() {
     setError("");
   }
   async function selectCourse(courseId: string) {
-    await api("/profile", "PUT", { ...state?.profile, activeCourse: courseId,language:state?.courses?.[courseId]?.language || "python" });
+    const target=courses.find(c=>c.id===courseId);
+    await api("/profile", "PUT", { ...state?.profile, activeCourse: courseId,language:target?currentLanguage(target,state?.courses?.[courseId]?.language):"python" });
     await refresh();
   }
   useEffect(() => {

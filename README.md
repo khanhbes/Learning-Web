@@ -1,8 +1,8 @@
 # BytePath
 
-Website học CNTT tiếng Việt, gồm **DSA (48 buổi bắt buộc + 12 nâng cao)** và **ML (40 + 12)**. DSA thực hành Python/C++; ML thực hành Python. Mỗi khóa có tiến độ, bài kiểm tra và bài luận cuối khóa riêng. Học liệu dựa trên 62 ảnh trong `study documents/DSA/` và 65 ảnh trong `study documents/ML/`; danh mục, ánh xạ và SHA-256 nằm ở `content/sources.json` và `content/ml/sources.json`.
+Website học CNTT tiếng Việt, gồm **DSA (48 buổi bắt buộc + 12 nâng cao)**, **ML (40 + 12)**, **DA (28 + 8)** và **Git/GitHub (24 + 6)**. DSA thực hành Python/C++; ML và DA thực hành Python, bài SQL dùng SQLite thực; Git dùng terminal mô phỏng. Mỗi khóa có tiến độ, bài kiểm tra và bài luận cuối khóa riêng. Học liệu dựa trên 62 ảnh DSA, 65 ảnh ML, 10 ảnh DA và 10 ảnh Git trong `study documents/`; danh mục, ánh xạ và SHA-256 nằm trong module nội dung từng khóa.
 
-Bài học có minh họa SVG, mô phỏng từng bước, biểu đồ hồi quy/gradient/classification/clustering/PCA và nhiều dạng luyện tương tác. Trang Mẹo & Phỏng vấn có 40 mẹo, 65 chủ đề và thưởng kim cương theo hạn mức. Hồ sơ dùng chung XP, 30 cấp, 24 skin/mascot, gói X2 theo lượt và vật phẩm. Vị trí học và bản nháp được lưu để tiếp tục. Xem [báo cáo mở rộng](docs/EXPANSION-REPORT.md), [học liệu ML](docs/ML-CONTENT.md) và [thiết kế hoạt động trực quan](docs/DESIGN-NOTES.md).
+Bài học có minh họa SVG, mô phỏng từng bước, biểu đồ hồi quy/gradient/classification/clustering/PCA, bảng DA có lọc/nhóm/pivot/join và đồ thị commit Git tương tác. Trang Mẹo & Phỏng vấn có **68 mẹo, 105 chủ đề** và thưởng kim cương theo hạn mức chung. Hồ sơ dùng chung XP, 30 cấp, 24 skin/mascot, gói X2 theo lượt và vật phẩm. Vị trí học và bản nháp được lưu để tiếp tục. Xem [báo cáo DA/Git](docs/DA-GIT-REPORT.md), [học liệu DA](docs/DA-CONTENT.md), [học liệu Git](docs/GIT-CONTENT.md), [học liệu ML](docs/ML-CONTENT.md) và [thiết kế hoạt động trực quan](docs/DESIGN-NOTES.md).
 
 Màn chờ có mascot chuyển động; qua bài, lên cấp và mở rương có màn ăn mừng riêng. Xem thử/phát lại tại **Hồ sơ → Xem thử hiệu ứng của Byte** (`/effects`). Có bỏ qua, giảm chuyển động và cài đặt âm thanh. Chi tiết ở [ANIMATION.md](docs/ANIMATION.md).
 
@@ -50,7 +50,9 @@ C++ dùng môi trường một luồng, không hỗ trợ exception/thread hay m
 
 Docker runner cũ vẫn có thể dùng nếu chủ động đặt `BYTEPATH_RUNNER=docker` và build image qua `npm run runner:build`. Website không tự chạy code học viên bằng Python/g++ trực tiếp trên host.
 
-ML dùng **Pyodide 314.0.7 / Python 3.14** trong Chromium headless có sandbox, kèm NumPy, pandas, SciPy, scikit-learn và matplotlib được khóa phiên bản. Windows Job Object giới hạn cả job ở 1 GB; khởi tạo tối đa 120 giây, thực thi 30 giây, output 2 MB. Chỉ nạp package cần dùng; mạng ngoài, filesystem host, cookie ứng dụng và API key không được cấp cho runner. Thiếu runtime hoặc vượt tài nguyên trả trạng thái cần chấm lại. Xem [chuẩn bị và giới hạn runner ML](docs/ML-RUNTIME.md).
+ML và DA dùng **Pyodide 314.0.7 / Python 3.14** trong Chromium headless có sandbox, kèm NumPy, pandas, SciPy, scikit-learn và matplotlib được khóa phiên bản. DA chạy SQL bằng SQLite `:memory:` riêng. Windows Job Object giới hạn cả job ở 1 GB; khởi tạo tối đa 120 giây, thực thi 30 giây, output 2 MB. Chỉ nạp package cần dùng; mạng ngoài, filesystem host, cookie ứng dụng và API key không được cấp cho runner. Thiếu runtime hoặc vượt tài nguyên trả trạng thái cần chấm lại. Xem [chuẩn bị và giới hạn runner ML/DA](docs/ML-RUNTIME.md).
+
+Git/GitHub dùng mô hình repository ảo, không chạy shell hay sửa repository trên máy. Lệnh trong allowlist thay đổi working tree, index, commit, nhánh và remote ảo; checker đối chiếu trạng thái mục tiêu. Giới hạn 120 dòng, đầu vào 64 KB và đầu ra 2 MB. Phạm vi lệnh hỗ trợ được công khai trong bài và [GIT-CONTENT.md](docs/GIT-CONTENT.md).
 
 ## AI
 

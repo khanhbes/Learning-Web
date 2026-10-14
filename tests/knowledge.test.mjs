@@ -17,10 +17,12 @@ function independentExpected(q) {
   if (q.itemId === "ml-interview-34" && input) return input.requests/input.seconds;
   return q.expected;
 }
-test("40 tips and 65 interview topics map to documents and contain unscored essays", () => {
-  assert.equal(tips.length,40); assert.equal(topics.length,65);
+test("Four-course tips and interview topics map to documents and contain unscored essays", () => {
+  assert.equal(tips.length,68); assert.equal(topics.length,105);
   assert.equal(tips.filter(t=>t.courseId==="ml").length,20);
   assert.equal(topics.filter(t=>t.courseId==="ml").length,35);
+  assert.equal(tips.filter(t=>t.courseId==="da").length,16);assert.equal(tips.filter(t=>t.courseId==="git").length,12);
+  assert.equal(topics.filter(t=>t.courseId==="da").length,20);assert.equal(topics.filter(t=>t.courseId==="git").length,20);
   for(const item of knowledgeItems) { assert.equal(item.templates.length,2); assert.ok(item.sourceIds.length); assert.equal(item.essay.scored,false); assert.ok(item.essay.rubric.length>=3); }
   assert.equal(knowledgeById["ml-interview-11"].sourceIds[0],"ML-825273896");
 });

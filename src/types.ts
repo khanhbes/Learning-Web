@@ -1,4 +1,4 @@
-export type Language = "python" | "cpp";
+export type Language = "python" | "cpp" | "shell";
 export interface Profile {
   name: string;
   language: Language;
@@ -94,6 +94,10 @@ export interface Course {
   languages?: Language[];
   completed?: number;
   capstoneTitle?: string;
+  runtime?: string;
+  icon?: string;
+  sourceCount?: number;
+  tagline?: string;
 }
 export interface Question {
   id: string;
@@ -134,7 +138,7 @@ export interface Problem {
   sampleInput: unknown;
   sampleOutput: unknown;
   hints: string[];
-  starters: Record<Language, string>;
+  starters: Partial<Record<Language, string>>;
 }
 export interface Lesson extends LessonSummary {
   objectives: string[];
@@ -142,14 +146,17 @@ export interface Lesson extends LessonSummary {
     title: string;
     text: string;
     label: string;
-    code?: Record<Language, string>;
+    code?: Partial<Record<Language, string>>;
     problemId?: string;
+    commandSnippet?: string;
   }[];
   steps: string[];
   sources: any[];
   corrections: any[];
   problems: Problem[];
-  helpers: Record<Language, string>;
+  helpers: Partial<Record<Language, string>>;
+  visualization?: string | { kind: string; problemId?: string; initial?: any; commands?: string[]; caption?: string };
+  visualData?: any;
   recall?: { prompt: string; options: string[]; answer: string };
   itinerary?: { title: string; minutes: number }[];
 }

@@ -1,0 +1,8 @@
+import { readdirSync,readFileSync,writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import {knowledgeInterviewRows} from './knowledge.mjs';
+const pages={802777798:[1,'Tổng quan Data Analytics',[1,29,31,33,36]],808298581:[2,'Excel căn bản',[3,4,5]],808051959:[3,'Pivot, bảng tính và trực quan hóa',[6,7,27]],807590346:[4,'SQL căn bản',[8,9,10]],808008330:[5,'Aggregation và GROUP BY',[11,12,13,14]],808521373:[6,'SQL JOIN',[15,16,35]],808565048:[7,'Subquery, CASE, CTE và window',[17,18,19]],808136923:[8,'Thống kê cho Data Analyst',[2,20,21,22,23,30,32]],805876927:[9,'Python, NumPy và pandas',[2,24,25]],805900198:[10,'Làm sạch dữ liệu và EDA',[23,24,25,26,27,28,34]]};
+const root=new URL('../../study documents/DA/',import.meta.url);
+const entries=readdirSync(root).filter(f=>/\.jpe?g$/i.test(f)).map(file=>{const prefix=file.split('_')[0],meta=pages[prefix];if(!meta)throw new Error('Trang chưa có ánh xạ: '+file);const[page,title,lessonIds]=meta;return{id:'DA-'+prefix,courseId:'da',prefix,file,path:'study documents/DA/'+file,url:'/sources/da/'+file,sha256:createHash('sha256').update(readFileSync(new URL(file,root))).digest('hex'),pack:'handbook',packTitle:'Cẩm nang Data Analyst',collection:'Cẩm nang Data Analyst',page,title,topic:title,topics:[title],lessonIds,reviewIds:lessonIds,interviewIds:knowledgeInterviewRows.flatMap((r,i)=>r[8]===prefix?['da-interview-'+String(i+1).padStart(2,'0')]:[]),uses:['lesson','review','interview']};}).sort((a,b)=>a.page-b.page);
+writeFileSync(new URL('sources.json',import.meta.url),JSON.stringify(entries,null,2)+'\n');
+console.log(JSON.stringify({sources:entries.length,pages:entries.map(x=>x.page)}));

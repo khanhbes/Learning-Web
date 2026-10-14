@@ -3,6 +3,7 @@ import { random, shuffle } from "../shared/random.mjs";
 import { dayKey, recordXP } from "./game.mjs";
 import { KNOWLEDGE_VERSION, knowledgeItems, knowledgeById, generateKnowledgeQuestion, checkKnowledgeAnswer, publicKnowledgeQuestion, publicKnowledgeItem } from "../content/knowledge.mjs";
 const DAY = 86400000, REVIEW_DAYS = [1, 3, 7, 14];
+const knowledgeCourses=new Set(knowledgeItems.map(item=>item.courseId));
 
 export function normalizeKnowledge(s) {
   s.knowledge ??= {};
@@ -24,7 +25,7 @@ export function knowledgeCatalog(s, { courseId = "dsa", topic, difficulty, now =
   return { tips: filtered.filter((i) => i.type === "tip").map(annotate), topics: filtered.filter((i) => i.type === "interview").map(annotate), bookmarks: k.bookmarks.filter((id) => knowledgeById[id]?.courseId === courseId), stats: knowledgeStats(s, courseId, now) };
 }
 export function createKnowledgeAttempt(s, { courseId = "dsa", topicId, itemIds, now = Date.now(), id = randomUUID(), seed = randomUUID() } = {}) {
-  if (!["dsa", "ml"].includes(courseId)) throw new Error("Khóa học không hợp lệ.");
+  if (!knowledgeCourses.has(courseId)) throw new Error("Khóa học không hợp lệ.");
   const candidates = knowledgeItems.filter((item) => item.courseId === courseId), k = normalizeKnowledge(s), rng = random(seed);
   const requested = itemIds ?? (topicId ? [topicId] : []);
   if (!Array.isArray(requested) || requested.length > 5 || requested.some((itemId) => knowledgeById[itemId]?.courseId !== courseId)) throw new Error("Chủ đề không thuộc khóa học đang chọn.");
@@ -101,7 +102,7 @@ export function saveKnowledgeAnswers(attempt, answers, now = Date.now()) {
   return attempt;
 }
 export function validateSavedKnowledgeAttempt(value) {
-  if (!value || typeof value.id !== "string" || !/^[\w-]{1,100}$/.test(value.id) || !["dsa","ml"].includes(value.courseId) || value.version !== KNOWLEDGE_VERSION || !["active","completed","abandoned"].includes(value.status) || !Array.isArray(value.questions) || value.questions.length !== 5) return false;
+  if (!value || typeof value.id !== "string" || !/^[\w-]{1,100}$/.test(value.id) || !knowledgeCourses.has(value.courseId) || value.version !== KNOWLEDGE_VERSION || !["active","completed","abandoned"].includes(value.status) || !Array.isArray(value.questions) || value.questions.length !== 5) return false;
   // Regenerate all signed content rather than trusting imported expected answers.
   return value.questions.every((q, index) => {
     const item = knowledgeById[q.itemId], ti = item?.templates.findIndex((t) => t.id === q.templateId);

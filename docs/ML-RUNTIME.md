@@ -28,4 +28,6 @@ node scripts/verify-ml-runtime.mjs
 
 Báo cáo nằm ở `output/ml-runtime-report.json`. Chỉ lời giải tham chiếu do dự án viết được chạy bằng Python host trong bộ test oracle; submission học viên luôn đi qua runner cách ly.
 
-Xuất backup v2 từ Hồ sơ trước khi cập nhật. Backup lưu cả hai khóa, bài làm, drafts, inventory, ledger và luyện thêm. Import nhận v1/v2 và chuyển v1 sang DSA trong giao dịch. Giữ `.data/bytepath.sqlite` cùng WAL khi ứng dụng đang chạy; nên dùng export trên web hoặc SQLite backup để có bản nhất quán.
+DA dùng cùng runtime cách ly này; các bài SQL chạy SQLite `:memory:` trong Pyodide, không truy cập SQLite của ứng dụng. Không cần tải thêm package hoặc dùng Docker. Chạy `node scripts/verify-da-git-runtime.mjs` để kiểm chứng lời giải DA/SQL và mô phỏng Git; `node scripts/verify-da-git-flow.mjs` kiểm tra API với runner thật trên dữ liệu thử riêng.
+
+Xuất backup v2 từ Hồ sơ trước khi cập nhật. Backup lưu tất cả các khóa, bài làm, drafts, inventory, ledger và luyện thêm. Import nhận v1/v2 và chuyển v1 sang DSA trong giao dịch. Giữ `.data/bytepath.sqlite` cùng WAL khi ứng dụng đang chạy; nên dùng export trên web hoặc SQLite backup để có bản nhất quán.

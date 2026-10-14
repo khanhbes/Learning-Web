@@ -5,6 +5,8 @@ import { api } from "./api";
 import { Button, Icon, Byte } from "./components";
 import { useApp } from "./context";
 import type { Attempt } from "./types";
+import { currentLanguage } from './courseUI';
+import { GitScenarioPreview } from './GitWorkbench';
 export default function HandsOnLab({
   attempt,
   onChange,
@@ -18,7 +20,7 @@ export default function HandsOnLab({
     [busy, setBusy] = useState(false);
   const dragged = useRef("");
   const reduced = useReducedMotion();
-  const { state, refresh, notify } = useApp();
+  const { state, course, refresh, notify } = useApp();
   const lab = attempt.lab,
     q = lab?.questions[index];
   if (!q) return null;
@@ -123,11 +125,11 @@ export default function HandsOnLab({
               name={
                 lab.completed?.includes(item.id)
                   ? "check"
-                  : ["layers", "link", "code", "puzzle"][i % 4]
+                  : ({order:'layers',match:'link',output:'code',choice:item.code?'puzzle':'brain'} as Record<string,string>)[item.kind]||'puzzle'
               }
               size={18}
             />
-            <span>{["Xếp bước", "Ghép cặp", "Chạy tay", "Sửa lỗi"][i % 4]}{i >= 4 ? " " + (i + 1) : ""}</span>
+            <span>{({order:'Xếp bước',match:'Ghép cặp',output:'Chạy tay',choice:item.code?'Sửa lỗi':'Chọn ý'} as Record<string,string>)[item.kind]||'Hoạt động'}{i >= 4 || (item.kind==='choice'&&!item.code) ? " " + (i + 1) : ""}</span>
           </button>
         ))}
       </div>
@@ -204,10 +206,11 @@ export default function HandsOnLab({
         )}
         {q.kind === "output" && (
           <>
-            <div className="input-workbench">
+            {q.input?.initial?<GitScenarioPreview input={q.input}/>:<div className="input-workbench">
               <span>ĐẦU VÀO</span>
               <pre>{JSON.stringify(q.input, null, 2)}</pre>
             </div>
+            }
             <label className="lab-output">
               Kết quả bạn dự đoán
               <textarea
@@ -222,9 +225,9 @@ export default function HandsOnLab({
         )}
         {q.kind === "choice" && (
           <>
-            <pre className="lesson-code-example">
-              <code>{q.code[state.profile.language]}</code>
-            </pre>
+            {q.code&&<pre className="lesson-code-example">
+              <code>{typeof q.code==='string'?q.code:q.code?.[currentLanguage(course,state.profile.language)]}</code>
+            </pre>}
             <div className="lab-choices">
               {q.options.map((o: any) => (
                 <button

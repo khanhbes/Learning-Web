@@ -9,6 +9,8 @@ import { useApp } from "./context";
 import { Button, Icon, Modal, Byte } from "./components";
 import type { Attempt, Problem, Language } from "./types";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
+import { courseLanguages, currentLanguage, editorLanguageName, gitCourse, pythonDataCourse, languageName } from './courseUI';
+import { GitFrameView, GitScenarioPreview } from './GitWorkbench';
 (globalThis as any).MonacoEnvironment = { getWorker: () => new EditorWorker() };
 loader.config({ monaco });
 export default function CodePanel({
@@ -25,7 +27,7 @@ export default function CodePanel({
   graded?: boolean;
 }) {
   const { state, course, notify, refresh } = useApp(),
-    [language, setLanguage] = useState<Language>(attempt.courseId === "ml" ? "python" : state.profile.language),
+    [language, setLanguage] = useState<Language>(currentLanguage(course,state.profile.language)),
     [pid, setPid] = useState(problems[0]?.id),
     [busy, setBusy] = useState(false),
     [runStage, setRunStage] = useState("submitting"),
@@ -50,7 +52,11 @@ export default function CodePanel({
   }, [pid]);
   const p = problems.find((p) => p.id === pid) || problems[0];
   if (!p) return null;
-  const code = attempt.codeDrafts[p.id]?.[language] ?? p.starters[language];
+  const code = attempt.codeDrafts[p.id]?.[language] ?? p.starters[language] ?? '';
+  const shell=gitCourse(course),languages=courseLanguages(course).filter(l=>p.starters[l]!==undefined);
+  function updateCode(value:string) {
+    onChange({...current.current,codeDrafts:{...current.current.codeDrafts,[p.id]:{...current.current.codeDrafts[p.id],[language]:value}}});
+  }
   async function run(publicOnly: boolean) {
     setBusy(true);
     setResult(null);
@@ -133,26 +139,30 @@ export default function CodePanel({
           </span>
           <h2>{p.title}</h2>
           <p>{p.statement}</p>
-          <h4>Ví dụ</h4>
+          {shell?<GitScenarioPreview input={p.sampleInput} output={p.sampleOutput}/>:<><h4>Ví dụ</h4>
           <div className="example-box">
             <small>ĐẦU VÀO</small>
             <pre>{JSON.stringify(p.sampleInput, null, 2)}</pre>
             <small>KẾT QUẢ</small>
             <pre>{JSON.stringify(p.sampleOutput)}</pre>
           </div>
+          </>}
           <h4>Điều kiện bài toán</h4>
           <p className="constraint">{p.constraints}</p>
           <details>
-            <summary>Viết hàm solve như thế nào?</summary>
+            <summary>{shell?'Viết chuỗi lệnh mô phỏng như thế nào?':'Viết hàm solve như thế nào?'}</summary>
+            {shell?<p>Mỗi dòng là một lệnh Git trong danh sách cho phép. <code>edit path "nội dung"</code> và <code>delete path</code> là thao tác editor mô phỏng. Bộ chấm kiểm tra trạng thái kho và lịch sử theo đề, không chạy shell hoặc Git thật trên máy.</p>:<>
             <p>
               <code>solve(data)</code> nhận dữ liệu trên và <code>return</code>{" "}
               kết quả. Python có sẵn deque, Counter, heapq, bisect. C++ có sẵn
               std và kiểu json. Không cần viết main hoặc đọc stdin.
             </p>
-            <p>
+            {!pythonDataCourse(course)&&<p>
               Hàm hỗ trợ: make_list, list_values, make_tree, tree_values và
               is_bad / isBad. Các helper được giải thích trong bài liên quan.
-            </p>
+            </p>}
+            {pythonDataCourse(course)&&<p>NumPy, pandas và các thư viện cần thiết được tải trong môi trường dữ liệu cách ly; dùng SQLite qua sqlite3 khi đề yêu cầu. Trả JSON theo đúng đặc tả; hình minh họa không quyết định điểm.</p>}
+            </>}
           </details>
           {!graded && (
             <div className="hint-area">
@@ -193,15 +203,14 @@ export default function CodePanel({
           <div className="editor-toolbar">
             <span>
               <Icon name="file" size={16} />
-              {language === "python" ? "solution.py" : "solution.cpp"}
+              {language === 'shell'?'scenario.git':language === "python" ? "solution.py" : "solution.cpp"}
             </span>
             <select
               aria-label="Ngôn ngữ code"
               value={language}
               onChange={(e) => setLanguage(e.target.value as Language)}
             >
-              <option value="python">{attempt.courseId === "ml" ? "Python 3.14 · ML" : "Python 3.12"}</option>
-              {attempt.courseId !== "ml" && <option value="cpp">C++17</option>}
+              {languages.map(l=><option key={l} value={l}>{editorLanguageName(course,l)}</option>)}
             </select>
             <button
               className="icon-button"
@@ -228,6 +237,7 @@ export default function CodePanel({
             </button>
           </div>
           <div className="monaco-host">
+            {shell?<textarea className="git-code-editor" spellCheck={false} aria-label="Editor chuỗi lệnh Git" value={code} disabled={attempt.status!=='active'} onChange={e=>updateCode(e.target.value)}/>:<>
             <Editor
               height="360px"
               language={language === "cpp" ? "cpp" : "python"}
@@ -236,18 +246,7 @@ export default function CodePanel({
               loading={
                 <LoadingScene compact title="Đang mở editor…" detail="Chuẩn bị không gian để bạn viết ý tưởng." />
               }
-              onChange={(value) =>
-                onChange({
-                  ...current.current,
-                  codeDrafts: {
-                    ...current.current.codeDrafts,
-                    [p.id]: {
-                      ...current.current.codeDrafts[p.id],
-                      [language]: value ?? "",
-                    },
-                  },
-                })
-              }
+              onChange={(value) => updateCode(value??'')}
               options={{
                 fontFamily: "JetBrains Mono",
                 fontSize: 14,
@@ -263,10 +262,11 @@ export default function CodePanel({
                 ariaLabel: "Editor lời giải",
               }}
             />
+            </>}
           </div>
           <div className="editor-actions">
             <span className="editor-save">
-              <Icon name="shield" size={15} /> Chạy trong môi trường riêng
+              <Icon name="shield" size={15} /> {shell?'Kho Git mô phỏng':'Chạy trong môi trường riêng'}
             </span>
             <div>
               {!graded && (
@@ -340,6 +340,7 @@ export default function CodePanel({
                 {result.diagnostic && (
                   <pre className="diagnostic">{result.diagnostic}</pre>
                 )}
+                {shell&&(result.frame||result.frames?.length>0)&&<section><p className="git-code-note">Trạng thái của test mẫu. Kết quả toàn bộ test được liệt kê phía trên.</p><GitFrameView frame={result.frame||result.frames.at(-1)}/></section>}
               </>
             ) : (
               <div className="result-placeholder">
@@ -365,13 +366,12 @@ export default function CodePanel({
           value={language}
           onChange={(e) => setLanguage(e.target.value as Language)}
         >
-          <option value="python">Python</option>
-          <option value="cpp">C++</option>
+          {languages.map(l=><option key={l} value={l}>{languageName[l]}</option>)}
         </select>
         <pre className="reference-code">{reference?.[language]}</pre>
         <details>
           <summary>Các hàm hỗ trợ</summary>
-          <pre>{reference?.helpers[language]}</pre>
+          <pre>{reference?.helpers?.[language]}</pre>
         </details>
       </Modal>
     </div>

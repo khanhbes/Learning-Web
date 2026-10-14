@@ -6,11 +6,18 @@ import { useApp } from './context';
 import { api } from './api';
 import { Byte, Icon, Button, Modal, ProgressBar } from './components';
 import { CelebrationScene } from './Delight';
+import { courseInfo } from './courseUI';
 
-export function CourseArt({ ml = false }: { ml?: boolean }) {
-  return <svg className="course-art" viewBox="0 0 340 190" role="img" aria-label={ml ? 'Dữ liệu được nhóm thành các cụm và một đường dự đoán' : 'Các nút dữ liệu được kết nối thành cây'}>
-    <circle cx="170" cy="97" r="85" fill={ml ? '#e8efff' : '#e9f8dc'} />
-    {ml ? <>
+export function CourseArt({ courseId = 'dsa' }: { courseId?: string }) {
+  const labels:Record<string,string>={dsa:'Các nút dữ liệu kết nối thành cây',ml:'Điểm dữ liệu và đường dự đoán',da:'Bảng dữ liệu chuyển thành biểu đồ doanh thu',git:'Nhánh tính năng gặp nhánh chính ở một commit hợp nhất'};
+  return <svg className="course-art" viewBox="0 0 340 190" role="img" aria-label={labels[courseId]||'Hành trình học cùng Byte'}>
+    <circle cx="170" cy="97" r="85" fill={{ml:'#e8efff',da:'#e0f6f3',git:'#fff0e6'}[courseId]||'#e9f8dc'} />
+    {courseId==='da'?<>
+      <rect x="42" y="36" width="143" height="116" rx="12" fill="white" stroke="#b6ddd5" strokeWidth="3"/><path d="M43 68h141M43 96h141M43 124h141M85 37v114M137 37v114" stroke="#d9ebe5" strokeWidth="2"/><path d="M54 51h20m21 0h30m22 0h23" stroke="#2c9f8a" strokeWidth="6" strokeLinecap="round"/>{[82,110,138].map((y,i)=><g key={y}><circle cx="65" cy={y} r="5" fill="#58cc02"/><path d={`M98 ${y}h21M147 ${y}h${14+i*3}`} stroke="#9cbeb6" strokeWidth="4" strokeLinecap="round"/></g>)}
+      <rect x="165" y="77" width="137" height="91" rx="15" fill="white" stroke="#9bd6c9" strokeWidth="3"/><path d="M183 90v60h103" fill="none" stroke="#b4cec3" strokeWidth="2"/>{[27,43,62].map((h,i)=><rect key={h} x={197+i*29} y={148-h} width="20" height={h} rx="5" fill={['#8ed0bd','#46b49c','#2b927e'][i]}/>)}<path d="m200 46 27 10-27 10" fill="none" stroke="#ffc800" strokeWidth="6" strokeLinecap="round"/>
+    </>:courseId==='git'?<>
+      <path d="M59 121h222M111 121c23 0 6-65 48-65h58c40 0 8 65 55 65" fill="none" stroke="#d89775" strokeWidth="6" strokeLinecap="round"/>{[[59,121],[111,121],[171,121],[217,56],[272,121]].map(([x,y],i)=><g key={i}><circle cx={x} cy={y} r="15" fill={i===3?'#8b82d8':'#ee9869'} stroke="white" strokeWidth="4"/><circle cx={x} cy={y} r="4" fill="white"/></g>)}<rect x="148" y="31" width="57" height="45" rx="14" fill="#a296e5"/><text x="176" y="58" textAnchor="middle" fill="white" fontSize="18" fontWeight="900">+</text><rect x="209" y="142" width="76" height="28" rx="10" fill="white"/><text x="247" y="161" textAnchor="middle" fontSize="13" fontWeight="900" fill="#b67150">main</text><rect x="44" y="41" width="73" height="45" rx="10" fill="white"/><path d="m60 53-8 9 8 9m17-18 8 9-8 9m-7-20-5 22" fill="none" stroke="#c7835a" strokeWidth="3" strokeLinecap="round"/>
+    </>:courseId==='ml' ? <>
       <path d="M48 146h238M59 153V37" stroke="#aec4da" strokeWidth="3" strokeLinecap="round" />
       <path d="m68 128 57-15 62-46 77-24" fill="none" stroke="#58cc02" strokeWidth="6" strokeLinecap="round" />
       {[[78,112],[94,123],[115,95],[130,115],[164,79],[177,91],[202,62],[227,63],[250,37],[271,56]].map(([x,y],i) => <circle key={i} cx={x} cy={y} r="8" fill={i < 4 ? '#6a8be9' : '#58cc02'} stroke="white" strokeWidth="3" />)}
@@ -24,13 +31,13 @@ export function CourseArt({ ml = false }: { ml?: boolean }) {
 }
 export function CoursesPage() {
   const { courses, course, selectCourse, notify, state } = useApp();
-  const navigate = useNavigate(), [busy, setBusy] = useState('');
+  const navigate = useNavigate(), [busy, setBusy] = useState(''), reduced = useMotionPreference();
   return <div className="wide-page courses-page">
-    <span className="eyebrow">BYTEPATH · THƯ VIỆN KHÓA HỌC</span><h1>Bạn muốn khám phá gì?</h1><p>Hai hành trình riêng. Cùng một bộ sưu tập thành tích.</p>
+    <span className="eyebrow">BYTEPATH · THƯ VIỆN KHÓA HỌC</span><h1>Bạn muốn khám phá gì?</h1><p>Mỗi khóa một hành trình. Cùng một bộ sưu tập thành tích.</p>
     <div className="course-catalog">{courses.map(c => {
-      const count = c.mandatoryCount || (c.id === 'ml' ? 40 : 48), completed = c.completed ?? state.courses?.[c.id]?.completed ?? 0;
-      return <motion.article key={c.id} className={`course-choice ${c.id === course.id ? 'selected' : ''}`} whileHover={{ y: -3 }}>
-        <CourseArt ml={c.id === 'ml'} /><div className="course-choice-content"><span className="eyebrow">{c.id === 'ml' ? 'PYTHON · TỪ DỮ LIỆU ĐẾN DỰ ĐOÁN' : 'PYTHON & C++ · TƯ DUY GIẢI BÀI'}</span><h2>{c.title}</h2><p>{c.description || (c.id === 'ml' ? 'Tự khám phá mô hình qua biểu đồ, dữ liệu nhỏ và Python.' : 'Hiểu cấu trúc dữ liệu và thuật toán bằng từng bước trực quan.')}</p><span className="course-meta">{count} buổi bắt buộc · {c.advancedCount || 12} buổi mở rộng</span><ProgressBar value={completed} max={count} /><small>{completed}/{count} buổi đã đạt</small><Button busy={busy === c.id} onClick={async () => { setBusy(c.id); try { await selectCourse(c.id); navigate('/'); } catch(e) { notify((e as Error).message); } finally { setBusy(''); } }}>{completed ? 'TIẾP TỤC' : 'KHÁM PHÁ KHÓA HỌC'}<Icon name="right" size={18} /></Button></div>
+      const count = c.mandatoryCount ?? c.lessons?.length ?? 0, completed = c.completed ?? state.courses?.[c.id]?.completed ?? 0,info=courseInfo(c);
+      return <motion.article key={c.id} className={`course-choice ${c.id === course.id ? 'selected' : ''}`} whileHover={reduced?undefined:{ y: -3 }}>
+        <CourseArt courseId={c.id} /><div className="course-choice-content"><span className="eyebrow">{c.tagline||info.tagline}</span><h2>{c.title}</h2><p>{c.description||info.description}</p><span className="course-meta">{count} buổi bắt buộc{c.advancedCount?` · ${c.advancedCount} buổi mở rộng`:''}</span><ProgressBar value={completed} max={count} /><small>{completed}/{count} buổi đã đạt</small><Button busy={busy === c.id} onClick={async () => { setBusy(c.id); try { await selectCourse(c.id); navigate('/'); } catch(e) { notify((e as Error).message); } finally { setBusy(''); } }}>{completed ? 'TIẾP TỤC' : 'KHÁM PHÁ KHÓA HỌC'}<Icon name="right" size={18} /></Button></div>
       </motion.article>;
     })}</div>
   </div>;

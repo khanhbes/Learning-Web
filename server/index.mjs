@@ -10,6 +10,7 @@ import { createStore, DATA_VERSION } from "./store.mjs";
 import { courseRegistry,getCourse,courseForProblem } from "../content/registry.mjs";
 import { courseState,persistCourse,courseSummary,courseUnlocked,normalizeCourses } from "./course-state.mjs";
 import { runML,mlRunnerHealth } from "./ml-runner.mjs";
+import { runGit,gitRunnerHealth } from "./git-runner.mjs";
 import { registerKnowledgeRoutes,validateSavedKnowledgeAttempt } from "./knowledge.mjs";
 import { knowledgeById } from "../content/knowledge.mjs";
 import { registerGamificationRoutes,purchaseExtended,awardCourseCosmetic,normalizeGamification } from "./gamification.mjs";
@@ -78,11 +79,12 @@ const sources = JSON.parse(
   readFileSync(new URL("../content/sources.json", import.meta.url), "utf8"),
 );
 validateContent({ course, lessons, problems, sources });
-validateContent({course:getCourse("ml").course,lessons:getCourse("ml").lessons,problems:getCourse("ml").problems,sources:getCourse("ml").sources});
+for(const definition of Object.values(courseRegistry))validateContent({course:definition.course,lessons:definition.lessons,problems:definition.problems,sources:definition.sources});
 const courseIdSchema=z.enum(Object.keys(courseRegistry));
+const languageSchema=z.enum(["python","cpp","shell"]);
 const profileSchema = z.object({
   name: z.string().trim().min(1).max(32),
-  language: z.enum(["python", "cpp"]),
+  language: languageSchema,
   dailyGoal: z.number().int().min(20).max(200),
   skin: z.string().optional(),
   activeCourse: courseIdSchema.optional(),
@@ -92,7 +94,7 @@ const profileSchema = z.object({
 const answerSchema = z.record(z.string(), z.string().max(64));
 const codeSchema = z.object({
   problemId: z.string(),
-  language: z.enum(["python", "cpp"]),
+  language: languageSchema,
   code: z.string().min(1).max(50000),
   publicOnly: z.boolean().default(false),
 });
@@ -101,6 +103,7 @@ const draftCodeSchema = z.record(
   z.object({
     python: z.string().max(50000).optional(),
     cpp: z.string().max(50000).optional(),
+    shell: z.string().max(50000).optional(),
   }),
 );
 const savedAttemptSchema = z
@@ -155,7 +158,7 @@ const savedJobSchema = z
     id: z.string().uuid(),
     attemptId: z.string().uuid(),
     problemId: z.string(),
-    language: z.enum(["python", "cpp"]),
+    language: languageSchema,
     publicOnly: z.boolean(),
     createdAt: z.number(),
     version: z.string().min(1).max(80),
@@ -319,6 +322,15 @@ export async function createApp({
     if(!courseUnlocked(state(),def,l.id))throw fail("Hoàn thành buổi trước để mở khóa.",403);
     return {...def.lessonMaterial(l),courseId:def.course.id,sources:def.sources.filter(s=>l.sourcePrefixes.includes(s.prefix)),problems:l.problemIds.map(id=>def.problemDetails(id)),helpers:def.helpers};
   });
+  app.post("/api/courses/git/workbench",async req=>{
+    const b=z.object({lessonId:z.number().int().positive(),script:z.string().max(50000)}).parse(req.body),def=getCourse("git");
+    const lesson=def.lessons.find(l=>l.id===b.lessonId);
+    if(!lesson || !courseUnlocked(state(),def,lesson.id))throw fail("Bài chưa mở khóa.",403);
+    if(store.list("attempts").some(a=>a.courseId==="git"&&a.mode==="assessment"&&a.status==="active"))throw fail("Workbench ẩn trong lượt kiểm tra.",403);
+    const material=def.lessonMaterial(lesson),visual=material.visualization;
+    const input=def.generateInput(visual?.problemId??lesson.problemIds[0],`workbench:${lesson.id}`);
+    return def.runGitScript(visual?.initial??input.initial,b.script);
+  });
   app.get("/api/course", async () => {
     const s = state();
     return {
@@ -369,20 +381,22 @@ export async function createApp({
       .type("image/jpeg")
       .send(readFileSync(resolve("study documents/DSA", entry.file)));
   });
-  app.get("/sources/:courseId/:file",async(req,reply)=>{const def=getCourse(req.params.courseId),entry=def.sources.find(s=>s.file===req.params.file);if(!entry)throw fail("Ảnh không tồn tại.",404);return reply.type("image/jpeg").send(readFileSync(resolve("study documents",def.course.id.toUpperCase(),entry.file)));});
+  app.get("/sources/:courseId/:file",async(req,reply)=>{const def=getCourse(req.params.courseId),entry=def.sources.find(s=>s.file===req.params.file);if(!entry)throw fail("Ảnh không tồn tại.",404);return reply.type("image/jpeg").send(readFileSync(resolve("study documents",def.sourceDirectory??def.course.id.toUpperCase(),entry.file)));});
   app.get("/api/health", async () => ({
     mode: config.cloud ? "cloud" : "local",
     runner: await health(),
     mlRunner: await mlRunnerHealth(),
+    gitRunner: gitRunnerHealth(),
     ai: await aiHealth(),
     version: VERSION,
   }));
   app.get("/api/traces/:pid", async (req) => {
     const pid = req.params.pid;
-    if(pid.startsWith("ml-")) {
-      const def=courseForProblem(pid),l=def.lessons.find(l=>l.problemIds.includes(pid)&&courseUnlocked(state(),def,l.id)&&(req.query.lessonId===undefined||l.id===Number(req.query.lessonId)));
+    const foundDefinition=courseForProblem(pid);
+    if(foundDefinition.course.id!=="dsa") {
+      const def=foundDefinition,l=def.lessons.find(l=>l.problemIds.includes(pid)&&courseUnlocked(state(),def,l.id)&&(req.query.lessonId===undefined||l.id===Number(req.query.lessonId)));
       if(!l)throw fail("Bài chưa mở khóa.",403);
-      if(store.list("attempts").some(a=>a.courseId==="ml"&&a.mode==="assessment"&&a.status==="active"))throw fail("Mô phỏng ẩn trong kiểm tra.",403);
+      if(store.list("attempts").some(a=>a.courseId===def.course.id&&a.mode==="assessment"&&a.status==="active"))throw fail("Mô phỏng ẩn trong kiểm tra.",403);
       const input=req.query.seed?def.generateInput(pid,String(req.query.seed)):def.problems[pid].sampleInput;
       return {...def.traceFor(pid,input),edgeCount:0};
     }
@@ -583,6 +597,7 @@ export async function createApp({
             z.object({
               python: z.string().max(50000).optional(),
               cpp: z.string().max(50000).optional(),
+              shell: z.string().max(50000).optional(),
             }),
           )
           .optional(),
@@ -655,7 +670,7 @@ export async function createApp({
         publicOnly: body.publicOnly,
         createdAt: now(),
         version: a.version,
-        fixtures: [...(table==="capstones"&&a.courseId==="ml"?[{input:a.tasks[body.problemId],expected:def.oracle(body.problemId,a.tasks[body.problemId]),group:"sample",name:"Dataset cuối khóa của bạn"}]:[]),...def.testsFor(body.problemId, a.seed, {
+        fixtures: [...(table==="capstones"&&a.courseId!=="dsa"?[{input:a.tasks[body.problemId],expected:def.oracle(body.problemId,a.tasks[body.problemId]),group:"sample",name:"Dữ liệu cuối khóa của bạn"}]:[]),...def.testsFor(body.problemId, a.seed, {
           publicOnly: body.publicOnly,
           version: a.version,
         })],
@@ -679,7 +694,8 @@ export async function createApp({
       job.status = "running";
       store.put("jobs", job);
       try {
-        job.result = await (a.courseId==="ml" && execute===runCode ? runML : execute)({
+        const runner = execute!==runCode ? execute : def.course.runtime==="pyodide" ? options=>runML(options,def) : def.course.runtime==="git-sim" ? options=>runGit(options,def) : execute;
+        job.result = await runner({
           ...body,
           seed: a.seed,
           version: job.version,
@@ -879,14 +895,8 @@ export async function createApp({
     )
       throw fail("Lời giải ẩn trong kiểm tra đang làm.", 403);
     return {
-      python:
-        l.id === 39 && pid === "union-find"
-          ? componentsSolution("python")
-          : def.solution(pid, "python"),
-      cpp:
-        l.id === 39 && pid === "union-find"
-          ? componentsSolution("cpp")
-          : def.course.languages.includes("cpp")?def.solution(pid, "cpp"):"",
+      ...Object.fromEntries(def.course.languages.map(language=>[language,
+        def.course.id==="dsa" && l.id===39 && pid==="union-find" ? componentsSolution(language) : def.solution(pid,language)])),
       helpers: def.helpers,
     };
   });
@@ -1038,6 +1048,7 @@ export async function createApp({
             z.object({
               python: z.string().max(50000).optional(),
               cpp: z.string().max(50000).optional(),
+              shell: z.string().max(50000).optional(),
             }),
           )
           .optional(),
@@ -1182,7 +1193,7 @@ export async function createApp({
   registerGamificationRoutes(app,{store,now});
   registerKnowledgeRoutes(app,{store,now,reward:store.reward});
   app.post("/api/knowledge/feedback",async req=>{
-    const b=z.object({courseId:z.enum(["dsa","ml"]),topicId:z.string(),text:z.string().min(1).max(20000)}).parse(req.body);
+    const b=z.object({courseId:courseIdSchema,topicId:z.string(),text:z.string().min(1).max(20000)}).parse(req.body);
     const topic=knowledgeById[b.topicId];if(!topic||topic.courseId!==b.courseId)throw fail("Chủ đề không thuộc khóa.");
     if(store.list("attempts").some(a=>a.mode==="assessment"&&a.status==="active"))throw fail("Trợ giảng ẩn trong lượt kiểm tra.",403);
     reserveAI();return tutor({essay:{topic:topic.title,rubric:JSON.stringify(topic.essay),answer:b.text}});
@@ -1206,7 +1217,16 @@ export async function createApp({
     drafts: store.list("drafts"),
     knowledgeAttempts:store.list("knowledge_attempts"),
   }));
-  app.post(
+  // Backup data can legitimately contain group labels named "constructor" or
+  // "__proto__" in saved checker outputs. Parse this route into null-prototype
+  // dictionaries; keep Fastify's stricter default parser on every other route.
+  app.register(async importApp=>{
+    importApp.removeContentTypeParser("application/json");
+    importApp.addContentTypeParser("application/json",{parseAs:"string"},(_req,body,done)=>{
+      try{done(null,JSON.parse(body,(_key,value)=>value&&typeof value==="object"&&!Array.isArray(value)?Object.assign(Object.create(null),value):value));}
+      catch{done(fail("Bản sao không phải JSON hợp lệ."));}
+    });
+  importApp.post(
     "/api/data/import",
     { bodyLimit: 128 * 1024 * 1024 },
     async (req) => {
@@ -1265,10 +1285,10 @@ export async function createApp({
               }),
               capstonePassed: z.boolean(),
               capstoneScore: z.number().min(0).max(100),
-              activeCourse:z.enum(["dsa","ml"]).optional(),
-              courses:z.record(z.enum(["dsa","ml"]),z.object({
+              activeCourse:courseIdSchema.optional(),
+              courses:z.record(courseIdSchema,z.object({
                 progress:z.record(z.string(),z.object({passed:z.boolean(),bestKnowledge:z.number().min(0).max(100)}).passthrough()),
-                started:z.array(z.number().int().positive()),language:z.enum(["python","cpp"]),
+                started:z.array(z.number().int().positive()),language:languageSchema,
                 capstonePassed:z.boolean(),capstoneScore:z.number().min(0).max(100)
               })).optional(),
             })
@@ -1289,7 +1309,7 @@ export async function createApp({
             savedAttemptSchema.extend({
               essay: z.record(z.string(), z.string()),
               customTests: z.array(z.unknown()),
-              courseId:z.enum(["dsa","ml"]).default("dsa"),
+              courseId:courseIdSchema.default("dsa"),
               tasks: z.record(z.string(), z.unknown()),
             }),
           ),
@@ -1302,7 +1322,7 @@ export async function createApp({
               essay: z.record(z.string(), z.string()),
               codeDrafts: draftCodeSchema,
               customTests: z.array(z.unknown()),
-              courseId:z.enum(["dsa","ml"]).default("dsa"),
+              courseId:courseIdSchema.default("dsa"),
             }),
           ),
         })
@@ -1313,8 +1333,8 @@ export async function createApp({
           a.questions.some(
             (q) => !q.options.some((o) => o.id === q.answerId),
           ) ||
-          a.requiredProblems.some((id) => !def.problems[id]) ||
-          Object.keys(a.codeDrafts).some((id) => !def.problems[id]) ||
+          a.requiredProblems.some((id) => !Object.hasOwn(def.problems,id)) ||
+          Object.keys(a.codeDrafts).some((id) => !Object.hasOwn(def.problems,id)) ||
           ![def.VERSION,...(a.courseId==="dsa"?[LEGACY_VERSION]:[])].includes(a.version)
         )
           throw fail("Bản sao chứa câu hỏi hoặc bài code không hợp lệ.");
@@ -1355,6 +1375,7 @@ export async function createApp({
       });
     },
   );
+  });
   // Serve only files in the build, never source, SQLite or user submissions.
   const mime = {
     ".js": "text/javascript",

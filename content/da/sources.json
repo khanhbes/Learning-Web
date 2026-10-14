@@ -1,0 +1,394 @@
+[
+  {
+    "id": "DA-802777798",
+    "courseId": "da",
+    "prefix": "802777798",
+    "file": "802777798_38464668513178457_2313061758286286203_n.jpg",
+    "path": "study documents/DA/802777798_38464668513178457_2313061758286286203_n.jpg",
+    "url": "/sources/da/802777798_38464668513178457_2313061758286286203_n.jpg",
+    "sha256": "e1c3c417bad6d36ebe34631528713705a63a94331cc37d2737a9172444dc6f2d",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 1,
+    "title": "Tổng quan Data Analytics",
+    "topic": "Tổng quan Data Analytics",
+    "topics": [
+      "Tổng quan Data Analytics"
+    ],
+    "lessonIds": [
+      1,
+      29,
+      31,
+      33,
+      36
+    ],
+    "reviewIds": [
+      1,
+      29,
+      31,
+      33,
+      36
+    ],
+    "interviewIds": [
+      "da-interview-01",
+      "da-interview-02",
+      "da-interview-20"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-808298581",
+    "courseId": "da",
+    "prefix": "808298581",
+    "file": "808298581_2576864129429423_901656665812593576_n.jpg",
+    "path": "study documents/DA/808298581_2576864129429423_901656665812593576_n.jpg",
+    "url": "/sources/da/808298581_2576864129429423_901656665812593576_n.jpg",
+    "sha256": "9d066a01114ab453d429690d1af4d1d039c55ff8e0a56eea7130220eae74ebda",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 2,
+    "title": "Excel căn bản",
+    "topic": "Excel căn bản",
+    "topics": [
+      "Excel căn bản"
+    ],
+    "lessonIds": [
+      3,
+      4,
+      5
+    ],
+    "reviewIds": [
+      3,
+      4,
+      5
+    ],
+    "interviewIds": [
+      "da-interview-03",
+      "da-interview-04",
+      "da-interview-05"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-808051959",
+    "courseId": "da",
+    "prefix": "808051959",
+    "file": "808051959_1515349970362683_2513799258148780306_n.jpg",
+    "path": "study documents/DA/808051959_1515349970362683_2513799258148780306_n.jpg",
+    "url": "/sources/da/808051959_1515349970362683_2513799258148780306_n.jpg",
+    "sha256": "3845251e9dfec990263e52a2f59314ddc4617b9ec9081633164949ee95b9c34a",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 3,
+    "title": "Pivot, bảng tính và trực quan hóa",
+    "topic": "Pivot, bảng tính và trực quan hóa",
+    "topics": [
+      "Pivot, bảng tính và trực quan hóa"
+    ],
+    "lessonIds": [
+      6,
+      7,
+      27
+    ],
+    "reviewIds": [
+      6,
+      7,
+      27
+    ],
+    "interviewIds": [
+      "da-interview-06"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-807590346",
+    "courseId": "da",
+    "prefix": "807590346",
+    "file": "807590346_1627870535357557_8521740914492015622_n.jpg",
+    "path": "study documents/DA/807590346_1627870535357557_8521740914492015622_n.jpg",
+    "url": "/sources/da/807590346_1627870535357557_8521740914492015622_n.jpg",
+    "sha256": "15b205c19fe5e850619e0162142f9bd841c172af8e91811c36a617a5c97f7420",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 4,
+    "title": "SQL căn bản",
+    "topic": "SQL căn bản",
+    "topics": [
+      "SQL căn bản"
+    ],
+    "lessonIds": [
+      8,
+      9,
+      10
+    ],
+    "reviewIds": [
+      8,
+      9,
+      10
+    ],
+    "interviewIds": [
+      "da-interview-07",
+      "da-interview-08"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-808008330",
+    "courseId": "da",
+    "prefix": "808008330",
+    "file": "808008330_1547281476717101_8339867554931581393_n.jpg",
+    "path": "study documents/DA/808008330_1547281476717101_8339867554931581393_n.jpg",
+    "url": "/sources/da/808008330_1547281476717101_8339867554931581393_n.jpg",
+    "sha256": "677ab63fd29c2c708d234e10393f3b4ad92b734857d208396bd6a3f6e2bcc694",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 5,
+    "title": "Aggregation và GROUP BY",
+    "topic": "Aggregation và GROUP BY",
+    "topics": [
+      "Aggregation và GROUP BY"
+    ],
+    "lessonIds": [
+      11,
+      12,
+      13,
+      14
+    ],
+    "reviewIds": [
+      11,
+      12,
+      13,
+      14
+    ],
+    "interviewIds": [
+      "da-interview-09",
+      "da-interview-10"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-808521373",
+    "courseId": "da",
+    "prefix": "808521373",
+    "file": "808521373_1627073012097993_1121082480417233905_n.jpg",
+    "path": "study documents/DA/808521373_1627073012097993_1121082480417233905_n.jpg",
+    "url": "/sources/da/808521373_1627073012097993_1121082480417233905_n.jpg",
+    "sha256": "85e464e6d80eb2e51f7102f09fdaa37948d03be5b7dfe15b25e25b9d486a3f1e",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 6,
+    "title": "SQL JOIN",
+    "topic": "SQL JOIN",
+    "topics": [
+      "SQL JOIN"
+    ],
+    "lessonIds": [
+      15,
+      16,
+      35
+    ],
+    "reviewIds": [
+      15,
+      16,
+      35
+    ],
+    "interviewIds": [
+      "da-interview-11",
+      "da-interview-12"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-808565048",
+    "courseId": "da",
+    "prefix": "808565048",
+    "file": "808565048_1631456578340480_1168104025128732244_n.jpg",
+    "path": "study documents/DA/808565048_1631456578340480_1168104025128732244_n.jpg",
+    "url": "/sources/da/808565048_1631456578340480_1168104025128732244_n.jpg",
+    "sha256": "7d31f0d4ec8a6680f02d2e49dd06e116f84c3cd6bc20f7d86ac3799108f720c4",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 7,
+    "title": "Subquery, CASE, CTE và window",
+    "topic": "Subquery, CASE, CTE và window",
+    "topics": [
+      "Subquery, CASE, CTE và window"
+    ],
+    "lessonIds": [
+      17,
+      18,
+      19
+    ],
+    "reviewIds": [
+      17,
+      18,
+      19
+    ],
+    "interviewIds": [
+      "da-interview-13",
+      "da-interview-14"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-808136923",
+    "courseId": "da",
+    "prefix": "808136923",
+    "file": "808136923_2876738896029969_7430632187495599915_n.jpg",
+    "path": "study documents/DA/808136923_2876738896029969_7430632187495599915_n.jpg",
+    "url": "/sources/da/808136923_2876738896029969_7430632187495599915_n.jpg",
+    "sha256": "5657c8a38abbe8b9fb239eea1df81ebeee84ca6fbfcc17f071eaae55f0867f69",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 8,
+    "title": "Thống kê cho Data Analyst",
+    "topic": "Thống kê cho Data Analyst",
+    "topics": [
+      "Thống kê cho Data Analyst"
+    ],
+    "lessonIds": [
+      2,
+      20,
+      21,
+      22,
+      23,
+      30,
+      32
+    ],
+    "reviewIds": [
+      2,
+      20,
+      21,
+      22,
+      23,
+      30,
+      32
+    ],
+    "interviewIds": [
+      "da-interview-15",
+      "da-interview-18"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-805876927",
+    "courseId": "da",
+    "prefix": "805876927",
+    "file": "805876927_1740363043683948_8364025259524309588_n.jpg",
+    "path": "study documents/DA/805876927_1740363043683948_8364025259524309588_n.jpg",
+    "url": "/sources/da/805876927_1740363043683948_8364025259524309588_n.jpg",
+    "sha256": "c2bd10b0b034b316f0b2dc413e3f5178cfdc0a9caff259712e45818d78b82e9a",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 9,
+    "title": "Python, NumPy và pandas",
+    "topic": "Python, NumPy và pandas",
+    "topics": [
+      "Python, NumPy và pandas"
+    ],
+    "lessonIds": [
+      2,
+      24,
+      25
+    ],
+    "reviewIds": [
+      2,
+      24,
+      25
+    ],
+    "interviewIds": [
+      "da-interview-16"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  },
+  {
+    "id": "DA-805900198",
+    "courseId": "da",
+    "prefix": "805900198",
+    "file": "805900198_27887702844258608_3913924345208115169_n.jpg",
+    "path": "study documents/DA/805900198_27887702844258608_3913924345208115169_n.jpg",
+    "url": "/sources/da/805900198_27887702844258608_3913924345208115169_n.jpg",
+    "sha256": "7d32d203a5eb66ce90965a400903f78d946a16a2668e3814dfc4e4597eee3d9d",
+    "pack": "handbook",
+    "packTitle": "Cẩm nang Data Analyst",
+    "collection": "Cẩm nang Data Analyst",
+    "page": 10,
+    "title": "Làm sạch dữ liệu và EDA",
+    "topic": "Làm sạch dữ liệu và EDA",
+    "topics": [
+      "Làm sạch dữ liệu và EDA"
+    ],
+    "lessonIds": [
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      34
+    ],
+    "reviewIds": [
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      34
+    ],
+    "interviewIds": [
+      "da-interview-17",
+      "da-interview-19"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ]
+  }
+]

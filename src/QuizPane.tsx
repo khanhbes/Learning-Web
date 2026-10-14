@@ -4,6 +4,7 @@ import { useApp } from "./context";
 import { Button, Icon, ProgressBar } from "./components";
 import type { Attempt } from "./types";
 import { SuccessFeedback } from "./Delight";
+import { GitScenarioPreview } from './GitWorkbench';
 export default function QuizPane({
   attempt,
   onChange,
@@ -54,7 +55,7 @@ export default function QuizPane({
       <ProgressBar value={index + 1} max={attempt.questions.length} />
       <h2>{q.prompt}</h2>
       {q.input !== undefined && (
-        <pre className="quiz-input">{JSON.stringify(q.input, null, 2)}</pre>
+        q.input&&typeof q.input==='object'&&'initial' in q.input?<GitScenarioPreview input={q.input}/>:<pre className="quiz-input">{JSON.stringify(q.input, null, 2)}</pre>
       )}
       <div className="answer-options">
         {q.options.map((o, i) => (

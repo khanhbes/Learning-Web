@@ -134,6 +134,7 @@ test("Cloud data requires secure login; sessions persist, expire and logout revo
       },
     });
   assert.equal((await inject("GET", "/api/state")).statusCode, 401);
+  assert.equal((await inject("POST", "/api/data/import", {})).statusCode, 401);
   assert.equal(
     (await inject("POST", "/api/auth/login", { password: "wrong" })).statusCode,
     401,
