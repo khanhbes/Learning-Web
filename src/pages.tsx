@@ -14,6 +14,8 @@ export function Home() {
   const { state, course, notify, refresh } = useApp(),
     navigate = useNavigate();
   const next = course.lessons.find((l) => !l.progress?.passed && l.id <= (mandatoryLessons(course)));
+  const guidedLesson = course.lessons.find(l => l.unlocked && l.kind !== 'exam' && !l.progress?.passed)
+    ?? course.lessons.find(l => l.unlocked && l.kind !== 'exam');
   const [unitId, setUnitId] = useState(next?.unitId || course.units.at(-2)?.id || 1),
     [reward, setReward] = useState<any>(null),
     [claiming, setClaiming] = useState(false);
@@ -45,6 +47,11 @@ export function Home() {
           <Icon name="layers" size={26} />
         </Link>
       </div>
+      {guidedLesson && <section className="teaching-update-banner" aria-label="Bài giảng đã cập nhật">
+        <Byte size={74} mood="explaining" skin={state.profile.skin}/>
+        <div><span className="eyebrow">BÀI GIẢNG ĐÃ ĐƯỢC LÀM MỚI</span><h2>Nhìn hình, làm thử, rồi viết code</h2><p>Ví dụ từng bước và bổ trợ ngay khi cần. Khi chuyển sang bản mới, code và lượt học cũ vẫn được giữ.</p>
+        <Link className="teaching-update-link" to={`/courses/${course.id}/lesson/${guidedLesson.id}?phase=learn&guided=1`}>THỬ CÁCH HỌC MỚI <Icon name="right" size={17}/></Link></div>
+      </section>}
       <div className="course-progress">
         <ProgressBar value={state.completed} max={mandatoryLessons(course)} />
         <span>

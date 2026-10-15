@@ -63,6 +63,7 @@ export default function LessonPage() {
     [recallAnswer, setRecallAnswer] = useState("");
   const [visualProblemId, setVisualProblemId] = useState("");
   const current = useRef(attempt);
+  const upgrading = useRef(false);
   current.current = attempt;
   const isReview = params.get("mode") === "review";
   useEffect(() => {
@@ -118,6 +119,22 @@ export default function LessonPage() {
       setBusy(false);
     }
   }
+  async function openGuided(source: Attempt) {
+    if (upgrading.current) return;
+    upgrading.current=true;setBusy(true);
+    try {
+      const stored=await api<Attempt>(`/attempts/${source.id}`);
+      if(stored.status==='active')await api(`/attempts/${source.id}`,'PATCH',{
+        answers:source.answers,codeDrafts:source.codeDrafts,
+        ...(source.lab?{labDrafts:source.lab.drafts,labCursor:source.lab.cursor}:{}),
+        ...(source.learningProgress?{learningProgress:source.learningProgress}:{})
+      });
+      const next=await api<Attempt>(`/attempts/${source.id}/guided`,'POST',{codeDrafts:source.codeDrafts});
+      setAttempt(next);setPhase('learn');setBlock(0);setResult(null);setExamCode(false);setSave('Đã lưu');
+      await refresh();return next;
+    }catch(error){notify((error as Error).message);}
+    finally{upgrading.current=false;setBusy(false);}
+  }
   useEffect(() => {
     let active = true;
     setLesson(null);
@@ -137,7 +154,9 @@ export default function LessonPage() {
             ? "assessment"
             : "practice";
         if (l.kind === "exam") setPhase("assessment");
-        const opened = await start(mode);
+        let opened = await start(mode);
+        if(active && opened && mode==='practice' && params.get('guided')==='1' && l.teachingFlow && opened.teachingVersion!==l.teachingFlow.version)
+          opened=await openGuided(opened)??opened;
         if (
           active &&
           opened?.learningCursor &&
@@ -368,7 +387,7 @@ export default function LessonPage() {
         className={`lesson-body ${phase === "code" || examCode ? "expanded" : ""}`}
       >
         {lesson.teachingFlow && !guided && !isReview && lesson.kind!=='exam' && attempt.mode==='practice' && attempt.status==='active' && (
-          <aside className="legacy-teaching-notice"><div><strong>Bài này có cách học từng bước mới</strong><p>Bản nháp hiện tại vẫn được giữ trong lịch sử. Bạn có thể mở lượt luyện mới và mang theo phần code đã viết.</p></div><Button variant="outline" onClick={async()=>{const drafts=attempt.codeDrafts;const next=await start('practice',true);if(next){setAttempt({...next,codeDrafts:drafts});setPhase('learn');}}}>MỞ CÁCH HỌC MỚI</Button></aside>
+          <aside className="legacy-teaching-notice"><div><span className="eyebrow">BẠN ĐANG MỞ BẢN NHÁP CŨ</span><strong>Bài này đã có hình và cách học từng bước mới</strong><p>Chuyển sang bản mới để xem ví dụ trực quan và tám hoạt động. Code sẽ được mang theo; lượt cũ vẫn nằm trong lịch sử.</p></div><Button busy={busy} onClick={()=>openGuided(attempt)}>MỞ CÁCH HỌC MỚI</Button></aside>
         )}
         <AnimatePresence mode="wait">
           <motion.div

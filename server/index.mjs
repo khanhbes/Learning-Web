@@ -299,7 +299,7 @@ export async function createApp({
     };
   }
   app.get("/api/state", async () => view(state()));
-  registerLearningRoutes(app,{store,now});
+  registerLearningRoutes(app,{store,now,syncCodePasses});
   app.put("/api/profile", async (req) => {
     const p = profileSchema.parse(req.body);
     return store.transaction(() => {
@@ -1423,7 +1423,7 @@ export async function createApp({
     if (req.url.startsWith("/api/") || req.url.startsWith("/sources/"))
       return reply.code(404).send({ error: "Không tìm thấy." });
     if (existsSync(resolve(assetRoot,"index.html")))
-      return reply.type("text/html").send(readFileSync(resolve(assetRoot,"index.html")));
+      return reply.header("Cache-Control","no-store, max-age=0").header("Pragma","no-cache").type("text/html").send(readFileSync(resolve(assetRoot,"index.html")));
     return reply.code(503).send({
       error: "Chạy npm run build trước hoặc npm run dev để phát triển.",
     });

@@ -68,6 +68,7 @@ export function PageTransition({ children, transitionKey, variant = 'slide_card'
       transition={{ duration, ease: variant === 'mascot_wipe' ? CUBIC_IN_OUT : CUBIC_OUT }} onAnimationComplete={finish}>
       {children}
     </motion.div>
+    <div className="bitty-transition-decoration-viewport" aria-hidden="true">
     {!reduced && variant === 'mascot_wipe' && <motion.div key={`wipe:${transitionKey}`} className="bitty-transition-decor bitty-transition-wipe" aria-hidden="true"
       initial={{ x: direction === 1 ? '-120%' : '120%', opacity: .95 }} animate={{ x: direction === 1 ? '120%' : '-120%', opacity: [0, .95, .95, 0] }}
       transition={{ duration, ease: CUBIC_IN_OUT, opacity: { times: [0, .12, .8, 1] } }}>
@@ -86,6 +87,7 @@ export function PageTransition({ children, transitionKey, variant = 'slide_card'
     </div>}
     {!reduced && variant === 'celebration_fade' && <motion.div key={`fade:${transitionKey}`} className="bitty-transition-decor bitty-transition-celebration" aria-hidden="true"
       initial={{ opacity: .28, scale: .98 }} animate={{ opacity: 0, scale: 1.02 }} transition={{ duration, ease: CUBIC_OUT }} />}
+    </div>
   </div>;
 }
 

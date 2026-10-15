@@ -49,7 +49,7 @@ Kết quả ngày 15/10/2026:
 
 | Hạng mục | Kết quả |
 |---|---|
-| Toàn bộ bộ kiểm thử | **191/191 đạt**, không bỏ qua; gồm runner WebAssembly thực cho Python/C++. |
+| Bộ kiểm thử đợt thiết kế bài giảng | **191/191 đạt**, không bỏ qua; gồm runner WebAssembly thực cho Python/C++. |
 | Rà lại sau khi rút gọn mở bài/chú giải | 3 kiểm tra nội dung/neo toán/trace đạt; bộ chấm và logic sinh đề không đổi ở bước này. |
 | TypeScript và Vite | Đạt. Monaco vẫn là chunk lớn tải riêng khi mở editor; có cảnh báo kích thước build. |
 | Desktop 1440×1000 và mobile 390×844 | Sáu buổi mẫu DSA11, ML25, DA15, Git2, Agent3, Linear1 đạt; không tràn ngang. |
@@ -67,6 +67,16 @@ Kết quả ngày 15/10/2026:
 Bản nháp luyện từ phiên bản cũ có thông báo **“MỞ CÁCH HỌC MỚI”**. Chọn nút này để bắt đầu luồng từng bước và mang theo code đã viết; lượt cũ vẫn nằm trong lịch sử. Tải lại trang để lấy giao diện mới nếu đang mở một tab cũ. Cập nhật không tự thay đề của lượt tính điểm đang lưu.
 
 Kết quả kiểm tra public không chứa hồ sơ trong `output/teaching-live-report.json`. Bản sao đầy đủ trước cập nhật nằm riêng ở `.data/public/teaching-before-export.json`; không đưa file này lên GitHub.
+
+## Khi chưa thấy cách học mới
+
+Những bản nháp luyện được tạo trước đợt cập nhật vẫn giữ giao diện cũ theo quy tắc không thay đề đang làm. Trang hành trình trước đó không có thông báo nên người học khó nhận ra đợt cập nhật. Kiểm tra public xác nhận HTML và API đã chạy bản mới; đây không phải thiếu học liệu trên server.
+
+Đã bổ sung khung **“Bài giảng đã được làm mới”** trên trang chủ với nút **“THỬ CÁCH HỌC MỚI”**. Link chọn một bài đang mở khóa và dùng `?phase=learn&guided=1`. Khi người học chủ động mở link này, bản nháp luyện cũ được lưu, code được chép sang một lượt học mới; seed, câu hỏi, lab và câu trả lời của lượt cũ vẫn nằm trong lịch sử. Lượt kiểm tra/ôn tập không bị chuyển đổi. API chuyển lượt dùng giao dịch và liên kết `guidedSuccessorId`, gọi lại hoặc tải lại không tạo nhiều lượt hay cộng/trừ tài nguyên.
+
+HTML trả `Cache-Control: no-store` để tránh giữ bản frontend cũ khi mở lại trang. Tab đang chạy cần tải lại một lần. Khung hiệu ứng chuyển cảnh được giới hạn riêng để không làm trang chủ tràn ngang trên mobile; menu và nội dung chính vẫn có thể mở ngoài khung.
+
+Đợt sửa khả năng nhìn thấy bản mới đã qua 11 kiểm thử mục tiêu, gồm 7 kiểm thử mới và 4 hồi quy lưu bài cũ. TypeScript và build đạt. Kịch bản Chromium dùng bản nháp giả để kiểm tra nút trên trang chủ, code được mang theo, đề cũ còn nguyên, không thưởng/trừ năng lượng thêm và tải lại không tạo lượt lặp. Kết quả giao diện nằm ở `output/visibility-browser.log`; bản sao riêng trước đợt sửa ở `.data/public/visibility-before-export.json`.
 
 ## Giới hạn
 
