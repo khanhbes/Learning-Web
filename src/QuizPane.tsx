@@ -4,7 +4,7 @@ import { useApp } from "./context";
 import { Button, Icon, ProgressBar } from "./components";
 import type { Attempt } from "./types";
 import { SuccessFeedback } from "./Delight";
-import { GitScenarioPreview } from './GitWorkbench';
+import LearningDataView from './LearningDataView';
 import { useMascot } from './bitty/MascotProvider';
 import Mascot from './bitty/Mascot';
 export default function QuizPane({
@@ -23,7 +23,8 @@ export default function QuizPane({
       ),
     ),
     [feedback, setFeedback] = useState<Record<string, any>>({}),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [wrongByQuestion, setWrongByQuestion] = useState<Record<string, number>>({});
   const { notify } = useApp();
   const mascot = useMascot();
   const alive = useRef(true), inFlight = useRef(false), wrongChain = useRef(0), animatedFeedback = useRef(new Set<string>());
@@ -45,6 +46,7 @@ export default function QuizPane({
         });
         if (!alive.current) return;
         setFeedback((prev) => ({ ...prev, [q.id]: { ...result, optionId: id } }));
+        if (!result.correct) setWrongByQuestion(previous => ({ ...previous, [q.id]: (previous[q.id] || 0) + 1 }));
         const eventId = `quiz:${attempt.id}:${q.id}:${id}`;
         if (typeof result.correct === 'boolean' && !animatedFeedback.current.has(eventId)) {
           animatedFeedback.current.add(eventId);
@@ -71,9 +73,7 @@ export default function QuizPane({
       <ProgressBar value={index + 1} max={attempt.questions.length} />
       {!graded && <div style={{ display: 'flex', justifyContent: 'flex-end', height: 64, marginTop: 6, pointerEvents: 'none' }}><Mascot size={86} /></div>}
       <h2>{q.prompt}</h2>
-      {q.input !== undefined && (
-        q.input&&typeof q.input==='object'&&'initial' in q.input?<GitScenarioPreview input={q.input}/>:<pre className="quiz-input">{JSON.stringify(q.input, null, 2)}</pre>
-      )}
+      {q.input !== undefined && <LearningDataView value={q.input} label="Dữ liệu của câu hỏi"/>}
       <div className="answer-options">
         {q.options.map((o, i) => (
           <button
@@ -106,6 +106,7 @@ export default function QuizPane({
           label={visibleFeedback.correct ? "Đúng rồi, bạn đã hiểu ý này!" : "Cùng nhìn lại một chút nhé."}
         >
           <p>{visibleFeedback.explanation}</p>
+          {!visibleFeedback.correct && wrongByQuestion[q.id] >= 2 && <p>Thử quay lại ví dụ cùng chủ đề: theo dõi từng bước rồi trả lời lại. Bạn có thể tiếp tục và quay lại câu này sau.</p>}
         </SuccessFeedback>
       )}
       <div className="quiz-actions">

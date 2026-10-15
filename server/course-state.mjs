@@ -13,6 +13,7 @@ export function normalizeCourses(s) {
   };
   for(const [id,definition] of Object.entries(courseRegistry))s.courses[id] ??= {progress:{},started:[],language:definition.course.languages[0],capstonePassed:false,capstoneScore:0};
   s.activeCourse ??= "dsa";
+  s.learningSupport ??= {};
   s.profile.settings ??= {sound:false,reducedMotion:false};
   return s;
 }

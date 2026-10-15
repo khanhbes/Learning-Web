@@ -15,6 +15,8 @@ import { registerKnowledgeRoutes,validateSavedKnowledgeAttempt } from "./knowled
 import { knowledgeById } from "../content/knowledge.mjs";
 import { registerGamificationRoutes,purchaseExtended,awardCourseCosmetic,normalizeGamification } from "./gamification.mjs";
 import { extendedShop } from "../shared/cosmetics.mjs";
+import {registerLearningRoutes,learningProgressSchema,learningSupportSchema,saveLearningProgress} from './learning.mjs';
+import {practiceFeedback} from '../content/pedagogy/engine.mjs';
 import {
   course,
   lessons,
@@ -297,6 +299,7 @@ export async function createApp({
     };
   }
   app.get("/api/state", async () => view(state()));
+  registerLearningRoutes(app,{store,now});
   app.put("/api/profile", async (req) => {
     const p = profileSchema.parse(req.body);
     return store.transaction(() => {
@@ -536,7 +539,7 @@ export async function createApp({
       a.answers[questionId] = optionId;
       a.updatedAt = now();
       store.put("attempts", a);
-      return { correct: q.answerId === optionId, explanation: q.explanation };
+      return { correct: q.answerId === optionId, explanation: q.feedbackByOption?.[optionId]??q.explanation };
     });
   });
   app.post("/api/attempts/:id/lab", async (req) => {
@@ -559,7 +562,14 @@ export async function createApp({
       const correct = (getCourse(a.courseId).checkLab??checkLab)(q, value),
         wasCorrect = a.lab.completed?.includes(q.id);
       if (correct && !wasCorrect) (a.lab.completed ??= []).push(q.id);
-      a.lab.responses[q.id] = { value, correct, explanation: q.explanation };
+      const previous=a.lab.responses[q.id],wrongCount=(previous?.wrongCount??0)+(correct?0:1),definition=getCourse(a.courseId);
+      const lesson=definition.lessons.find(l=>l.id===a.lessonId),design=definition.teachingDesigns?.[lesson.id];
+      const feedback=q.teachingVersion&&design?practiceFeedback(q,value,correct,design,wrongCount):{explanation:q.explanation};
+      a.lab.responses[q.id] = { value, correct, ...feedback,wrongCount };
+      if(q.teachingVersion&&a.learningProgress){
+        const step=definition.teachingFlow(lesson)?.steps.find(s=>s.activityId===q.id);
+        if(step)a.learningProgress.tried=[...new Set([...a.learningProgress.tried,step.id])];
+      }
       a.updatedAt = now();
       store.put("attempts", a);
       if (correct && !wasCorrect) {
@@ -581,6 +591,7 @@ export async function createApp({
             block: z.number().int().min(0).max(10),
           })
           .optional(),
+        learningProgress:learningProgressSchema.optional(),
         labDrafts: z
           .record(
             z.string().max(64),
@@ -617,6 +628,7 @@ export async function createApp({
       }
       if (p.learningCursor && a.mode !== "assessment")
         a.learningCursor = p.learningCursor;
+      if(p.learningProgress)saveLearningProgress(a,p.learningProgress);
       if (p.labDrafts) {
         if (a.mode === "assessment" || !a.lab)
           throw fail("Hoạt động không mở trong kiểm tra.", 403);
@@ -1287,6 +1299,7 @@ export async function createApp({
               capstonePassed: z.boolean(),
               capstoneScore: z.number().min(0).max(100),
               activeCourse:courseIdSchema.optional(),
+              learningSupport:learningSupportSchema.optional(),
               courses:z.record(courseIdSchema,z.object({
                 progress:z.record(z.string(),z.object({passed:z.boolean(),bestKnowledge:z.number().min(0).max(100)}).passthrough()),
                 started:z.array(z.number().int().positive()),language:languageSchema,

@@ -1,6 +1,8 @@
 import { random, shuffle, int, hash } from "../shared/random.mjs";
 import { lessons, topicQuestions } from "../content/curriculum.mjs";
 import { createLab, publicLab } from "../content/labs.mjs";
+import {courseRegistry} from '../content/registry.mjs';
+import {initialLearningProgress,publicTeachingLab,ASSESSMENT_VERSION} from '../content/pedagogy/engine.mjs';
 import {
   problems,
   generateInput,
@@ -46,6 +48,8 @@ function question(id, prompt, correct, wrong, explanation, rng) {
   };
 }
 export function generateQuestions(lesson, mode, seed, definition = null) {
+  const teaching=definition??courseRegistry[lesson.courseId??'dsa'];
+  if(teaching?.generateUnderstandingQuestions)return teaching.generateUnderstandingQuestions(lesson,mode,seed);
   const lessonList=definition?.lessons??lessons,topics=definition?.topicQuestions??topicQuestions;
   const inputFor=definition?.generateInput??generateInput,answerFor=definition?.oracle??oracle;
   const check=definition?.checkOutput??checkOutput,problemList=definition?.problems??problems;
@@ -117,6 +121,8 @@ export function generateQuestions(lesson, mode, seed, definition = null) {
   return rows;
 }
 export function newAttempt(lesson, mode, seed, id, now, definition = null) {
+  definition??=courseRegistry[lesson.courseId??'dsa'];
+  const flow=definition.teachingFlow?.(lesson);
   return {
     id,
     courseId: definition?.course.id??"dsa",
@@ -124,6 +130,9 @@ export function newAttempt(lesson, mode, seed, id, now, definition = null) {
     mode,
     seed,
     version: definition?.VERSION??VERSION,
+    assessmentVersion:ASSESSMENT_VERSION,
+    ...(flow?{teachingVersion:flow.version}:{}),
+    ...(flow&&mode!=='assessment'?{learningProgress:initialLearningProgress(flow)}:{}),
     createdAt: now,
     updatedAt: now,
     status: "active",
@@ -147,11 +156,13 @@ export function newAttempt(lesson, mode, seed, id, now, definition = null) {
   };
 }
 export function publicAttempt(a) {
+  const flow=courseRegistry[a.courseId??'dsa']?.teachingFlow?.(a.lessonId);
   return {
     ...a,
-    lab: publicLab(a.lab),
+    ...(flow&&a.mode!=='assessment'&&a.mode!=='capstone'?{learningProgress:a.learningProgress??initialLearningProgress(flow,a.learningCursor)}:{}),
+    lab: publicTeachingLab(a.lab),
     questions: a.questions.map((q) => {
-      const { answerId, explanation, ...publicQ } = q;
+      const { answerId, explanation,traceAnswer,feedbackByOption, ...publicQ } = q;
       return a.status === "completed" ? q : publicQ;
     }),
   };
@@ -208,7 +219,7 @@ export function scoreAttempt(a) {
       correct: ok,
       selected: a.answers[q.id] ?? null,
       answerId: q.answerId,
-      explanation: q.explanation,
+      explanation: q.feedbackByOption?.[a.answers[q.id]]??q.explanation,
     };
   });
   const knowledge = Math.round((correct / a.questions.length) * 100),

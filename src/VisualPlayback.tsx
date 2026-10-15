@@ -83,10 +83,12 @@ export function VisualPlayback({
   playback,
   onChangeData,
   busy = false,
+  allowChangeData = true,
 }: {
   playback: Playback;
   onChangeData: () => void;
   busy?: boolean;
+  allowChangeData?: boolean;
 }) {
   const p = playback;
   return (
@@ -133,10 +135,10 @@ export function VisualPlayback({
       >
         <Icon name="reset" />
       </button>
-      <button className="text-link" onClick={onChangeData} disabled={busy}>
+      {allowChangeData && <button className="text-link" onClick={onChangeData} disabled={busy}>
         <Icon name="refresh" size={15} />
         ĐỔI DỮ LIỆU
-      </button>
+      </button>}
       <span className="workshop-step">
         Bước {p.length ? p.step + 1 : 0}/{p.length}
       </span>

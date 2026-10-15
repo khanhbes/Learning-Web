@@ -8,6 +8,7 @@ import * as agent from "./agent/index.mjs";
 import * as linear from "./linear/index.mjs";
 import { readFileSync } from "node:fs";
 import { corrections } from "./sources-map.mjs";
+import {installTeaching} from './pedagogy/index.mjs';
 const dsaSources=JSON.parse(readFileSync(new URL("./sources.json",import.meta.url),"utf8"));
 export const courseRegistry={
   dsa:{...dsaCurriculum,...dsaProblems,course:{...dsaCurriculum.course,languages:["python","cpp"],runtime:"wasi",description:"Từ dòng code đầu tiên đến tư duy cấu trúc dữ liệu và thuật toán."},sources:dsaSources,corrections,
@@ -25,6 +26,7 @@ export const courseRegistry={
   linear:{...linear,sourceDirectory:"Đại số tuyến tính",course:{...linear.course,languages:["python"],runtime:"pyodide",description:"Nhìn vector, ma trận và hệ phương trình chuyển động; kiểm chứng từng phép tính bằng Python."},sources:linear.sourceCatalog.map(s=>({...s,collection:s.packTitle??s.collection,topic:s.title??s.topic,url:"/sources/linear/"+s.file})),
     helpers:{python:"# solve(data) nhận JSON; có thể dùng NumPy trong môi trường cách ly.\n# Return số/list/dict; ndarray cần .tolist(), không trả NaN/Infinity."}}
 };
+installTeaching(courseRegistry);
 export function getCourse(id="dsa") {
   const c=Object.hasOwn(courseRegistry,id)?courseRegistry[id]:null;
   if(!c) throw Object.assign(Error("Không tìm thấy khóa học."),{statusCode:404});

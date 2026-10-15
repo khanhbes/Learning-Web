@@ -18,6 +18,7 @@ export interface Progress {
 export interface AppState {
   activeCourse?: string;
   courses?: Record<string, any>;
+  learningSupport?: Record<string, { seen?: boolean; skipped?: boolean; correct?: string[] }>;
   level?: { level: number; xpIntoLevel: number; xpForNext: number; progress: number; totalXp: number; capped: boolean };
   rewardEvents?: any[];
   consumables?: Record<string, number>;
@@ -111,6 +112,8 @@ export interface Question {
   explanation?: string;
 }
 export interface Attempt {
+  teachingVersion?: string;
+  assessmentVersion?: string;
   courseId?: string;
   id: string;
   lessonId: number;
@@ -131,6 +134,7 @@ export interface Attempt {
   feedback?: any;
   lab?: any;
   learningCursor?: { phase: string; block: number };
+  learningProgress?: LearningProgress;
 }
 export interface Problem {
   id: string;
@@ -151,7 +155,9 @@ export interface Lesson extends LessonSummary {
     code?: Partial<Record<Language, string>>;
     problemId?: string;
     commandSnippet?: string;
+    collapsible?: boolean;
   }[];
+  teachingFlow?: TeachingFlow;
   steps: string[];
   sources: any[];
   corrections: any[];
@@ -161,4 +167,34 @@ export interface Lesson extends LessonSummary {
   visualData?: any;
   recall?: { prompt: string; options: string[]; answer: string };
   itinerary?: { title: string; minutes: number }[];
+}
+export interface LearningProgress {
+  version: string;
+  stepId: string;
+  seen: string[];
+  tried: string[];
+}
+export interface TeachingStep {
+  id: string;
+  stage: 'intro' | 'model' | 'guided' | 'practice' | 'transfer' | 'code';
+  kind: 'story' | 'worked' | 'visual' | 'activity' | 'code';
+  title: string;
+  prompt?: string;
+  text?: string;
+  explanations?: string[];
+  activityId?: string;
+  visual?: { kind: 'data' | 'course' | 'trace'; problemId?: string; input?: unknown; output?: unknown; focus?: string; [key: string]: unknown };
+  code?: Partial<Record<Language, string>>;
+  annotations?: Partial<Record<Language, (string | { line?: number; text: string })[]>>;
+}
+export interface TeachingFlow {
+  trace?: {title:string;input:unknown;result:unknown;frames:any[];detailed:boolean;note:string};
+  version: string;
+  objectives: string[];
+  prerequisites: string[];
+  glossary: { term: string; definition: string; example?: string }[];
+  steps: TeachingStep[];
+  deepDive: Lesson['blocks'];
+  sample: { problemId?: string; input: unknown; output?: unknown };
+  summary: string[];
 }

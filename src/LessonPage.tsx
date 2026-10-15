@@ -26,6 +26,8 @@ import GitWorkbench from './GitWorkbench';
 import { currentLanguage, gitCourse } from './courseUI';
 import { useMascot } from './bitty/MascotProvider';
 import { LessonCompleteModal } from './bitty/RewardOverlays';
+import GuidedLesson from './GuidedLesson';
+import {useMotionPreference} from './motionPreference';
 const phases = [
   ["learn", "Hiểu"],
   ["visual", "Khám phá"],
@@ -35,6 +37,7 @@ const phases = [
 ];
 export default function LessonPage() {
   const mascot = useMascot();
+  const reduced = useMotionPreference();
   const { id } = useParams(),
     [params] = useSearchParams(),
     navigate = useNavigate(),
@@ -93,11 +96,13 @@ export default function LessonPage() {
           if (a.lab && draft.labDrafts) a.lab.drafts = draft.labDrafts;
           if (a.lab && draft.labCursor !== undefined)
             a.lab.cursor = draft.labCursor;
+          if (draft.learningProgress) a.learningProgress = draft.learningProgress;
           await api("/attempts/" + a.id, "PATCH", {
             answers: a.answers,
             codeDrafts: a.codeDrafts,
             ...(a.lab ? { labDrafts: a.lab.drafts } : {}),
             ...(a.lab ? { labCursor: a.lab.cursor } : {}),
+            ...(a.learningProgress ? { learningProgress: a.learningProgress } : {}),
           });
         }
       }
@@ -158,6 +163,7 @@ export default function LessonPage() {
         codeDrafts: attempt.codeDrafts,
         labDrafts: attempt.lab?.drafts,
         labCursor: attempt.lab?.cursor,
+        learningProgress: attempt.learningProgress,
         savedAt: Date.now(),
       }),
     );
@@ -171,6 +177,7 @@ export default function LessonPage() {
           codeDrafts: attempt.codeDrafts,
           ...(attempt.lab ? { labDrafts: attempt.lab.drafts } : {}),
           ...(attempt.lab ? { labCursor: attempt.lab.cursor } : {}),
+          ...(attempt.learningProgress ? { learningProgress: attempt.learningProgress } : {}),
         });
         if (active) {
           setSave("Đã lưu");
@@ -200,6 +207,7 @@ export default function LessonPage() {
     attempt?.codeDrafts,
     attempt?.lab?.drafts,
     attempt?.lab?.cursor,
+    attempt?.learningProgress,
   ]);
   useEffect(() => {
     if (
@@ -229,6 +237,7 @@ export default function LessonPage() {
             codeDrafts: a.codeDrafts,
             ...(a.lab ? { labDrafts: a.lab.drafts } : {}),
             ...(a.lab ? { labCursor: a.lab.cursor } : {}),
+            ...(a.learningProgress ? { learningProgress: a.learningProgress } : {}),
           }),
           keepalive: true,
         }).catch(() => {});
@@ -308,6 +317,9 @@ export default function LessonPage() {
   const graded = attempt.mode === "assessment",
     currentPhase = phases.findIndex((p) => p[0] === phase),
     main = lesson.problems[0];
+  const guided = !!lesson.teachingFlow && attempt.teachingVersion===lesson.teachingFlow.version && !isReview && lesson.kind !== 'exam';
+  const visiblePhases = guided ? [['learn', 'Bài giảng'], ['code', 'Thực hành code'], ['assessment', 'Kiểm tra']] : phases;
+  const activePhase = guided && ['learn', 'visual', 'practice'].includes(phase) ? 'learn' : phase;
   return (
     <div className="lesson-shell">
       <header className="lesson-header">
@@ -335,17 +347,17 @@ export default function LessonPage() {
       </header>
       {!isReview && lesson.kind !== "exam" && (
         <nav className="lesson-phases" aria-label="Các hoạt động">
-          {phases.map(([p, title], i) => (
+          {visiblePhases.map(([p, title], i) => (
             <button
               className={
-                phase === p ? "active" : i < currentPhase ? "visited" : ""
+                activePhase === p ? "active" : i < visiblePhases.findIndex(item => item[0] === activePhase) ? "visited" : ""
               }
               key={p}
               aria-label={title}
               onClick={() => switchPhase(p)}
             >
               <span>
-                {i < currentPhase ? <Icon name="check" size={14} /> : i + 1}
+                {i < visiblePhases.findIndex(item => item[0] === activePhase) ? <Icon name="check" size={14} /> : i + 1}
               </span>
               {title}
             </button>
@@ -355,15 +367,20 @@ export default function LessonPage() {
       <div
         className={`lesson-body ${phase === "code" || examCode ? "expanded" : ""}`}
       >
+        {lesson.teachingFlow && !guided && !isReview && lesson.kind!=='exam' && attempt.mode==='practice' && attempt.status==='active' && (
+          <aside className="legacy-teaching-notice"><div><strong>Bài này có cách học từng bước mới</strong><p>Bản nháp hiện tại vẫn được giữ trong lịch sử. Bạn có thể mở lượt luyện mới và mang theo phần code đã viết.</p></div><Button variant="outline" onClick={async()=>{const drafts=attempt.codeDrafts;const next=await start('practice',true);if(next){setAttempt({...next,codeDrafts:drafts});setPhase('learn');}}}>MỞ CÁCH HỌC MỚI</Button></aside>
+        )}
         <AnimatePresence mode="wait">
           <motion.div
             key={phase + String(examCode)}
-            initial={{ opacity: 0, y: 12 }}
+            initial={reduced ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.16 }}
+            exit={reduced ? {opacity:1} : { opacity: 0, y: -8 }}
+            transition={{ duration: reduced ? 0 : 0.16 }}
           >
-            {phase === "learn" ? (
+            {guided && ['learn', 'visual', 'practice'].includes(phase) ? (
+              <GuidedLesson key={attempt.id} lesson={lesson} attempt={attempt} onChange={setAttempt} onCode={() => switchPhase('code')} onAssessment={() => switchPhase('assessment')}/>
+            ) : phase === "learn" ? (
               <div className="teaching-pane">
                 <div className="teaching-top">
                   <span className="pill">

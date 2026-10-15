@@ -6,6 +6,8 @@ Bài học có minh họa SVG, mô phỏng từng bước, biểu đồ hồi qu
 
 Màn chờ có mascot chuyển động; qua bài, lên cấp và mở rương có màn ăn mừng riêng. Xem thử/phát lại tại **Hồ sơ → Xem thử hiệu ứng của Byte** (`/effects`). Có bỏ qua, giảm chuyển động và cài đặt âm thanh. Chi tiết ở [ANIMATION.md](docs/ANIMATION.md).
 
+**Luồng học cho người mới:** 223 buổi học có từng bước từ tình huống, ví dụ đã giải, tám hoạt động làm cùng/tự làm đến code và vận dụng. Hình, số và trace dùng chung dữ liệu ví dụ; nội dung đọc sâu được thu gọn. 15 bài bổ trợ Python/toán mở ngay trong bài và ghi nhớ giữa các khóa. Mục lục phân biệt đã xem/đã thử, lưu vị trí khi tải lại. Xem [báo cáo thiết kế bài giảng](docs/TEACHING-REPORT.md), [rà soát 246 buổi](docs/TEACHING-AUDIT.md) và [kịch bản học thử](docs/BEGINNER-PILOT.md). Tạo lại bảng rà soát bằng `node scripts/audit-teaching.mjs --write`.
+
 **Bitty** là mascot chính mới: mèo robot với 27 biểu cảm, sáu chuyển cảnh, sân khấu sáng/tối và SVG dự phòng khi Rive không hoạt động. Xem tại `/mascot` hoặc liên kết trong phòng hiệu ứng. File `.riv` thật 100.022 byte, runtime/WASM cùng origin; giữ React/Vite và mọi skin đã sở hữu. Lựa chọn skin riêng vẫn được giữ. Rig, keyframe, state machine, hướng dẫn Rive và code có trong [BITTY-CONCEPT.md](docs/BITTY-CONCEPT.md), [BITTY-MOTION.md](docs/BITTY-MOTION.md) và [BITTY-RIVE.md](docs/BITTY-RIVE.md). Dựng lại binary bằng `node scripts/build-bitty-rive.mjs` sau khi cài official Rive CLI 1.5.1; không cần CLI để chạy asset đã bàn giao.
 
 ## Cách chạy trên máy

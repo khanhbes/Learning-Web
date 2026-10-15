@@ -202,7 +202,10 @@ test("Question seeds freeze shuffled answers and do not reveal answers before su
     assert.notDeepEqual(q, generateQuestions(lesson, "assessment", "y"));
     assert.equal(q.length, lesson.kind === "exam" ? 10 : 5);
     for (const row of q) {
-      assert.equal(new Set(row.options.map((o) => o.text)).size, 3);
+      // Binary traces have exactly two meaningful answers. Do not manufacture
+      // a third option solely to satisfy the old three-choice presentation.
+      assert.equal(new Set(row.options.map((o) => o.text)).size,
+        row.category === 'trace' && typeof row.traceAnswer === 'boolean' ? 2 : 3);
       assert.ok(row.options.some((o) => o.id === row.answerId));
     }
     const a = { status: "active", questions: q };
