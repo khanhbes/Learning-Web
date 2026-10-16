@@ -99,7 +99,7 @@ export default function GuidedLesson({ lesson, attempt, onChange, onCode, onAsse
   function reviewModel() { let previous = 0; for (let i = 0; i < index; i++) if (flow.steps[i].kind === 'worked' || flow.steps[i].stage === 'model') previous = i; go(previous); }
   function courseVisual() {
     if (course.id === 'docker') return <DockerVisualizer lesson={lesson} compact/>;
-    if (course.id === 'genai') return <GenAIVisualizer lesson={lesson} compact/>;
+    if (course.id === 'genai') return <GenAIVisualizer lesson={lesson}/>;
     if (course.id === 'rag') return <RAGVisualizer lesson={lesson} compact/>;
     if (course.id === 'linear' && lesson.id === 1) return <CoordinateBoard input={step.visual?.input || flow.sample.input}/>;
     if (course.id === 'linear') return <LinearVisualizer lesson={lesson} compact/>;

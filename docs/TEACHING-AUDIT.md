@@ -1,6 +1,6 @@
 # Danh mục rà soát bài giảng BytePath
 
-Ngày: 15/10/2026. Bảng kiểm cấu trúc cho toàn bộ sáu khóa; kết quả này không thay thử nghiệm khả năng hiểu bài với người mới.
+Ngày: 16/10/2026. Bảng kiểm cấu trúc cho toàn bộ các khóa đã đăng ký; kết quả này không thay thử nghiệm khả năng hiểu bài với người mới.
 
 Mỗi buổi học có mục tiêu quan sát được, thuật ngữ, ví dụ có đầu ra kiểm chứng, quy trình riêng, lỗi dễ nhầm, hoạt động làm cùng/tự làm và vận dụng. Bài kiểm tra giữ điều kiện đạt cũ.
 
@@ -254,11 +254,105 @@ Mã câu kiểm tra: K = khái niệm, T = đọc hình/truy vết, L = tìm l�
 | linear | 34 | Markov: xác suất đi qua các trạng thái | Phân số và tỷ lệ, Phần trăm, Danh sách và chỉ số | 2 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 2 dòng | 1K/2T/1L/1V + code |
 | linear | 35 | Condition number và sai số số thực | Phân số và tỷ lệ, Phần trăm, Đọc ký hiệu toán | 2 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 5 dòng | 1K/2T/1L/1V + code |
 | linear | 36 | Trị riêng phức và giới hạn hình2D | Đọc ký hiệu toán, Tọa độ trên mặt phẳng | 2 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 1 | Image và container: bản vẽ và căn phòng | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 2 | Client, daemon và registry | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 3 | Create, start và run | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 4 | Stop không phải remove | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 5 | Cổng ngoài và cổng trong | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 6 | Đọc logs và inspect trước khi sửa | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 7 | Image ID, tag và phiên bản | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 8 | Kiểm tra: image và vòng đời | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| docker | 9 | Dockerfile: công thức tạo image | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 10 | Build context và COPY | Không cần Python/toán bổ trợ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 11 | .dockerignore và trực giác cache | Không cần Python/toán bổ trợ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| docker | 12 | Biến môi trường và thông tin riêng | Không cần Python/toán bổ trợ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 13 | Volume: dữ liệu sống lâu hơn container | Không cần Python/toán bổ trợ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 14 | Network và tên service | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| docker | 15 | Thay phiên bản, giữ dữ liệu | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| docker | 16 | Kiểm tra: build, lưu trữ và mạng | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| docker | 17 | Compose: bản đồ cho nhiều service | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 18 | Compose down, dependency và readiness | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 19 | CPU, RAM và giới hạn tài nguyên | Không cần Python/toán bổ trợ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 20 | Non-root và filesystem chỉ đọc | Không cần Python/toán bổ trợ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 21 | Restart policy và nhật ký có giới hạn | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 22 | Điều tra lỗi và dọn đúng phạm vi | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 23 | Dự án: một trang học được đóng gói | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 24 | Kiểm tra tổng hợp Docker | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| docker | 25 | Multi-stage: mang sản phẩm, để lại dụng cụ | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 26 | Registry, digest và chuỗi phân phối | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 27 | Named volume, bind mount và tmpfs | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 28 | Compose vận hành: ranh giới và sẵn sàng | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| docker | 29 | CI, cache và build tái hiện | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 1 dòng | 1K/2T/1L/1V + code |
+| docker | 30 | Review production và diễn tập sự cố | Không cần Python/toán bổ trợ | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 1 | Gen AI: tạo nội dung bắt đầu từ mảnh nhỏ | Danh sách và chỉ số, Hàm và return | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 2 | Python: tra token trong từ điển | Dictionary: tra theo tên, Vòng lặp, Hàm và return | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 3 | Từ số đếm đến phân phối dự đoán | Tổng và cộng dồn, Phân số và tỷ lệ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| genai | 4 | Embedding: hiểu tổng có trọng số | Tọa độ trên mặt phẳng, Trung bình cộng, Phân số và tỷ lệ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| genai | 5 | Attention: nhìn đúng vị trí | Danh sách và chỉ số, Vòng lặp, Điều kiện | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 6 | Chọn token tiếp theo: greedy và giới hạn | Điều kiện, Danh sách và chỉ số | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 4 dòng | 1K/2T/1L/1V + code |
+| genai | 7 | Top-k và top-p: lọc trước khi lấy mẫu | Phần trăm, Tổng và cộng dồn | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 9 dòng | 1K/2T/1L/1V + code |
+| genai | 8 | Kiểm tra token và lựa chọn | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| genai | 9 | Context window: chiếc ba lô token | Tổng và cộng dồn, Điều kiện | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| genai | 10 | KV cache: tái sử dụng phần đã tính | Danh sách và chỉ số, Vòng lặp | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 6 mốc | 7 dòng | 1K/2T/1L/1V + code |
+| genai | 11 | Pretraining, SFT và tập kiểm tra riêng | Danh sách và chỉ số | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| genai | 12 | Preference: sở thích khác với sự thật | Dictionary: tra theo tên, Vòng lặp | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 7 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| genai | 13 | Fine-tuning và LoRA: thay phần nào? | Đọc ký hiệu toán | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 4 dòng | 1K/2T/1L/1V + code |
+| genai | 14 | Quantization: cân bộ nhớ trước khi chạy | Phân số và tỷ lệ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 15 | Prompt rõ nhiệm vụ, dữ liệu, định dạng | Đọc dữ liệu đầu vào, Hàm và return | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 16 | Kiểm tra từ ngữ cảnh đến triển khai | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| genai | 17 | Structured output: JSON đúng chưa đủ | Dictionary: tra theo tên, Điều kiện | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 9 mốc | 9 dòng | 1K/2T/1L/1V + code |
+| genai | 18 | Context engineering: giữ điều cần thiết | Danh sách và chỉ số, Tổng và cộng dồn, Vòng lặp | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 11 mốc | 9 dòng | 1K/2T/1L/1V + code |
+| genai | 19 | RAG: tìm dữ kiện trước khi trả lời | Danh sách và chỉ số, Dictionary: tra theo tên | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| genai | 20 | Grounding: trích dẫn phải hỗ trợ điều nói | Dictionary: tra theo tên, Điều kiện | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 6 mốc | 11 dòng | 1K/2T/1L/1V + code |
+| genai | 21 | Tool loop: biết lúc nào dừng | Vòng lặp, Điều kiện | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| genai | 22 | Đánh giá: chấm phần kiểm chứng được | Phân số và tỷ lệ, Vòng lặp | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 7 mốc | 4 dòng | 1K/2T/1L/1V + code |
+| genai | 23 | Quan sát hệ thống: thời gian ở đâu? | Trung bình cộng | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 7 mốc | 4 dòng | 1K/2T/1L/1V + code |
+| genai | 24 | Kiểm tra tổng hợp Gen AI | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| genai | 25 | Nâng cao: đối chiếu top-k với top-p | Phần trăm | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 8 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| genai | 26 | Nâng cao: lượng tử hóa trên trục số | Phân số và tỷ lệ, Đọc ký hiệu toán | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| genai | 27 | Nâng cao: distillation và nhãn mềm | Trung bình cộng, Danh sách và chỉ số | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| genai | 28 | Nâng cao: compute nhiều hơn, đo được gì? | Tổng và cộng dồn | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| genai | 29 | Nâng cao: kiến trúc agent có trạng thái | Điều kiện, Vòng lặp | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| genai | 30 | Nâng cao: thiết kế eval và đọc sự bất đồng | Phân số và tỷ lệ | 3 | 2 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 7 mốc | 4 dòng | 1K/2T/1L/1V + code |
+| rag | 1 | RAG: người thủ thư tìm bằng chứng | Đọc dữ liệu đầu vào, Dictionary: tra theo tên, Điều kiện, Hàm và return | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| rag | 2 | Python: đọc một phiếu tài liệu | Biến và giá trị, Dictionary: tra theo tên, Điều kiện, Vòng lặp, Hàm và return | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| rag | 3 | Token và bộ tách từ đồ chơi | Danh sách và chỉ số, Hàm và return | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| rag | 4 | Context như chiếc ba lô có giới hạn | Đọc ký hiệu toán, Danh sách và chỉ số, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 9 dòng | 1K/2T/1L/1V + code |
+| rag | 5 | LLM chọn token tiếp theo thế nào? | Điều kiện, Danh sách và chỉ số | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| rag | 6 | Attention: pha thông tin có trọng số | Phần trăm, Tổng và cộng dồn | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| rag | 7 | Prompt có nguồn, ràng buộc và đầu ra | Danh sách và chỉ số, Dictionary: tra theo tên, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| rag | 8 | RAG, fine-tuning và RLHF khác nhau | Dictionary: tra theo tên, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| rag | 9 | Kiểm tra: LLM và bằng chứng | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| rag | 10 | Nạp nguồn và giữ metadata | Dictionary: tra theo tên, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| rag | 11 | Cắt tài liệu thành các đoạn vừa tay | Danh sách và chỉ số, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| rag | 12 | Overlap: nối ngữ cảnh mà không lặp thừa | Đọc ký hiệu toán, Danh sách và chỉ số, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| rag | 13 | Vector đồ chơi: đếm từ thành tọa độ | Danh sách và chỉ số, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| rag | 14 | Cosine: so hướng, không chỉ độ dài | Tọa độ trên mặt phẳng, Tổng và cộng dồn | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 9 dòng | 1K/2T/1L/1V + code |
+| rag | 15 | Tìm top-K trong không gian vector | Danh sách và chỉ số, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 3 mốc | 7 dòng | 1K/2T/1L/1V + code |
+| rag | 16 | Từ khóa và ý nghĩa: hai cách tìm | Danh sách và chỉ số, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| rag | 17 | ID ổn định và gộp tài liệu trùng | Danh sách và chỉ số, Dictionary: tra theo tên, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 6 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| rag | 18 | Kiểm tra: nạp nguồn và truy xuất | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| rag | 19 | Hybrid search: trộn thứ hạng bằng RRF | Phân số và tỷ lệ, Tổng và cộng dồn | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 6 mốc | 7 dòng | 1K/2T/1L/1V + code |
+| rag | 20 | Reranking: đọc kỹ những ứng viên đã có | Danh sách và chỉ số, Dictionary: tra theo tên | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| rag | 21 | Lắp context và nén có trách nhiệm | Đọc ký hiệu toán, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 9 dòng | 1K/2T/1L/1V + code |
+| rag | 22 | Trích dẫn: từ câu trả lời về đúng đoạn | Danh sách và chỉ số, Dictionary: tra theo tên | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 5 dòng | 1K/2T/1L/1V + code |
+| rag | 23 | Biết nói chưa đủ bằng chứng | Điều kiện, Phần trăm | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| rag | 24 | Đánh giá retrieval: đúng và đủ | Phân số và tỷ lệ, Phần trăm | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 6 dòng | 1K/2T/1L/1V + code |
+| rag | 25 | Quyền truy cập và prompt injection | Điều kiện, Dictionary: tra theo tên | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| rag | 26 | Index cập nhật và truy vết phiên bản | Dictionary: tra theo tên, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 7 dòng | 1K/2T/1L/1V + code |
+| rag | 27 | Ghép hệ RAG có thể kiểm chứng | Danh sách và chỉ số, Dictionary: tra theo tên | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| rag | 28 | Kiểm tra tổng hợp RAG & LLM | Ôn kỹ năng trong chặng | — | — | 10 câu + 2 bài | Bài tổng hợp | Theo câu hỏi | 2 bài bắt buộc | 2K/3T/2L/3V |
+| rag | 29 | Multi-query: nhiều cách hỏi, một tập nguồn | Danh sách và chỉ số, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 6 mốc | 8 dòng | 1K/2T/1L/1V + code |
+| rag | 30 | MMR: liên quan nhưng bớt trùng lặp | Phần trăm, Vòng lặp | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 12 dòng | 1K/2T/1L/1V + code |
+| rag | 31 | Graph RAG: đi theo quan hệ có nguồn | Danh sách và chỉ số, Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 2 dòng | 1K/2T/1L/1V + code |
+| rag | 32 | Time-aware: tài liệu còn hiệu lực | Điều kiện | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 4 mốc | 3 dòng | 1K/2T/1L/1V + code |
+| rag | 33 | MRR: tìm đúng sớm quan trọng thế nào? | Phân số và tỷ lệ, Trung bình cộng | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 2 mốc | 7 dòng | 1K/2T/1L/1V + code |
+| rag | 34 | Phỏng vấn thiết kế RAG bằng bằng chứng | Phân số và tỷ lệ, Phần trăm | 3 | 3 | 8 | Đã có ví dụ và lỗi/ranh giới riêng | 5 mốc | 6 dòng | 1K/2T/1L/1V + code |
 
 ## Tổng hợp
 
-- 223 buổi học và 23 kiểm tra.
-- 1784 vị trí hoạt động; đề/data của lượt được cố định bằng seed.
+- 308 buổi học và 32 kiểm tra.
+- 2464 vị trí hoạt động; đề/data của lượt được cố định bằng seed.
 - 15 bài bổ trợ, mỗi bài có một kiểm tra nhẹ và hai câu thực hành.
-- ID, số buổi và tiến độ học thuật được giữ nguyên.
-- Nguồn và các hiệu đính của sáu khóa vẫn nằm trong catalog gốc.
+- ID, số buổi và tiến độ học thuật của các khóa đã có được giữ nguyên.
+- Nguồn và các hiệu đính của các khóa đã đăng ký vẫn nằm trong catalog gốc.

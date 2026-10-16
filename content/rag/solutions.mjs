@@ -91,7 +91,7 @@ citations:`def solve(data):
     texts = {source["id"]: source["text"] for source in data["sources"]}
     return [{"id": claim["id"], "supported": bool(claim["quote"])
              and claim["sourceId"] in texts
-             and claim["quote"] in texts[claim["sourceId"]] for claim in data["claims"]]`,
+             and claim["quote"] in texts[claim["sourceId"]]} for claim in data["claims"]]`,
 abstain:`def solve(data):
     return "answer" if any(score >= data["threshold"] for score in data["scores"]) else "abstain"`,
 metrics:`def solve(data):

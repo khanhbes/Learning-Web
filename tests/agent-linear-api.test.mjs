@@ -37,7 +37,7 @@ test('AI Agent and Linear Algebra sources, preferences, lesson-one drafts and ba
   const {store,app,call}=await fixture();
   try {
     const courses=(await call('GET','/api/courses')).body.courses;
-    assert.equal(courses.length,6);
+    assert.equal(courses.length,9);
     for(const [id,sourceCount] of [['agent',8],['linear',10]]) {
       const def=getCourse(id);
       assert.equal(def.course.runtime,'pyodide');

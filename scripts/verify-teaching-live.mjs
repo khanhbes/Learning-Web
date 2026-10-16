@@ -13,6 +13,7 @@ const origin=settings.publicOrigin??settings.origin;
 const login=await fetch(origin+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify({password:settings.password})});
 assert.equal(login.status,200,'Existing password must still work');
 const cookie=login.headers.get('set-cookie')?.split(';')[0];assert.ok(cookie);
+try{
 const get=async path=>{const r=await fetch(origin+path,{headers:{cookie,Origin:origin}});assert.equal(r.status,200,path);return r.json();};
 const report={origin,online:true,existingPassword:true,courses:[],teachingVersion:TEACHING_VERSION};
 const courses=(await get('/api/courses')).courses;assert.equal(courses.length,Object.keys(courseRegistry).length);
@@ -38,5 +39,9 @@ const html=await fetch(origin);assert.equal(html.status,200);assert.ok((await ht
 report.frontendPublished=true;
 assert.equal((await fetch(origin+'/api/courses')).status,401);report.privateApisProtected=true;
 const health=await get('/api/health');assert.equal(health.mlRunner.available,true);report.pythonRunnerAvailable=true;
+if(courseRegistry.docker){assert.equal(health.dockerRunner.available,true);report.dockerSimulationAvailable=true;}
 writeFileSync('output/teaching-live-report.json',JSON.stringify(report,null,2));
 console.log(JSON.stringify(report));
+}finally{
+  await fetch(origin+'/api/auth/logout',{method:'POST',headers:{cookie,Origin:origin}}).catch(()=>{});
+}

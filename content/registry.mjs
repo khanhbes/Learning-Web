@@ -14,7 +14,7 @@ import { corrections } from "./sources-map.mjs";
 import {installTeaching} from './pedagogy/index.mjs';
 const dsaSources=JSON.parse(readFileSync(new URL("./sources.json",import.meta.url),"utf8"));
 function extension(definition, sourceDirectory, runtime, languages, description, helpers) {
-  return {...definition,sourceDirectory,course:{...definition.course,languages,runtime,description},
+  return {...definition,sourceDirectory,course:{...definition.course,languages,runtime,description,capstoneTitle:definition.course.capstoneTitle??definition.course.capstone?.title},
     sources:definition.sourceCatalog.map(s=>({...s,collection:s.packTitle??s.collection,topic:s.title??s.topic,url:`/sources/${definition.course.id}/${s.file}`})),helpers};
 }
 export const courseRegistry={

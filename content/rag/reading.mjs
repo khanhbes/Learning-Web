@@ -11,7 +11,7 @@ export const notes=[
     "analogy": "Thư viện đổi hạn trả sách: Bitty nên nhớ theo trí nhớ hay mở nội quy mới?",
     "concept": "Một người thủ thư giỏi tìm đúng phiếu trước khi trả lời. RAG cũng truy xuất tài liệu, đưa phần liên quan vào ngữ cảnh rồi mới tạo câu trả lời. Tài liệu giúp kiểm chứng và cập nhật thông tin, nhưng bản thân tài liệu vẫn có thể sai hoặc cũ. Hôm nay mình chỉ tra đúng ID và đọc câu trả lời đã có.",
     "algorithm": [
-      "Đọc source Id được hỏi",
+      "Đọc sourceId được hỏi",
       "Duyệt các phiếu nguồn",
       "Nếu ID khớp, lấy answer của phiếu ấy",
       "Không có nguồn thì trả null"
@@ -33,20 +33,20 @@ export const notes=[
         "Hợp đồng yêu cầu ID chính xác, không có thì báo thiếu thay vì lấy nhầm phiếu."
       ],
       [
-        "Nội quy mới B ghi14 ngày, bản A ghi7 ngày; yêu cầu source Id=B. Lấy nội dung nào?",
+        "Nội quy mới B ghi 14 ngày, bản A ghi 7 ngày; yêu cầu sourceId=B. Lấy nội dung nào?",
         "Nội dung phiếu B",
         "Nội dung A vì xuất hiện trước",
-        "Trung bình7 và 14 ngày",
+        "Trung bình 7 và 14 ngày",
         "ID chỉ rõ nguồn cần đọc. Đúng phép tra chưa chứng minh B là chính sách hợp lệ ngoài dữ liệu bài."
       ]
     ],
     "terms": [
       "Retrieval|Tìm thông tin theo yêu cầu|Lấy phiếu B.",
-      "Con text|Ngữ cảnh được đưa cho lượt trả lời|Đoạn nội quy đã lấy.",
+      "Context|Ngữ cảnh được đưa cho lượt trả lời|Đoạn nội quy đã lấy.",
       "Grounding|Gắn phát biểu với bằng chứng cụ thể|Đọc câu và nguồn đi kèm."
     ],
     "bridges": "input,dictionaries,conditions,functions",
-    "example": "Đọc source Id được hỏi → Duyệt các phiếu nguồn → Nếu ID khớp, lấy answer của phiếu ấy → Không có nguồn thì trả null",
+    "example": "Đọc sourceId được hỏi → Duyệt các phiếu nguồn → Nếu ID khớp, lấy answer của phiếu ấy → Không có nguồn thì trả null",
     "formula": "Không có nguồn thì trả null"
   },
   {
@@ -62,7 +62,7 @@ export const notes=[
     "algorithm": [
       "Nhận danh sách docs",
       "Đọc khóa id của từng doc",
-      "So id với source Id",
+      "So id với sourceId",
       "Return answer khi khớp, None khi không tìm thấy"
     ],
     "trap": "Không dùng if answer để quyết định nguồn tồn tại: chuỗi rỗng vẫn có thể là giá trị hợp lệ.",
@@ -95,7 +95,7 @@ export const notes=[
       "None|Giá trị Python biểu thị không có|JSON chuyển thành null."
     ],
     "bridges": "variables,dictionaries,conditions,loops,functions",
-    "example": "Nhận danh sách docs → Đọc khóa id của từng doc → So id với source Id → Return answer khi khớp, None khi không tìm thấy",
+    "example": "Nhận danh sách docs → Đọc khóa id của từng doc → So id với sourceId → Return answer khi khớp, None khi không tìm thấy",
     "formula": "Return answer khi khớp, None khi không tìm thấy"
   },
   {
@@ -112,9 +112,9 @@ export const notes=[
       "Đọc text",
       "Tách theo khoảng trắng liên tiếp",
       "Bỏ mảnh rỗng ở đầu và cuối",
-      "Trả token s cùng số phần tử"
+      "Trả tokens cùng số phần tử"
     ],
-    "trap": "Một từ không luôn bằng một token trong token izer thật; dấu câu cũng phụ thuộc token izer.",
+    "trap": "Một từ không luôn bằng một token trong tokenizer thật; dấu câu cũng phụ thuộc tokenizer.",
     "quiz": [
       [
         "Token thật có bắt buộc là một từ hoàn chỉnh?",
@@ -124,39 +124,39 @@ export const notes=[
         "Tokenizer quyết định đơn vị; ví dụ split chỉ để học thao tác."
       ],
       [
-        "text=\"a b\" trong bộ tách của bài có count bao nhiêu?",
+        "text=\"a  b\" có hai dấu cách giữa a và b. Bộ tách của bài cho count bao nhiêu?",
         "2",
         "3",
         "4",
         "Hai khoảng trắng là một ranh giới, không phải token rỗng."
       ],
       [
-        "Dùng count của split để bảo đảm vừa con text của mọi LLM được không?",
-        "Không; cần token izer/cách tính của model",
+        "Dùng count của split để bảo đảm vừa context của mọi LLM được không?",
+        "Không; cần tokenizer/cách tính của model",
         "Được nếu văn bản tiếng Anh",
         "Được nếu ít dấu câu",
         "Tokenizer thật có vocabulary và quy tắc khác; split không cung cấp bảo đảm ấy."
       ]
     ],
     "terms": [
-      "Token|Đơn vị token izer xử lý|Một mảnh từ.",
+      "Token|Đơn vị tokenizer xử lý|Một mảnh từ.",
       "Tokenizer|Quy tắc đổi văn bản thành token|BPE là một họ cách tách.",
       "Whitespace|Khoảng trắng, tab, xuống dòng|a rồi tab rồi b."
     ],
     "bridges": "lists,functions",
-    "example": "Đọc text → Tách theo khoảng trắng liên tiếp → Bỏ mảnh rỗng ở đầu và cuối → Trả token s cùng số phần tử",
-    "formula": "Trả token s cùng số phần tử"
+    "example": "Đọc text → Tách theo khoảng trắng liên tiếp → Bỏ mảnh rỗng ở đầu và cuối → Trả tokens cùng số phần tử",
+    "formula": "Trả tokens cùng số phần tử"
   },
   {
     "id": 4,
-    "title": "Con text như chiếc ba lô có giới hạn",
+    "title": "Context như chiếc ba lô có giới hạn",
     "page": 3,
     "pids": [
       "budget"
     ],
-    "hook": "Ba lô còn4 ô: bỏ qua sách9 ô rồi lấy tờ giấy2 ô được không?",
-    "analogy": "Ba lô còn4 ô: bỏ qua sách9 ô rồi lấy tờ giấy2 ô được không?",
-    "concept": "Con text budget là số chỗ còn lại sau khi dành phần cho chỉ dẫn và câu trả lời. Mỗi chunk của bài có chi phí đã biết. Mình duyệt theo thứ tự, lấy phần vừa chỗ và bỏ qua phần quá lớn. Đây là chính sách đóng gói cụ thể; thư viện thật có thể báo lỗi hoặc cắt bớt theo cấu hình, không mặc định quên phần đầu.",
+    "hook": "Ba lô còn 4 ô: bỏ qua sách 9 ô rồi lấy tờ giấy 2 ô được không?",
+    "analogy": "Ba lô còn 4 ô: bỏ qua sách 9 ô rồi lấy tờ giấy 2 ô được không?",
+    "concept": "Context budget là số chỗ còn lại sau khi dành phần cho chỉ dẫn và câu trả lời. Mỗi chunk của bài có chi phí đã biết. Mình duyệt theo thứ tự, lấy phần vừa chỗ và bỏ qua phần quá lớn. Đây là chính sách đóng gói cụ thể; thư viện thật có thể báo lỗi hoặc cắt bớt theo cấu hình, không mặc định quên phần đầu.",
     "algorithm": [
       "Tính limit trừ reserved",
       "Đọc chunk theo thứ tự",
@@ -166,17 +166,17 @@ export const notes=[
     "trap": "Không cộng reserved vào chỗ trống, và không dừng khi gặp chunk quá lớn trong chính sách bài này.",
     "quiz": [
       [
-        "limit15, reserved5 thì ngữ cảnh có bao nhiêu chỗ?",
+        "limit 15, reserved 5 thì ngữ cảnh có bao nhiêu chỗ?",
         "10",
         "20",
         "15",
         "Phần reserved đã chiếm chỗ nên phải trừ khỏi limit."
       ],
       [
-        "Còn4, chunk đầu9, chunk sau2. Bài này giữ gì?",
-        "Chunk sau2",
+        "Còn 4, chunk đầu 9, chunk sau 2. Bài này giữ gì?",
+        "Chunk sau 2",
         "Không giữ gì vì dừng ngay",
-        "Chunk9 vì ưu tiên đầu",
+        "Chunk 9 vì ưu tiên đầu",
         "Chính sách nói bỏ qua chunk không vừa rồi xét tiếp, khác giữ một tiền tố liên tiếp."
       ],
       [
@@ -188,11 +188,11 @@ export const notes=[
       ]
     ],
     "terms": [
-      "Budget|Giới hạn tài nguyên được dùng|Còn10 đơn vị.",
+      "Budget|Giới hạn tài nguyên được dùng|Còn 10 đơn vị.",
       "Reserved|Phần để riêng trước khi lấy tài liệu|5 đơn vị cho đầu ra.",
       "Chunk|Một đoạn tài liệu|Đoạn nội quy."
     ],
-    "bridges": "arithmetic,lists,conditions",
+    "bridges": "notation,lists,conditions",
     "example": "Tính limit trừ reserved → Đọc chunk theo thứ tự → Nếu vừa thì thêm ID và giảm remaining → Bỏ qua chunk không vừa, trả used và remaining",
     "formula": "Bỏ qua chunk không vừa, trả used và remaining"
   },
@@ -252,14 +252,14 @@ export const notes=[
     "pids": [
       "attention"
     ],
-    "hook": "Một ly gồm25%thành phần2 và 75%thành phần6: kết quả là gì?",
-    "analogy": "Một ly gồm25%thành phần2 và 75%thành phần6: kết quả là gì?",
+    "hook": "Một ly gồm 25% thành phần 2 và 75% thành phần 6: kết quả là gì?",
+    "analogy": "Một ly gồm 25% thành phần 2 và 75% thành phần 6: kết quả là gì?",
     "concept": "Attention phối hợp các vector giá trị theo trọng số tính từ quan hệ giữa query và key. Bài nhập môn chỉ xét một chiều và trọng số cho sẵn: nhân từng value với phần trăm rồi cộng. Attention thật còn có phép chiếu, softmax và masking. Decoder self-attention che tương lai; cross-attention tới encoder không mặc nhiên dùng cùng mặt nạ tương lai.",
     "algorithm": [
       "Ghép weight với value cùng vị trí",
       "Nhân từng cặp",
       "Cộng các tích",
-      "Chia100 để đổi phần trăm về trọng số"
+      "Chia 100 để đổi phần trăm về trọng số"
     ],
     "trap": "Trọng số lớn thể hiện mức phối hợp trong phép tính, không phải lời giải thích đầy đủ cho suy nghĩ của model.",
     "quiz": [
@@ -268,30 +268,30 @@ export const notes=[
         "5",
         "8",
         "4",
-        "0.25 × 2+0.75 × 6=5; không lấy tổng hoặc trung bình không trọng số."
+        "0.25 × 2 + 0.75 × 6 = 5; không lấy tổng hoặc trung bình không trọng số."
       ],
       [
-        "Weight0 và value99 đóng góp bao nhiêu?",
+        "Weight 0 và value 99 đóng góp bao nhiêu?",
         "0",
         "99",
         "Không tính được",
-        "0 × 99/100=0. Giá trị lớn không đóng góp nếu trọng số bằng0."
+        "0 × 99/100=0. Giá trị lớn không đóng góp nếu trọng số bằng 0."
       ],
       [
         "Chỉ từ attention weight có khẳng định model tin nguồn đúng không?",
         "Không; trọng số phối hợp khác độ đúng của nguồn",
         "Có, weight cao luôn đúng",
-        "Có, nếu tổng100",
+        "Có, nếu tổng 100",
         "Phép toán trộn thông tin không tự kiểm chứng sự thật của nguồn."
       ]
     ],
     "terms": [
-      "Attention|Phối hợp value theo trọng số|25%và 75%.",
+      "Attention|Phối hợp value theo trọng số|25% và 75%.",
       "Value|Thông tin được phối hợp|2 và 6.",
       "Mask|Điều kiện che vị trí không được đọc|Token tương lai."
     ],
-    "bridges": "percentages,summation",
-    "example": "Ghép weight với value cùng vị trí → Nhân từng cặp → Cộng các tích → Chia100 để đổi phần trăm về trọng số",
+    "bridges": "percentages,sums",
+    "example": "Ghép weight với value cùng vị trí → Nhân từng cặp → Cộng các tích → Chia 100 để đổi phần trăm về trọng số",
     "formula": "output=Σweightᵢ×valueᵢ/100"
   },
   {
@@ -303,10 +303,10 @@ export const notes=[
     ],
     "hook": "Một câu nghe rất chắc nhưng gắn nguồn không chứa câu ấy: có nhận không?",
     "analogy": "Một câu nghe rất chắc nhưng gắn nguồn không chứa câu ấy: có nhận không?",
-    "concept": "Prompt hữu ích nêu nhiệm vụ, nguồn được dùng và cách báo thiếu bằng chứng. Mình đặt nguồn thành dữ liệu riêng với chỉ dẫn. Trong phòng này, checker chỉ xác nhận quote không rỗng, source Id tồn tại và chứa đúng đoạn trích. Không suy từ một câu trích đúng rằng mọi lập luận quanh nó cũng đúng.",
+    "concept": "Prompt hữu ích nêu nhiệm vụ, nguồn được dùng và cách báo thiếu bằng chứng. Mình đặt nguồn thành dữ liệu riêng với chỉ dẫn. Trong phòng này, checker chỉ xác nhận quote không rỗng, sourceId tồn tại và chứa đúng đoạn trích. Không suy từ một câu trích đúng rằng mọi lập luận quanh nó cũng đúng.",
     "algorithm": [
       "Đọc từng claim",
-      "Tìm source Id trong source s",
+      "Tìm sourceId trong source s",
       "Kiểm quote không rỗng và có nguyên văn",
       "Ghi supported cho từng claim"
     ],
@@ -320,7 +320,7 @@ export const notes=[
         "Nguồn có thể đối chiếu cho phép kiểm bằng chứng cụ thể."
       ],
       [
-        "source Id đúng nhưng quote rỗng có supported=true?",
+        "sourceId đúng nhưng quote rỗng có supported=true?",
         "Không",
         "Có vì rỗng là chuỗi con",
         "Có nếu câu ngắn",
@@ -329,18 +329,18 @@ export const notes=[
       [
         "Nguồn chứa “7 days”, câu trả lời trích “14 days”. Kết quả?",
         "Không được hỗ trợ bởi đoạn trích",
-        "Được vì cùng đơn vịdays",
-        "Được vì có source Id",
+        "Được vì cùng đơn vị days",
+        "Được vì có sourceId",
         "So nguyên văn theo hợp đồng; cùng chủ đề không thay thế bằng chứng."
       ]
     ],
     "terms": [
       "Instruction|Yêu cầu dành cho hệ thống|Trả lời kèm nguồn.",
-      "Citation|Dẫn chiếu tới bằng chứng|NguồnA, đoạn nguyên văn.",
+      "Citation|Dẫn chiếu tới bằng chứng|Nguồn A, đoạn nguyên văn.",
       "Claim|Một phát biểu cần kiểm|Thư viện mở 9 giờ."
     ],
     "bridges": "lists,dictionaries,conditions",
-    "example": "Đọc từng claim → Tìm source Id trong source s → Kiểm quote không rỗng và có nguyên văn → Ghi supported cho từng claim",
+    "example": "Đọc từng claim → Tìm sourceId trong source s → Kiểm quote không rỗng và có nguyên văn → Ghi supported cho từng claim",
     "formula": "Ghi supported cho từng claim"
   },
   {
@@ -373,7 +373,7 @@ export const notes=[
         "Không; chưa có cập nhật tham số qua huấn luyện",
         "Có; model đã đọc văn bản",
         "Có nếu dùng nhiều ví dụ",
-        "In-con text examples và huấn luyện là hai cơ chế khác nhau."
+        "In-context examples và huấn luyện là hai cơ chế khác nhau."
       ],
       [
         "Giờ làm việc đổi hằng ngày, theo policy bài chọn gì?",
@@ -432,7 +432,7 @@ export const notes=[
       "Kiểm expiresAt lớn hơn now",
       "Giữ ID hợp lệ theo thứ tự gốc"
     ],
-    "trap": "Lọc quyền sau khi gửi tài liệu cho LLM là quá muộn: dữ liệu đã lọt vào con text.",
+    "trap": "Lọc quyền sau khi gửi tài liệu cho LLM là quá muộn: dữ liệu đã lọt vào context.",
     "quiz": [
       [
         "Metadata có ích gì ngoài nội dung?",
@@ -458,7 +458,7 @@ export const notes=[
     ],
     "terms": [
       "Metadata|Thông tin kèm nội dung|ID, trang, tenant.",
-      "Tenant|Phạm vi dữ liệu tách biệt|TrườngA.",
+      "Tenant|Phạm vi dữ liệu tách biệt|Trường A.",
       "Provenance|Dấu vết nguồn gốc|File và trang gốc."
     ],
     "bridges": "dictionaries,conditions",
@@ -472,9 +472,9 @@ export const notes=[
     "pids": [
       "chunks"
     ],
-    "hook": "Tờ nội quy dài: cắt từng3 từ và giữ vị trí để ghép lại?",
-    "analogy": "Tờ nội quy dài: cắt từng3 từ và giữ vị trí để ghép lại?",
-    "concept": "Chunk là một đoạn được truy xuất riêng. Đoạn cần đủ ngữ cảnh để hiểu và đủ nhỏ để tìm phần liên quan. Phòng này cắt mảng token theo kích thước cho sẵn, giữ start làm vị trí nguồn. Trước tiên dùng overlap0 để thấy các đoạn nối nhau. Không có kích thước tốt nhất chung cho mọi tài liệu.",
+    "hook": "Tờ nội quy dài: cắt từng 3 từ và giữ vị trí để ghép lại?",
+    "analogy": "Tờ nội quy dài: cắt từng 3 từ và giữ vị trí để ghép lại?",
+    "concept": "Chunk là một đoạn được truy xuất riêng. Đoạn cần đủ ngữ cảnh để hiểu và đủ nhỏ để tìm phần liên quan. Phòng này cắt mảng token theo kích thước cho sẵn, giữ start làm vị trí nguồn. Trước tiên dùng overlap 0 để thấy các đoạn nối nhau. Không có kích thước tốt nhất chung cho mọi tài liệu.",
     "algorithm": [
       "Bắt đầu tại chỉ số 0",
       "Lấy tối đa size token",
@@ -487,27 +487,27 @@ export const notes=[
         "Vì sao giữ start của chunk?",
         "Để lần về vị trí trong tài liệu gốc",
         "Để score luôn cao",
-        "Để không cần source Id",
+        "Để không cần sourceId",
         "Vị trí giúp đối chiếu trích đoạn và kiểm mất/trùng nội dung."
       ],
       [
-        "6 token, size3, overlap0 có bao nhiêu đoạn?",
+        "6 token, size 3, overlap 0 có bao nhiêu đoạn?",
         "2",
         "3 vì thêm đoạn rỗng",
         "1",
-        "Hai đoạn start0 và 3 đã phủ hết, không có đoạn start6 rỗng."
+        "Hai đoạn start 0 và 3 đã phủ hết, không có đoạn start 6 rỗng."
       ],
       [
         "Nội dung trả lời bị tách giữa hai đoạn. Điều chỉnh gì cần thử?",
         "Ranh giới đoạn hoặc overlap và đo lại retrieval",
         "Luôn giảm size về 1",
-        "Xóa source Id cho gọn",
+        "Xóa sourceId cho gọn",
         "Cần giữ ngữ cảnh và kiểm trên câu hỏi thật, không chọn số tùy ý."
       ]
     ],
     "terms": [
       "Chunk|Đoạn được tìm độc lập|Ba token một đoạn.",
-      "Start|Chỉ số đầu của đoạn|0 hoặc3.",
+      "Start|Chỉ số đầu của đoạn|0 hoặc 3.",
       "Size|Số token tối đa trong đoạn|size=3."
     ],
     "bridges": "lists,loops",
@@ -523,31 +523,31 @@ export const notes=[
     ],
     "hook": "Kéo hai mảnh giấy chồng một ô: ô bắt đầu kế tiếp ở đâu?",
     "analogy": "Kéo hai mảnh giấy chồng một ô: ô bắt đầu kế tiếp ở đâu?",
-    "concept": "Overlap giúp hai đoạn chia sẻ một phần ngữ cảnh. Với size3 và overlap1, start tăng2 chứ không tăng3. Khi một đoạn đã phủ tới cuối, ta dừng để tránh tạo thêm đoạn chỉ lặp phần đuôi. Overlap quá nhiều tăng dung lượng và có thể lặp cùng bằng chứng trong con text.",
+    "concept": "Overlap giúp hai đoạn chia sẻ một phần ngữ cảnh. Với size 3 và overlap 1, start tăng 2 chứ không tăng 3. Khi một đoạn đã phủ tới cuối, ta dừng để tránh tạo thêm đoạn chỉ lặp phần đuôi. Overlap quá nhiều tăng dung lượng và có thể lặp cùng bằng chứng trong context.",
     "algorithm": [
       "Tính bước trượt size-overlap",
       "Cắt đoạn tại start hiện tại",
       "Kiểm đoạn đã chạm cuối hay chưa",
       "Chỉ chuyển start nếu còn phần chưa phủ"
     ],
-    "trap": "overlap phải nhỏ hơn size; nếu bằng size thì bước trượt0 không tiến lên.",
+    "trap": "overlap phải nhỏ hơn size; nếu bằng size thì bước trượt 0 không tiến lên.",
     "quiz": [
       [
-        "size4, overlap1 thì bước trượt là bao nhiêu?",
+        "size 4, overlap 1 thì bước trượt là bao nhiêu?",
         "3",
         "4",
         "5",
-        "Phần chồng1 được giữ lại nên chuyển thêm4−1=3."
+        "Phần chồng 1 được giữ lại nên chuyển thêm 4−1=3."
       ],
       [
-        "Có 2 token, size2, overlap1. Có cần đoạn thứ hai?",
+        "Có 2 token, size 2, overlap 1. Có cần đoạn thứ hai?",
         "Không; đoạn đầu đã phủ hết",
         "Có; phải lặp token cuối",
         "Có; tới khi start bằng len",
         "Điều kiện dừng là đã phủ cuối, tránh tạo đuôi dư."
       ],
       [
-        "Overlap tăng từ 1 lên2 với size3 thì điều gì thường tăng?",
+        "Overlap tăng từ 1 lên 2 với size 3 thì điều gì thường tăng?",
         "Số đoạn và token lưu lặp",
         "Số từ gốc của tài liệu",
         "Độ đúng được bảo đảm",
@@ -559,7 +559,7 @@ export const notes=[
       "Stride|Mức dịch điểm bắt đầu|size−overlap.",
       "Coverage|Phần tài liệu đã được phủ|Dừng khi chạm cuối."
     ],
-    "bridges": "arithmetic,lists,loops",
+    "bridges": "notation,lists,loops",
     "example": "Tính bước trượt size-overlap → Cắt đoạn tại start hiện tại → Kiểm đoạn đã chạm cuối hay chưa → Chỉ chuyển start nếu còn phần chưa phủ",
     "formula": "start kế tiếp = start + size − overlap"
   },
@@ -570,19 +570,19 @@ export const notes=[
     "pids": [
       "bow"
     ],
-    "hook": "Đếm book vàdays: làm sao biến một đoạn thành hai con số?",
-    "analogy": "Đếm book vàdays: làm sao biến một đoạn thành hai con số?",
+    "hook": "Đếm book và days: làm sao biến một đoạn thành hai con số?",
+    "analogy": "Đếm book và days: làm sao biến một đoạn thành hai con số?",
     "concept": "Vector là danh sách số theo các chiều có ý nghĩa đã định. Mình dùng từ điển cố định và đếm mỗi từ để nhìn được từng con số. Đây là bag-of-words, khác embedding học được từ dữ liệu. Từ “book” lặp hai lần tạo số 2 ở đúng chiều; từ ngoài từ điển không tạo chiều mới.",
     "algorithm": [
       "Đọc vocab theo thứ tự",
-      "Đếm từng từ vocab trong token s",
+      "Đếm từng từ vocab trong tokens",
       "Bỏ từ ngoài vocab",
       "Trả vector cùng thứ tự vocab"
     ],
     "trap": "Không đổi thứ tự vocab ở phía query so với phía tài liệu; cùng số chiều chưa đủ nếu ý nghĩa chiều khác nhau.",
     "quiz": [
       [
-        "vocab[book, days], token s[book, book] cho vector nào?",
+        "vocab[book, days], tokens[book, book] cho vector nào?",
         "[2, 0]",
         "[0, 2]",
         "[1, 0]",
@@ -598,7 +598,7 @@ export const notes=[
       [
         "Query dùng[book, days], doc dùng[days, book]. Có so trực tiếp được không?",
         "Không; phải thống nhất ý nghĩa chiều",
-        "Được vì đều2 chiều",
+        "Được vì đều 2 chiều",
         "Được nếu cosine dương",
         "Đổi thứ tự biến các tọa độ thành đại lượng khác."
       ]
@@ -609,7 +609,7 @@ export const notes=[
       "Bag-of-words|Biểu diễn đếm từ|Không hiểu từ đồng nghĩa."
     ],
     "bridges": "lists,loops",
-    "example": "Đọc vocab theo thứ tự → Đếm từng từ vocab trong token s → Bỏ từ ngoài vocab → Trả vector cùng thứ tự vocab",
+    "example": "Đọc vocab theo thứ tự → Đếm từng từ vocab trong tokens → Bỏ từ ngoài vocab → Trả vector cùng thứ tự vocab",
     "formula": "Trả vector cùng thứ tự vocab"
   },
   {
@@ -621,14 +621,14 @@ export const notes=[
     ],
     "hook": "Hai mũi tên dài khác nhau nhưng cùng hướng có giống nhau không?",
     "analogy": "Hai mũi tên dài khác nhau nhưng cùng hướng có giống nhau không?",
-    "concept": "Cosine đo độ đồng hướng: nhân cặp tọa độ rồi chia cho tích độ dài. Hai vector cùng hướng có cosine1 dù dài khác nhau; ngược hướng có thể−1. Vector0 không có hướng nên bài trả null. Các điểm trên hình là vector số giả lập, không chứng minh ngữ nghĩa của văn bản thật.",
+    "concept": "Cosine đo độ đồng hướng: nhân cặp tọa độ rồi chia cho tích độ dài. Hai vector cùng hướng có cosine 1 dù dài khác nhau; ngược hướng có thể−1. Vector 0 không có hướng nên bài trả null. Các điểm trên hình là vector số giả lập, không chứng minh ngữ nghĩa của văn bản thật.",
     "algorithm": [
       "Tính tích vô hướng của a, b",
       "Tính tổng bình phương từng vector",
-      "Nếu có độ dài0 thì trả null",
+      "Nếu có độ dài 0 thì trả null",
       "Chia dot cho căn tích hai tổng bình phương"
     ],
-    "trap": "Cosine không bị giới hạn0..1 với vector bất kỳ; nó có thể âm.",
+    "trap": "Cosine không bị giới hạn 0..1 với vector bất kỳ; nó có thể âm.",
     "quiz": [
       [
         "a[1, 0], b[2, 0] có cosine bao nhiêu?",
@@ -647,18 +647,18 @@ export const notes=[
       [
         "Một vector[0, 0] thì làm gì theo hợp đồng?",
         "Trả null",
-        "Tự coi cosine1",
-        "Chia trực tiếp cho0",
-        "Vector0 không có hướng; null thể hiện phép so này chưa xác định."
+        "Tự coi cosine 1",
+        "Chia trực tiếp cho 0",
+        "Vector 0 không có hướng; null thể hiện phép so này chưa xác định."
       ]
     ],
     "terms": [
-      "Cosine|Tích vô hướng chuẩn hóa|Cùng hướng bằng1.",
+      "Cosine|Tích vô hướng chuẩn hóa|Cùng hướng bằng 1.",
       "Norm|Độ dài vector|Căn tổng bình phương.",
       "Dot product|Tổng tích tọa độ cùng vị trí|1 × 2+0 × 0."
     ],
-    "bridges": "coordinates,summation",
-    "example": "Tính tích vô hướng của a, b → Tính tổng bình phương từng vector → Nếu có độ dài0 thì trả null → Chia dot cho căn tích hai tổng bình phương",
+    "bridges": "coordinates,sums",
+    "example": "Tính tích vô hướng của a, b → Tính tổng bình phương từng vector → Nếu có độ dài 0 thì trả null → Chia dot cho căn tích hai tổng bình phương",
     "formula": "cos(a, b)=Σaᵢbᵢ / (‖a‖‖b‖)"
   },
   {
@@ -673,21 +673,21 @@ export const notes=[
     "concept": "Dense retrieval xếp các vector tài liệu theo độ tương tự với vector query. Bài dùng hai chiều để nhìn được hướng và điểm. Không so vector từ hai model khác nhau chỉ vì chúng cùng chiều. Top-K luôn bị giới hạn bởi nguồn có trong index; điểm cao không bảo đảm tài liệu có đúng câu trả lời.",
     "algorithm": [
       "Kiểm query có hướng không",
-      "Tính cosine từng doc khác vector0",
+      "Tính cosine từng doc khác vector 0",
       "Sắp score giảm và ID tăng khi hòa",
       "Lấy tối đa k kết quả"
     ],
-    "trap": "Đừng tự loại điểm âm nếu hợp đồng vẫn lấy top-K; chỉ vector0 được loại ở đây.",
+    "trap": "Đừng tự loại điểm âm nếu hợp đồng vẫn lấy top-K; chỉ vector 0 được loại ở đây.",
     "quiz": [
       [
         "K=0 cần trả gì?",
         "[]",
         "Nguồn cao nhất",
         "null",
-        "Lấy tối đa0 phần tử là danh sách rỗng."
+        "Lấy tối đa 0 phần tử là danh sách rỗng."
       ],
       [
-        "Hai doc cùng cosine1, ID BvàA. Ai đứng trước?",
+        "Hai doc cùng cosine 1, ID B và A. Ai đứng trước?",
         "A",
         "B vì tới trước",
         "Tùy mỗi lần chạy",
@@ -702,12 +702,12 @@ export const notes=[
       ]
     ],
     "terms": [
-      "Top-K|Tối đaKkết quả theo thứ hạng|Chọn hai phiếu.",
+      "Top-K|Tối đa Kkết quả theo thứ hạng|Chọn hai phiếu.",
       "Index|Cấu trúc lưu và tìm vector|Tập doc đã nạp.",
       "Dense retrieval|Truy xuất theo vector|So cosine."
     ],
     "bridges": "lists,conditions",
-    "example": "Kiểm query có hướng không → Tính cosine từng doc khác vector0 → Sắp score giảm và ID tăng khi hòa → Lấy tối đa k kết quả",
+    "example": "Kiểm query có hướng không → Tính cosine từng doc khác vector 0 → Sắp score giảm và ID tăng khi hòa → Lấy tối đa k kết quả",
     "formula": "Lấy tối đa k kết quả"
   },
   {
@@ -719,12 +719,12 @@ export const notes=[
     ],
     "hook": "Câu hỏi nhắc mã sản phẩm hiếm: tìm đúng từ có thể hữu ích thế nào?",
     "analogy": "Câu hỏi nhắc mã sản phẩm hiếm: tìm đúng từ có thể hữu ích thế nào?",
-    "concept": "Tìm từ khóa giữ tốt các mã và thuật ngữ xuất hiện nguyên văn; dense retrieval có thể tìm những cách diễn đạt gần nghĩa. Bài cài giao tập từ đơn giản: mỗi từ query chỉ đóng góp một điểm nếu có trong doc. Đây không phải BM25 vì chưa có ID F, độ dài và bão hòa tần suất.",
+    "concept": "Tìm từ khóa giữ tốt các mã và thuật ngữ xuất hiện nguyên văn; dense retrieval có thể tìm những cách diễn đạt gần nghĩa. Bài cài giao tập từ đơn giản: mỗi từ query chỉ đóng góp một điểm nếu có trong doc. Đây không phải BM25 vì chưa có IDF, độ dài và bão hòa tần suất.",
     "algorithm": [
       "Khử trùng từ query",
       "Tạo tập từ của từng doc",
       "Đếm phần giao",
-      "Bỏ score0 rồi xếp score giảm, ID tăng, lấy k"
+      "Bỏ score 0 rồi xếp score giảm, ID tăng, lấy k"
     ],
     "trap": "Lặp một từ nhiều lần không tạo thêm điểm trong bộ chấm này.",
     "quiz": [
@@ -733,7 +733,7 @@ export const notes=[
         "1",
         "2",
         "3",
-        "Tập query là{a, b}; phần giao chỉ cóa."
+        "Tập query là {a, b}; phần giao chỉ có a."
       ],
       [
         "Gọi phép đếm giao từ này là BM25 có chính xác không?",
@@ -747,7 +747,7 @@ export const notes=[
         "Không; có thể bị bỏ dù liên quan",
         "Có vì đã hiểu nghĩa",
         "Có nếu tăngKvô hạn",
-        "Điểm0 bị bỏ; thêmKkhông tự tạo khả năng hiểu từ đồng nghĩa."
+        "Điểm 0 bị bỏ; thêm K không tự tạo khả năng hiểu từ đồng nghĩa."
       ]
     ],
     "terms": [
@@ -756,8 +756,8 @@ export const notes=[
       "BM25|Công thức xếp hạng từ khóa thống kê|Không phải phép giao đơn thuần."
     ],
     "bridges": "lists,loops",
-    "example": "Khử trùng từ query → Tạo tập từ của từng doc → Đếm phần giao → Bỏ score0 rồi xếp score giảm, ID tăng, lấy k",
-    "formula": "Bỏ score0 rồi xếp score giảm, ID tăng, lấy k"
+    "example": "Khử trùng từ query → Tạo tập từ của từng doc → Đếm phần giao → Bỏ score 0 rồi xếp score giảm, ID tăng, lấy k",
+    "formula": "Bỏ score 0 rồi xếp score giảm, ID tăng, lấy k"
   },
   {
     "id": 17,
@@ -766,8 +766,8 @@ export const notes=[
     "pids": [
       "dedup"
     ],
-    "hook": "Hai truy vấn cùng tìm thấy phiếuA: có nên gửiAhai lần?",
-    "analogy": "Hai truy vấn cùng tìm thấy phiếuA: có nên gửiAhai lần?",
+    "hook": "Hai truy vấn cùng tìm thấy phiếu A: có nên gửi Ahai lần?",
+    "analogy": "Hai truy vấn cùng tìm thấy phiếu A: có nên gửi Ahai lần?",
     "concept": "Nhiều bước tìm kiếm có thể trả cùng một tài liệu. Gộp theo ID giúp tránh tốn ngữ cảnh vì bản lặp. Bài giữ thứ tự lần xuất hiện đầu tiên để không tự thay đổi ưu tiên. Hai đoạn khác nhau của cùng file nên có ID đoạn riêng; giống chữ không tự có nghĩa cùng nguồn.",
     "algorithm": [
       "Khởi tạo seen và danh sách kết quả",
@@ -782,7 +782,7 @@ export const notes=[
         "[B, A, C]",
         "[A, B, C]",
         "[B, A, A, C]",
-        "Bđến trướcA; Alặp ở bảng sau không được thêm lại."
+        "Bđến trước A; A lặp ở bảng sau không được thêm lại."
       ],
       [
         "Hai chunk cùng file nhưng khác vị trí nên dùng cùng ID không?",
@@ -792,17 +792,17 @@ export const notes=[
         "ID nguồn và ID đoạn phục vụ mức định danh khác nhau."
       ],
       [
-        "Gộp ba bản sao tài liệuA có tăng recall khi cầnAvàBkhông?",
-        "Không; vẫn chỉ tìm đượcA",
+        "Gộp ba bản sao tài liệu A có tăng recall khi cần A và B không?",
+        "Không; vẫn chỉ tìm được A",
         "Có; ba bản bằng ba hit",
-        "Có nếuAđúng sự thật",
-        "Recall dùng tài liệu liên quan duy nhất, bản sao không thay nguồnB."
+        "Có nếu A đúng sự thật",
+        "Recall dùng tài liệu liên quan duy nhất, bản sao không thay nguồn B."
       ]
     ],
     "terms": [
       "Deduplication|Loại phần tử trùng theo khóa|Mỗi ID một lần.",
       "Stable order|Giữ thứ tự đã quy định|Lần xuất hiện đầu.",
-      "Chunk ID|Mã riêng cho một đoạn|FileA: trang2: đoạn1."
+      "Chunk ID|Mã riêng cho một đoạn|File A: trang 2: đoạn 1."
     ],
     "bridges": "lists,dictionaries,loops",
     "example": "Khởi tạo seen và danh sách kết quả → Duyệt các bảng theo thứ tự → Nếu ID chưa thấy, thêm vào kết quả → Đánh dấu đã thấy và bỏ các lần lặp sau",
@@ -834,35 +834,35 @@ export const notes=[
   },
   {
     "id": 19,
-    "title": "Hybrid search: trộn thứ hạng bằng RR F",
+    "title": "Hybrid search: trộn thứ hạng bằng RRF",
     "page": 13,
     "pids": [
       "rrf"
     ],
-    "hook": "Một bộ tìm cho điểm0.9, bộ kia12: cộng thẳng có công bằng không?",
-    "analogy": "Một bộ tìm cho điểm0.9, bộ kia12: cộng thẳng có công bằng không?",
-    "concept": "Hai bộ tìm kiếm có thể dùng thang điểm khác nhau. RR F trộn vị trí trong bảng hạng thay vì cộng raw score. Mỗi ID nhận1/(c+rank)từ mỗi bảng có nó, rank bắt đầu1. Nhờ đó tài liệu xuất hiện cao ở nhiều bảng có thêm đóng góp. Đây là chiến lược cần đánh giá, không bảo đảm luôn tốt hơn từng bộ.",
+    "hook": "Một bộ tìm cho điểm 0.9, bộ kia 12: cộng thẳng có công bằng không?",
+    "analogy": "Một bộ tìm cho điểm 0.9, bộ kia 12: cộng thẳng có công bằng không?",
+    "concept": "Hai bộ tìm kiếm có thể dùng thang điểm khác nhau. RRF trộn vị trí trong bảng hạng thay vì cộng raw score. Mỗi ID nhận 1/(c+rank)từ mỗi bảng có nó, rank bắt đầu 1. Nhờ đó tài liệu xuất hiện cao ở nhiều bảng có thêm đóng góp. Đây là chiến lược cần đánh giá, không bảo đảm luôn tốt hơn từng bộ.",
     "algorithm": [
       "Đọc mỗi bảng xếp hạng",
       "Đếm rank từ 1",
-      "Cộng1/(c+rank)vào điểm ID",
+      "Cộng 1/(c+rank)vào điểm ID",
       "Sắp điểm tổng giảm, hòa ID rồi lấy k"
     ],
-    "trap": "Không dùng rank0; c=1 và hạng1 phải đóng góp1/2, không phải1.",
+    "trap": "Không dùng rank 0; c=1 và hạng 1 phải đóng góp 1/2, không phải 1.",
     "quiz": [
       [
-        "Vì sao RR F dùng rank thay raw score?",
+        "Vì sao RRF dùng rank thay raw score?",
         "Giảm phụ thuộc vào thang điểm khác nhau",
         "Vì rank luôn là xác suất",
         "Vì không cần tài liệu nguồn",
         "Vị trí có thể kết hợp khi cosine và điểm từ khóa không cùng thang."
       ],
       [
-        "c1, rank1 đóng góp bao nhiêu?",
+        "c 1, rank 1 đóng góp bao nhiêu?",
         "0.5",
         "1",
         "2",
-        "Công thức1/(1+1)=0.5 với rank bắt đầu1."
+        "Công thức 1/(1+1)=0.5 với rank bắt đầu 1."
       ],
       [
         "Một ID không có trong bảng thứ hai nhận đóng góp gì từ bảng đó?",
@@ -874,96 +874,96 @@ export const notes=[
     ],
     "terms": [
       "Hybrid search|Kết hợp các cách truy xuất|Sparse và dense.",
-      "RR F|Cộng nghịch đảo thứ hạng có hằng số|1/(c+rank).",
+      "RRF|Cộng nghịch đảo thứ hạng có hằng số|1/(c+rank).",
       "Rank|Vị trí bắt đầu từ 1|Nguồn đứng đầu."
     ],
-    "bridges": "fractions,summation",
-    "example": "Đọc mỗi bảng xếp hạng → Đếm rank từ 1 → Cộng1/(c+rank)vào điểm ID → Sắp điểm tổng giảm, hòa ID rồi lấy k",
-    "formula": "RR F(d)=Σ 1/(c+rank(d))"
+    "bridges": "fractions,sums",
+    "example": "Đọc mỗi bảng xếp hạng → Đếm rank từ 1 → Cộng 1/(c+rank)vào điểm ID → Sắp điểm tổng giảm, hòa ID rồi lấy k",
+    "formula": "RRF(d)=Σ 1/(c+rank(d))"
   },
   {
     "id": 20,
-    "title": "Re rank ing: đọc kỹ những ứng viên đã có",
+    "title": "Reranking: đọc kỹ những ứng viên đã có",
     "page": 11,
     "pids": [
       "rerank"
     ],
-    "hook": "NguồnZrất tốt nhưng chưa có trong giỏ ứng viên: re rank er có tự lấy được?",
-    "analogy": "NguồnZrất tốt nhưng chưa có trong giỏ ứng viên: re rank er có tự lấy được?",
-    "concept": "Retriever tìm ứng viên từ kho lớn; re rank er đánh giá lại từng cặp query–tài liệu trong tập đã lấy. Bài dùng bảng score cung cấp sẵn để tập trung vào ranh giới này. Nó chỉ sắp các candidate, dù bảng score s có thêm ID khác. Cross-encoder thật cần model riêng; phòng học không giả đã chạy model ấy.",
+    "hook": "Nguồn Z rất tốt nhưng chưa có trong giỏ ứng viên: reranker có tự lấy được?",
+    "analogy": "Nguồn Z rất tốt nhưng chưa có trong giỏ ứng viên: reranker có tự lấy được?",
+    "concept": "Retriever tìm ứng viên từ kho lớn; reranker đánh giá lại từng cặp query–tài liệu trong tập đã lấy. Bài dùng bảng score cung cấp sẵn để tập trung vào ranh giới này. Nó chỉ sắp các candidate, dù bảng scores có thêm ID khác. Cross-encoder thật cần model riêng; phòng học không giả đã chạy model ấy.",
     "algorithm": [
-      "Đọc tập candidate s từ retrieval",
+      "Đọc tập candidates từ retrieval",
       "Tra score của từng candidate",
       "Xếp giảm score, hòa theo ID",
-      "Lấy top k trong candidate s"
+      "Lấy top k trong candidates"
     ],
-    "trap": "Re rank không sửa được việc nguồn cần thiết hoàn toàn vắng trong candidate s.",
+    "trap": "Re rank không sửa được việc nguồn cần thiết hoàn toàn vắng trong candidates.",
     "quiz": [
       [
-        "Re rank er của bài được xếp tài liệu nào?",
-        "Chỉ ID trong candidate s",
-        "Mọi ID trong score s",
+        "Reranker của bài được xếp tài liệu nào?",
+        "Chỉ ID trong candidates",
+        "Mọi ID trong scores",
         "Mọi tài liệu trên Internet",
         "Tập ứng viên giới hạn phạm vi xếp lại."
       ],
       [
-        "Z score100 nhưng candidate s=[A, B]. Có đưaZvào không?",
+        "Z score 100 nhưng candidates=[A, B]. Có đưa Z vào không?",
         "Không",
         "Có vì 100 cao nhất",
-        "Có nếuK=3",
-        "Score ngoài candidate s không cho phép mở rộng tập nguồn."
+        "Có nếu K=3",
+        "Score ngoài candidates không cho phép mở rộng tập nguồn."
       ],
       [
-        "Recall của candidate s thấp nên sửa gì trước?",
+        "Recall của candidates thấp nên sửa gì trước?",
         "Bước retrieval và độ phủ ứng viên",
         "Chỉ đổi màu biểu đồ",
         "Chỉ xếp lại cùng tập nhiều lần",
-        "Không có nguồn trong tập thì re rank er không có dữ liệu để chọn nó."
+        "Không có nguồn trong tập thì reranker không có dữ liệu để chọn nó."
       ]
     ],
     "terms": [
-      "Candidate|Ứng viên đã lấy ở bước đầu|AhoặcB.",
-      "Re rank er|Bộ xếp hạng lại ứng viên|Đọc cặp query–doc.",
+      "Candidate|Ứng viên đã lấy ở bước đầu|A hoặc B.",
+      "Reranker|Bộ xếp hạng lại ứng viên|Đọc cặp query–doc.",
       "Cross-encoder|Model chấm cặp query, tài liệu cùng nhau|Có chi phí riêng."
     ],
     "bridges": "lists,dictionaries",
-    "example": "Đọc tập candidate s từ retrieval → Tra score của từng candidate → Xếp giảm score, hòa theo ID → Lấy top k trong candidate s",
-    "formula": "Lấy top k trong candidate s"
+    "example": "Đọc tập candidates từ retrieval → Tra score của từng candidate → Xếp giảm score, hòa theo ID → Lấy top k trong candidates",
+    "formula": "Lấy top k trong candidates"
   },
   {
     "id": 21,
-    "title": "Lắp con text và nén có trách nhiệm",
+    "title": "Lắp context và nén có trách nhiệm",
     "page": 13,
     "pids": [
       "budget"
     ],
     "hook": "Nén một quy định mà bỏ chữ “không”: có còn là cùng bằng chứng?",
     "analogy": "Nén một quy định mà bỏ chữ “không”: có còn là cùng bằng chứng?",
-    "concept": "Con text nên có đoạn liên quan, ID và đủ điều kiện của phát biểu. Nén trích xuất giữ nguyên câu được chọn; nén diễn đạt lại có thể làm mất phủ định, ngoại lệ hoặc đơn vị. Mình chỉ đóng gói những đoạn có chi phí cho sẵn. Sau khi vừa ngân sách vẫn phải kiểm nội dung và nguồn.",
+    "concept": "Context nên có đoạn liên quan, ID và đủ điều kiện của phát biểu. Nén trích xuất giữ nguyên câu được chọn; nén diễn đạt lại có thể làm mất phủ định, ngoại lệ hoặc đơn vị. Mình chỉ đóng gói những đoạn có chi phí cho sẵn. Sau khi vừa ngân sách vẫn phải kiểm nội dung và nguồn.",
     "algorithm": [
       "Trừ reserved khỏi limit",
       "Duyệt các chunk theo ưu tiên đã có",
       "Lấy đoạn còn vừa ngân sách",
       "Báo ID, used, remaining để kiểm lại"
     ],
-    "trap": "Vừa con text không chứng minh đủ ý; đoạn bị bỏ có thể chứa điều kiện quan trọng.",
+    "trap": "Vừa context không chứng minh đủ ý; đoạn bị bỏ có thể chứa điều kiện quan trọng.",
     "quiz": [
       [
-        "Nén có nguy cơ gì với câu “không trả hàng sau7 ngày”?",
+        "Nén có nguy cơ gì với câu “không trả hàng sau 7 ngày”?",
         "Mất phủ định hoặc điều kiện có thể đảo nghĩa",
         "Luôn giữ nghĩa khi ít từ hơn",
         "Chỉ ảnh hưởng tốc độ",
         "Rút ngắn phải kiểm lại điều kiện và nguồn, không chỉ đếm token."
       ],
       [
-        "limit10, reserved10 và đoạn cost1 có lấy được không?",
+        "limit 10, reserved 10 và đoạn cost 1 có lấy được không?",
         "Không",
-        "Có vìlimit10",
+        "Có vì limit 10",
         "Có nếu đoạn liên quan nhất",
         "Không còn ngân sách cho đoạn nào: 10−10=0."
       ],
       [
-        "Sau nén còn câu nhưng mất source Id, cần làm gì?",
+        "Sau nén còn câu nhưng mất sourceId, cần làm gì?",
         "Giữ hoặc khôi phục liên kết tới nguồn",
         "Bịa một ID cho đẹp",
         "Bỏ kiểm trích dẫn",
@@ -975,7 +975,7 @@ export const notes=[
       "Extractive|Trích xuất nguyên phần từ nguồn|Giữ câu cùng điều kiện.",
       "Abstractive|Diễn đạt lại nội dung|Cần kiểm mất/đổi nghĩa."
     ],
-    "bridges": "arithmetic,conditions",
+    "bridges": "notation,conditions",
     "example": "Trừ reserved khỏi limit → Duyệt các chunk theo ưu tiên đã có → Lấy đoạn còn vừa ngân sách → Báo ID, used, remaining để kiểm lại",
     "formula": "Báo ID, used, remaining để kiểm lại"
   },
@@ -986,11 +986,11 @@ export const notes=[
     "pids": [
       "citations"
     ],
-    "hook": "Nhấn[nguồnA] mà không tìm thấy câu trích: lỗi ở đâu?",
-    "analogy": "Nhấn[nguồnA] mà không tìm thấy câu trích: lỗi ở đâu?",
-    "concept": "Một citation tốt giúp người đọc quay lại đoạn hỗ trợ phát biểu. Trong bài, source Id và quote được kiểm riêng. So nguyên văn phân biệt hoa/thường và không chấp nhận quote rỗng. Bài chỉ kiểm tính tồn tại của đoạn trích; đánh giá suy diễn và độ tin cậy nguồn còn cần tiêu chí khác.",
+    "hook": "Nhấn[nguồn A] mà không tìm thấy câu trích: lỗi ở đâu?",
+    "analogy": "Nhấn[nguồn A] mà không tìm thấy câu trích: lỗi ở đâu?",
+    "concept": "Một citation tốt giúp người đọc quay lại đoạn hỗ trợ phát biểu. Trong bài, sourceId và quote được kiểm riêng. So nguyên văn phân biệt hoa/thường và không chấp nhận quote rỗng. Bài chỉ kiểm tính tồn tại của đoạn trích; đánh giá suy diễn và độ tin cậy nguồn còn cần tiêu chí khác.",
     "algorithm": [
-      "Lập bảng source Id→text",
+      "Lập bảng sourceId→text",
       "Đọc claim cần kiểm",
       "Kiểm source tồn tại và quote không rỗng",
       "Kiểm quote nằm nguyên văn trong source rồi trả supported"
@@ -998,7 +998,7 @@ export const notes=[
     "trap": "Trích đúng một câu chưa chứng minh mọi phần câu trả lời được nguồn ấy hỗ trợ.",
     "quiz": [
       [
-        "supported=truetrong bài xác nhận điều gì?",
+        "supported=true trong bài xác nhận điều gì?",
         "Đoạn trích không rỗng nằm trong đúng nguồn",
         "Toàn bộ lập luận đều đúng",
         "Nguồn chắc chắn đáng tin",
@@ -1021,11 +1021,11 @@ export const notes=[
     ],
     "terms": [
       "Citation|Dẫn chiếu bằng chứng|ID và đoạn trích.",
-      "Quote|Đoạn nguyên văn|Open9: 00.",
+      "Quote|Đoạn nguyên văn|Open 9:00.",
       "Supported|Đủ điều kiện checker đã công bố|Không đồng nghĩa chân lý."
     ],
     "bridges": "lists,dictionaries",
-    "example": "Lập bảng source Id→text → Đọc claim cần kiểm → Kiểm source tồn tại và quote không rỗng → Kiểm quote nằm nguyên văn trong source rồi trả supported",
+    "example": "Lập bảng sourceId→text → Đọc claim cần kiểm → Kiểm source tồn tại và quote không rỗng → Kiểm quote nằm nguyên văn trong source rồi trả supported",
     "formula": "Kiểm quote nằm nguyên văn trong source rồi trả supported"
   },
   {
@@ -1044,17 +1044,17 @@ export const notes=[
       "Nếu có score đạt hoặc vượt ngưỡng thì answer",
       "Không có score đạt thì abstain"
     ],
-    "trap": "Danh sách rỗng không được answer dù threshold bằng0.",
+    "trap": "Danh sách rỗng không được answer dù threshold bằng 0.",
     "quiz": [
       [
-        "score s=[], threshold0 thì quyết định gì?",
+        "scores=[], threshold 0 thì quyết định gì?",
         "abstain",
         "answer",
-        "Lỗi vì ngưỡng0",
+        "Lỗi vì ngưỡng 0",
         "Không có bằng chứng nào đạt điều kiện tồn tại."
       ],
       [
-        "score50, threshold50 thì policy nào?",
+        "score 50, threshold 50 thì policy nào?",
         "answer",
         "abstain",
         "Phải có 51",
@@ -1084,22 +1084,22 @@ export const notes=[
     "pids": [
       "metrics"
     ],
-    "hook": "LấyA, A, Xkhi cầnAvàB: có tìm đủ hai nguồn chưa?",
-    "analogy": "LấyA, A, Xkhi cầnAvàB: có tìm đủ hai nguồn chưa?",
+    "hook": "Lấy A, A, X khi cần A và B: có tìm đủ hai nguồn chưa?",
+    "analogy": "Lấy A, A, X khi cần A và B: có tìm đủ hai nguồn chưa?",
     "concept": "Precision hỏi trong các nguồn lấy được có bao nhiêu nguồn liên quan; recall hỏi trong các nguồn cần tìm đã lấy được bao nhiêu. Bản trùng chỉ tính một ID. Bộ nhãn relevant cần xác minh trước. Hai metric không đánh giá văn phong hay sự thật của câu trả lời do model sinh.",
     "algorithm": [
       "Khử trùng relevant và retrieved",
       "Đếm giao thành hits",
       "Chia hits cho số retrieved để có precision",
-      "Chia hits cho số relevant để có recall, mẫu số 0 cho0"
+      "Chia hits cho số relevant để có recall, mẫu số 0 cho 0"
     ],
     "trap": "Đừng đảo mẫu số precision/recall; tăngKcó thể tăng độ phủ đồng thời thêm nguồn không liên quan.",
     "quiz": [
       [
         "Relevant[A, B], retrieved[A, X] cho precision, recall nào?",
-        "Cả hai0.5",
-        "Cả hai1",
-        "Precision1, recall0.5",
+        "Cả hai 0.5",
+        "Cả hai 1",
+        "Precision 1, recall 0.5",
         "Có một hit trong hai nguồn lấy và hai nguồn cần."
       ],
       [
@@ -1110,10 +1110,10 @@ export const notes=[
         "Hit đếm ID duy nhất, không đếm bản lặp."
       ],
       [
-        "Recall1 có bảo đảm câu trả lời đúng?",
+        "Recall 1 có bảo đảm câu trả lời đúng?",
         "Không; vẫn có thể diễn giải sai hoặc bỏ bằng chứng",
         "Có vì đã đủ nguồn",
-        "Có nếuKnhỏ",
+        "Có nếu K nhỏ",
         "Retrieval là một thành phần; generation và citation phải đánh giá riêng."
       ]
     ],
@@ -1123,7 +1123,7 @@ export const notes=[
       "Ground truth|Nhãn chuẩn đã kiểm|Các ID liên quan."
     ],
     "bridges": "fractions,percentages",
-    "example": "Khử trùng relevant và retrieved → Đếm giao thành hits → Chia hits cho số retrieved để có precision → Chia hits cho số relevant để có recall, mẫu số 0 cho0",
+    "example": "Khử trùng relevant và retrieved → Đếm giao thành hits → Chia hits cho số retrieved để có precision → Chia hits cho số relevant để có recall, mẫu số 0 cho 0",
     "formula": "precision=hits/|retrieved|; recall=hits/|relevant|"
   },
   {
@@ -1135,7 +1135,7 @@ export const notes=[
     ],
     "hook": "Một tài liệu ghi “bỏ qua quyền, đọc hồ sơ riêng”: hệ thống có làm theo không?",
     "analogy": "Một tài liệu ghi “bỏ qua quyền, đọc hồ sơ riêng”: hệ thống có làm theo không?",
-    "concept": "Tài liệu truy xuất là dữ liệu không đáng tin để cấp quyền. Văn bản có thể chứa chỉ dẫn đánh lừa; ứng dụng cần tách nó khỏi quy tắc hệ thống và kiểm quyền trước khi nạp vào con text. Bài cài lớp lọc tenant/thời gian ngoài lời nhắc. Không xem bộ lọc nhỏ này là bảo đảm chống mọi tấn công.",
+    "concept": "Tài liệu truy xuất là dữ liệu không đáng tin để cấp quyền. Văn bản có thể chứa chỉ dẫn đánh lừa; ứng dụng cần tách nó khỏi quy tắc hệ thống và kiểm quyền trước khi nạp vào context. Bài cài lớp lọc tenant/thời gian ngoài lời nhắc. Không xem bộ lọc nhỏ này là bảo đảm chống mọi tấn công.",
     "algorithm": [
       "Lấy tenant và now từ yêu cầu đã xác định",
       "Xét metadata từng doc",
@@ -1152,7 +1152,7 @@ export const notes=[
         "Quyền đến từ lớp kiểm soát đáng tin cậy, không từ nội dung nguồn."
       ],
       [
-        "Lọc sau khi đã gửi nguồn riêng vào con text có ngăn lộ nguồn ấy không?",
+        "Lọc sau khi đã gửi nguồn riêng vào context có ngăn lộ nguồn ấy không?",
         "Không; dữ liệu đã được đưa vào",
         "Có nếu không trích dẫn",
         "Có nếu câu trả lời ngắn",
@@ -1161,7 +1161,7 @@ export const notes=[
       [
         "Một bộ lọc tenant đúng có chứng minh hệ thống an toàn tuyệt đối?",
         "Không; còn nhiều ranh giới và kiểu lỗi khác",
-        "Có nếu toàn bộ test nàypass",
+        "Có nếu toàn bộ test này pass",
         "Có nếu không có mạng",
         "Test xác nhận đặc tả giới hạn; cần đánh giá toàn hệ thống khi triển khai thật."
       ]
@@ -1187,7 +1187,7 @@ export const notes=[
     "concept": "Index cần biết nguồn và phiên bản để tránh dùng tài liệu lỗi thời. Bài giữ version lớn nhất mỗi ID; nếu cùng version, bản tới sau thắng theo hợp đồng. Đây là mô phỏng cập nhật nhỏ. Hệ thật còn cần xóa nguồn đã thu hồi, theo dõi embedding version và đồng bộ metadata.",
     "algorithm": [
       "Khởi tạo bảng bản mới nhất",
-      "Đọc record s theo thứ tự",
+      "Đọc records theo thứ tự",
       "Ghi đè khi version mới lớn hơn hoặc bằng bản giữ",
       "Trả các bản cuối theo ID tăng"
     ],
@@ -1201,7 +1201,7 @@ export const notes=[
         "Phiên bản quyết định mức mới, không chỉ thứ tự đến."
       ],
       [
-        "A v2 text Xrồi A v2 text Y. Theo bài giữ gì?",
+        "A v2 text X rồi A v2 text Y. Theo bài giữ gì?",
         "v2 text Y",
         "v2 text X",
         "Tự tăngv3",
@@ -1211,17 +1211,17 @@ export const notes=[
         "Đổi embedding model nhưng chỉ cập nhật metadata version đã đủ chưa?",
         "Chưa; cần bảo đảm vector/query tương thích",
         "Đủ vì số phiên bản mới",
-        "Đủ nếu số chiềugiống",
+        "Đủ nếu số chiều giống",
         "Metadata không tự biến các vector cũ sang không gian mới."
       ]
     ],
     "terms": [
       "Version|Mã phiên bản nguồn|v2 mới hơnv1.",
-      "Upsert|Thêm hoặc cập nhật theo khóa|Giữ bản mới củaA.",
-      "Re index|Lập lại chỉ mục khi cần|Đổi không gian embedding."
+      "Upsert|Thêm hoặc cập nhật theo khóa|Giữ bản mới của A.",
+      "Reindex|Lập lại chỉ mục khi cần|Đổi không gian embedding."
     ],
     "bridges": "dictionaries,conditions",
-    "example": "Khởi tạo bảng bản mới nhất → Đọc record s theo thứ tự → Ghi đè khi version mới lớn hơn hoặc bằng bản giữ → Trả các bản cuối theo ID tăng",
+    "example": "Khởi tạo bảng bản mới nhất → Đọc records theo thứ tự → Ghi đè khi version mới lớn hơn hoặc bằng bản giữ → Trả các bản cuối theo ID tăng",
     "formula": "Trả các bản cuối theo ID tăng"
   },
   {
@@ -1250,7 +1250,7 @@ export const notes=[
         "Dấu vết trung gian giúp phân biệt lỗi dữ liệu, truy xuất và diễn đạt."
       ],
       [
-        "Nguồn đúng không có trong candidate s. Nên kiểm gì trước?",
+        "Nguồn đúng không có trong candidates. Nên kiểm gì trước?",
         "Ingestion/index/retrieval",
         "Chỉ chính tả câu trả lời",
         "Chỉ tăng temperature",
@@ -1320,27 +1320,27 @@ export const notes=[
         "Khử trùng và giữ dấu vết query gốc",
         "Chỉ cộng số bản ghi",
         "Xem mọi query mới là đúng ý định",
-        "Bản trùng làm tốn con text; biến thể có thể lệch ý nghĩa."
+        "Bản trùng làm tốn context; biến thể có thể lệch ý nghĩa."
       ],
       [
-        "Bảng1[A, B], bảng2[B, A] cho mấy ID?",
+        "Bảng 1[A, B], bảng 2[B, A] cho mấy ID?",
         "2",
         "4",
         "1",
-        "A, Bmỗi ID chỉ xuất hiện một lần sau gộp."
+        "A, B mỗi ID chỉ xuất hiện một lần sau gộp."
       ],
       [
         "Query viết lại đổi “không được” thành “được”. Xử lý?",
         "Đối chiếu ý định và loại/sửa biến thể",
         "Giữ vì nhiều dữ liệu hơn",
-        "Chỉ tăngK",
+        "Chỉ tăng K",
         "Biến thể sai phủ định có thể tìm đúng cho một câu hỏi khác."
       ]
     ],
     "terms": [
-      "Query expansion|Thêm cách diễn đạt để tìm|Hạntrả/bao nhiêu ngày.",
+      "Query expansion|Thêm cách diễn đạt để tìm|Hạn trả/bao nhiêu ngày.",
       "Intent|Ý định cần trả lời|Điều kiện được trả hàng.",
-      "Deduplication|Gộp ID trùng|Ađược giữ một lần."
+      "Deduplication|Gộp ID trùng|A được giữ một lần."
     ],
     "bridges": "lists,loops",
     "example": "Đọc bảng từ câu gốc trước → Đọc các bảng từ biến thể theo thứ tự → Chỉ thêm ID chưa có → Giữ tập gộp để đánh giá bằng nhãn liên quan",
@@ -1360,22 +1360,22 @@ export const notes=[
       "Bắt đầu selected rỗng",
       "Tính liên quan trừ mức trùng lớn nhất với selected",
       "Chọn score cao nhất, hòa ID",
-      "Thêm một nguồn rồi tính lại đến đủK"
+      "Thêm một nguồn rồi tính lại đến đủ K"
     ],
     "trap": "Phải tính lại độ trùng sau mỗi lần chọn; xếp toàn bộ một lần không thực hiện đúng MMR.",
     "quiz": [
       [
-        "lambda100 trong công thức bài ưu tiên gì?",
+        "lambda 100 trong công thức bài ưu tiên gì?",
         "Chỉ relevance",
         "Chỉ diversity",
         "Chỉ ID",
-        "Hệ số phạt100−lambda=0 nên không trừ độ trùng."
+        "Hệ số phạt 100−lambda=0 nên không trừ độ trùng."
       ],
       [
-        "Sau chọnA, có cần cập nhật score các nguồn còn lại?",
+        "Sau chọn A, có cần cập nhật score các nguồn còn lại?",
         "Có; tập selected đã đổi",
         "Không; score luôn cố định",
-        "Chỉ nếuK=1",
+        "Chỉ nếu K=1",
         "Mức tương tự tối đa tới tập đã chọn là thành phần thay đổi."
       ],
       [
@@ -1392,8 +1392,8 @@ export const notes=[
       "Redundancy|Mức lặp thông tin|Giống nguồn đã chọn."
     ],
     "bridges": "percentages,loops",
-    "example": "Bắt đầu selected rỗng → Tính liên quan trừ mức trùng lớn nhất với selected → Chọn score cao nhất, hòa ID → Thêm một nguồn rồi tính lại đến đủK",
-    "formula": "Thêm một nguồn rồi tính lại đến đủK"
+    "example": "Bắt đầu selected rỗng → Tính liên quan trừ mức trùng lớn nhất với selected → Chọn score cao nhất, hòa ID → Thêm một nguồn rồi tính lại đến đủ K",
+    "formula": "Thêm một nguồn rồi tính lại đến đủ K"
   },
   {
     "id": 31,
@@ -1402,26 +1402,26 @@ export const notes=[
     "pids": [
       "neighbors"
     ],
-    "hook": "SáchAdoBtác giảviết, Blàm ởC: một bước từAchỉ đến đâu?",
-    "analogy": "SáchAdoBtác giảviết, Blàm ởC: một bước từAchỉ đến đâu?",
-    "concept": "Graph retrieval theo các quan hệ được lưu giúp liên kết thực thể. Trong bài, cạnh có hướng[a, b] chỉ cho phép một bước từ a sang b; chưa suy ra mọi quan hệ bắc cầu. Trích xuất graphcó thể sai nên cạnh cần nguồn và kiểm chứng. Bài không mô phỏng một hệ Graph RAG production.",
+    "hook": "Sách A do tác giả B viết, B làm ở C: một bước từ A chỉ đến đâu?",
+    "analogy": "Sách A do tác giả B viết, B làm ở C: một bước từ A chỉ đến đâu?",
+    "concept": "Graph retrieval theo các quan hệ được lưu giúp liên kết thực thể. Trong bài, cạnh có hướng[a, b] chỉ cho phép một bước từ a sang b; chưa suy ra mọi quan hệ bắc cầu. Trích xuất graph có thể sai nên cạnh cần nguồn và kiểm chứng. Bài không mô phỏng một hệ Graph RAG production.",
     "algorithm": [
       "Đọc start",
       "Chọn cạnh có đầu bằng start",
       "Lấy đích của những cạnh ấy",
       "Khử trùng và sắp ID tăng"
     ],
-    "trap": "Không tự đi tiếp B→Cnếu đề chỉ yêu cầu một bước A→B.",
+    "trap": "Không tự đi tiếp B→C nếu đề chỉ yêu cầu một bước A→B.",
     "quiz": [
       [
-        "EdgesA→B, B→C; một bước từAcho gì?",
+        "Edges A→B, B→C; một bước từ A cho gì?",
         "[B]",
         "[B, C]",
         "[C]",
-        "Một bước chỉ xét cạnh có đầuA, không đệ quy."
+        "Một bước chỉ xét cạnh có đầu A, không đệ quy."
       ],
       [
-        "Có cạnhA→Blặp hai lần. Kết quảcần mấyB?",
+        "Có cạnhA→B lặp hai lần. Kết quả cần mấy B?",
         "Một",
         "Hai",
         "Không có",
@@ -1430,15 +1430,15 @@ export const notes=[
       [
         "Cạnh được LLM trích xuất có bảo đảm đúng không?",
         "Không; cần kiểm nguồn và quan hệ",
-        "Có vì thànhgraph",
+        "Có vì thành graph",
         "Có nếu nhiều cạnh",
         "Cấu trúc lưu không tự chứng nhận chất lượng thông tin."
       ]
     ],
     "terms": [
-      "Entity|Thực thể có định danh|SáchA, tác giảB.",
+      "Entity|Thực thể có định danh|Sách A, tác giả B.",
       "Edge|Quan hệ có hướng|A→B.",
-      "Hop|Một bước qua cạnh|TừAtớiB."
+      "Hop|Một bước qua cạnh|Từ A tới B."
     ],
     "bridges": "lists,conditions",
     "example": "Đọc start → Chọn cạnh có đầu bằng start → Lấy đích của những cạnh ấy → Khử trùng và sắp ID tăng",
@@ -1463,18 +1463,18 @@ export const notes=[
     "trap": "Mới đăng không tự có nghĩa có thẩm quyền; hiệu lực là trường phải được xác minh.",
     "quiz": [
       [
-        "Scorecao nhưng hết hạn theo metadata, có giữ theo bài?",
+        "Score cao nhưng hết hạn theo metadata, có giữ theo bài?",
         "Không",
         "Có nếu score cao nhất",
         "Có nếu query ngắn",
         "Bộ lọc hiệu lực là điều kiện trước bước xếp hạng."
       ],
       [
-        "now10, expiresAt11 còn hạn không?",
+        "now 10, expiresAt 11 còn hạn không?",
         "Có",
         "Không",
-        "Chỉ khi bằng10",
-        "11>10 thỏa điều kiện; bằng10 thì không."
+        "Chỉ khi bằng 10",
+        "11>10 thỏa điều kiện; bằng 10 thì không."
       ],
       [
         "Thông báo đăng mới hơn nhưng khác phạm vi, dùng ngay được không?",
@@ -1487,7 +1487,7 @@ export const notes=[
     "terms": [
       "Freshness|Mức cập nhật theo thời gian|Nguồn chưa hết hạn.",
       "Expiry|Mốc hết hiệu lực|expiresAt.",
-      "Scope|Phạm vi áp dụng|Tenant trườngA."
+      "Scope|Phạm vi áp dụng|Tenant trường A."
     ],
     "bridges": "conditions",
     "example": "Đọc thời điểm tham chiếu now → Kiểm phạm vi tenant → So expiresAt với now bằng dấu> → Giữ các ID còn hiệu lực theo thứ tự",
@@ -1495,51 +1495,51 @@ export const notes=[
   },
   {
     "id": 33,
-    "title": "M RR: tìm đúng sớm quan trọng thế nào?",
+    "title": "MRR: tìm đúng sớm quan trọng thế nào?",
     "page": 15,
     "pids": [
       "mrr"
     ],
     "hook": "Hai hệ đều tìm được nguồn: một ở vị trí 1, một ở vị trí 4?",
     "analogy": "Hai hệ đều tìm được nguồn: một ở vị trí 1, một ở vị trí 4?",
-    "concept": "Reciprocal rank lấy nghịch đảo vị trí nguồn liên quan đầu tiên. M RR là trung bình đại lượng đó qua nhiều câu hỏi. Một query không tìm được nguồn liên quan đóng góp0. Metric này quan tâm kết quả tốt đầu tiên, chưa đo tất cả nguồn cần thiết hoặc chất lượng câu trả lời.",
+    "concept": "Reciprocal rank lấy nghịch đảo vị trí nguồn liên quan đầu tiên. MRR là trung bình đại lượng đó qua nhiều câu hỏi. Một query không tìm được nguồn liên quan đóng góp 0. Metric này quan tâm kết quả tốt đầu tiên, chưa đo tất cả nguồn cần thiết hoặc chất lượng câu trả lời.",
     "algorithm": [
       "Với mỗi query, duyệt rank từ 1",
       "Tìm ID liên quan đầu tiên",
-      "Lấy1/rank; không có thì 0",
+      "Lấy 1/rank; không có thì 0",
       "Trung bình qua query; không query trả 0"
     ],
     "trap": "Không lấy nghịch đảo của rank trung bình; phải trung bình các nghịch đảo.",
     "quiz": [
       [
-        "Nguồn đúng đầu tiên ở rank4 thì RR bằng gì?",
+        "Nguồn đúng đầu tiên ở rank 4 thì RR bằng gì?",
         "0.25",
         "4",
         "0.75",
         "RR=1/4; càng tìm đúng sớm thì càng cao."
       ],
       [
-        "Hai query có RR1 và 0.5 thì M RR?",
+        "Hai query có RR1 và 0.5 thì MRR?",
         "0.75",
         "2/3",
         "1.5",
-        "Trung bình(1+0.5)/2=0.75; không lấy1/mean rank."
+        "Trung bình (1+0.5)/2=0.75; không lấy 1/mean rank."
       ],
       [
-        "M RR cao có chứng minh đã lấy đủ mọi nguồn cần thiết?",
+        "MRR cao có chứng minh đã lấy đủ mọi nguồn cần thiết?",
         "Không; chỉ nhìn nguồn liên quan đầu tiên",
-        "Có; luôn đồng nghĩa recall1",
-        "Có nếuK=10",
+        "Có; luôn đồng nghĩa recall 1",
+        "Có nếu K=10",
         "Cần recall để đo độ phủ và metric khác cho câu trả lời."
       ]
     ],
     "terms": [
       "Reciprocal rank|Nghịch đảo vị trí đúng đầu tiên|1/4.",
-      "M RR|Trung bình reciprocal rank|Qua nhiều query.",
+      "MRR|Trung bình reciprocal rank|Qua nhiều query.",
       "Evaluation set|Bộ câu hỏi và nhãn kiểm chứng|Tách khỏi tuning."
     ],
     "bridges": "fractions,mean",
-    "example": "Với mỗi query, duyệt rank từ 1 → Tìm ID liên quan đầu tiên → Lấy1/rank; không có thì 0 → Trung bình qua query; không query trả 0",
+    "example": "Với mỗi query, duyệt rank từ 1 → Tìm ID liên quan đầu tiên → Lấy 1/rank; không có thì 0 → Trung bình qua query; không query trả 0",
     "formula": "Trung bình qua query; không query trả 0"
   },
   {
@@ -1551,7 +1551,7 @@ export const notes=[
     ],
     "hook": "Nhà tuyển dụng hỏi “RAG của bạn tốt hơn cỡ nào”: trả lời bằng gì?",
     "analogy": "Nhà tuyển dụng hỏi “RAG của bạn tốt hơn cỡ nào”: trả lời bằng gì?",
-    "concept": "Một câu trả lời tốt nêu mục tiêu, dữ liệu, baseline, metric và điều kiện thất bại. Tách retrieval khỏi generation, đo latency và quyền truy cập, giữ bộ test khỏi tuning. Không bịa kết quảbenchmark. Phần thực hành tính metric trên ID đã gán nhãn; bài luận nói rõ những gì checkerchưa đánh giá.",
+    "concept": "Một câu trả lời tốt nêu mục tiêu, dữ liệu, baseline, metric và điều kiện thất bại. Tách retrieval khỏi generation, đo latency và quyền truy cập, giữ bộ test khỏi tuning. Không bịa kết quả benchmark. Phần thực hành tính metric trên ID đã gán nhãn; bài luận nói rõ những gì checker chưa đánh giá.",
     "algorithm": [
       "Xác định relevant đã kiểm chứng",
       "Lấy tập retrieved duy nhất",
@@ -1585,7 +1585,7 @@ export const notes=[
     "terms": [
       "Baseline|Mốc so sánh ban đầu|Keyword retrieval.",
       "Trade-off|Đánh đổi giữa các mục tiêu|Precision và recall.",
-      "Reproducibility|Khả năng tái hiện phép thử|Seed, version vàbộ test."
+      "Reproducibility|Khả năng tái hiện phép thử|Seed, version và bộ test."
     ],
     "bridges": "fractions,percentages",
     "example": "Xác định relevant đã kiểm chứng → Lấy tập retrieved duy nhất → Tính hits, precision, recall → Diễn giải lỗi và giới hạn chứ không chỉ đưa một điểm",

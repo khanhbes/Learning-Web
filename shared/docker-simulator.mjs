@@ -3,6 +3,7 @@
 export const DOCKER_SIM_NOTICE='Phòng thí nghiệm Docker mô phỏng: chỉ thay đổi tài nguyên ảo trong bài. Không cài Docker, tải image, mở cổng thật hoặc chạy shell trên máy.';
 const copy=v=>structuredClone(v), own=(o,k)=>Object.hasOwn(o,k);
 const safeName=s=>typeof s==='string'&&/^[a-zA-Z0-9][a-zA-Z0-9_.:/-]{0,99}$/.test(s)&&!s.split(/[/:]/).some(x=>['__proto__','prototype','constructor','..'].includes(x));
+const safeContextPath=s=>typeof s==='string'&&/^[a-zA-Z0-9_.-][a-zA-Z0-9_./-]{0,99}$/.test(s)&&!s.split('/').some(x=>['__proto__','prototype','constructor','.','..',''].includes(x));
 const assert=(condition,message)=>{if(!condition)throw Error(message);};
 const ref=s=>s.includes(':')?s:s+':latest';
 const image=(id,extra={})=>({id,files:{'/app/index.txt':'BytePath'},env:{},exposed:[],user:'0',workdir:'/',cmd:[],...extra});
@@ -59,7 +60,7 @@ function build(s,args){
  assert(im,'Dockerfile trống.');im.id='virtual-build-'+s.nextId++;s.images[target]=im;return'Tạo image ảo '+target;
 }
 function apply(s,t){
- if(t[0]==='edit'){assert(t.length===3&&safeName(t[1])&&!t[1].startsWith('/'),'edit FILE "TEXT" chỉ sửa build context ảo.');s.context[t[1]]=t[2];return'Đã sửa '+t[1]+' trong editor ảo.';}
+ if(t[0]==='edit'){assert(t.length===3&&safeContextPath(t[1]),'edit FILE "TEXT" chỉ sửa build context ảo.');s.context[t[1]]=t[2];return'Đã sửa '+t[1]+' trong editor ảo.';}
  assert(t[0]==='docker','Chỉ hỗ trợ docker và edit của editor ảo.');const args=t.slice(2),op=t[1];
  if(op==='run'||op==='create')return createContainer(s,args,op==='run');
  if(op==='build')return build(s,args);

@@ -59,7 +59,7 @@ export function oracle(id,d){switch(id.replace(/^genai-/,'')){
 export function equivalent(a,b){if(typeof a==='number'||typeof b==='number')return typeof a==='number'&&typeof b==='number'&&Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=1e-8+Math.abs(b)*1e-7;if(Array.isArray(a)||Array.isArray(b))return Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((v,i)=>equivalent(v,b[i]));if(a&&b&&typeof a==='object'&&typeof b==='object')return Object.keys(a).length===Object.keys(b).length&&Object.keys(b).every(k=>Object.hasOwn(a,k)&&equivalent(a[k],b[k]));return a===b;}
 export const checkOutput=(id,d,value)=>problemIds.includes(id)&&equivalent(value,oracle(id,d));
 export function generateInput(id,seed=0){const rng=random(String(seed)+':'+id),n=int(rng,2,5),arr=(fn,k=n)=>Array.from({length:k},(_,i)=>fn(i)),pick=a=>a[int(rng,0,a.length-1)],vocab={sun:0,flower:1,'!':2,cat:3};switch(id.replace(/^genai-/,'')){
- case'count':return{tokens:arr(()=>pick(['sun','flower','cat','!']))};
+ case'count':return{tokens:seed===0?['sun','flower','!']:arr(()=>pick(['sun','flower','cat','!']))};
  case'encode':return{tokens:arr(()=>pick(['sun','flower','cat','unknown','!'])),vocab};
  case'distribution':return{counts:arr(()=>int(rng,0,9))};
  case'greedy':return{candidates:arr(i=>({id:'T'+i,score:int(rng,-2,5)})).reverse()};

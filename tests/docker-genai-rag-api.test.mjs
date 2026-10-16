@@ -38,7 +38,7 @@ test('Three new courses start independently with guided activities, private answ
       const a=(await call('POST','/api/attempts',{courseId,lessonId:1,mode:'practice'})).body;
       assert.equal(a.courseId,courseId);assert.equal(a.lab.version,2);
       for(const q of a.lab.questions){assert.equal(q.answer,undefined);assert.equal(q.explanation,undefined);}
-      const pid=a.requiredProblems[0],lang=getCourse(courseId).course.languages[0];
+      const pid=material.problemIds[0],lang=getCourse(courseId).course.languages[0];
       const progress={version:TEACHING_VERSION,stepId:'code-model',seen:['intro','model','code-model'],tried:[]};
       assert.equal((await call('PATCH',`/api/attempts/${a.id}`,{learningProgress:progress,codeDrafts:{[pid]:{[lang]:'# saved '+courseId}}})).status,200);
       const resumed=(await call('POST','/api/attempts',{courseId,lessonId:1,mode:'practice'})).body;
@@ -55,6 +55,22 @@ test('Three new courses start independently with guided activities, private answ
     assert.equal((await call('POST','/api/data/import',backup)).status,200);
     for(const a of saved)assert.deepEqual(store.get('attempts',a.id),a);
   }finally{await app.close();}
+});
+
+test('Docker workbench uses bounded virtual state, never rewards and is blocked in an active assessment',async()=>{
+ const {app,store,call}=await setup();
+ try{
+  const before=store.getState();
+  const r=await call('POST','/api/courses/docker/workbench',{lessonId:1,script:'docker run -d --name web byte-web:1'});
+  assert.equal(r.status,200);assert.equal(r.body.ok,true);assert.equal(r.body.state.containers.web.status,'running');
+  for(const key of ['courses','xp','gems','energy','inventory'])assert.deepEqual(store.getState()[key],before[key]);
+  const blocked=await call('POST','/api/courses/docker/workbench',{lessonId:1,script:'docker ps; echo unsupported'});
+  assert.equal(blocked.status,200);assert.equal(blocked.body.ok,false);assert.equal(Object.keys(blocked.body.state.containers).length,0);
+  assert.equal((await call('POST','/api/courses/docker/workbench',{lessonId:2,script:'docker ps'})).status,403);
+  assert.equal((await call('POST','/api/courses/docker/workbench',{lessonId:1,script:'x'.repeat(50001)})).status,400);
+  await call('POST','/api/attempts',{courseId:'docker',lessonId:1,mode:'assessment'});
+  assert.equal((await call('POST','/api/courses/docker/workbench',{lessonId:1,script:'docker ps'})).status,403);
+ }finally{await app.close();}
 });
 
 for(const courseId of ids)test(`${courseId}: mandatory path, 80% gate, capstone and rewards remain isolated and idempotent`,async()=>{
