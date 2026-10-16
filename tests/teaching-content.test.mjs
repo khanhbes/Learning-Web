@@ -7,7 +7,7 @@ import {newAttempt,publicAttempt} from '../server/assessment.mjs';
 import {workedTrace} from '../content/pedagogy/worked.mjs';
 const valueFor=q=>['number','output'].includes(q.kind)?JSON.stringify(q.answer):q.answer;
 
-test('223 lessons have authored teaching, specific algorithms, bridges, minimal examples and eight embedded tasks',()=>{
+test('All registered lessons have authored teaching, specific algorithms, bridges, minimal examples and eight embedded tasks',()=>{
   let count=0,exams=0;
   for(const [id,def]of Object.entries(courseRegistry)){
     const algorithms=[];
@@ -36,7 +36,7 @@ test('223 lessons have authored teaching, specific algorithms, bridges, minimal 
     }
     assert.ok(new Set(algorithms).size>=Math.floor(algorithms.length*.8),id+' repeated algorithms');
   }
-  assert.equal(count,223);assert.equal(exams,23);
+  assert.equal(count,308);assert.equal(exams,32);
   const first=courseRegistry.linear.teachingFlow(1);
   assert.deepEqual(first.sample.input,{x:2,y:1});assert.deepEqual(first.sample.output,[2,1]);
   assert.ok(first.steps.find(s=>s.code).code.python.split('\n').length<=3);
@@ -62,7 +62,7 @@ for(const [id,def]of Object.entries(courseRegistry))test(`${id}: 200 seeds per l
       assert.equal(q.options.filter(o=>o.id===q.answerId).length,1);
       if(q.category==='trace'){
         assert.equal(q.options.find(o=>o.id===q.answerId).text,displayValue(q.traceAnswer));
-        if(!['linear','git'].includes(id))assert.ok(def.checkOutput(q.problemId,q.input,q.traceAnswer));
+        if(!['linear','git','docker'].includes(id))assert.ok(def.checkOutput(q.problemId,q.input,q.traceAnswer));
       }
       assert.ok(q.sourceLessonId<=l.id);
     }

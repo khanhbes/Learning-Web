@@ -16,6 +16,9 @@ import DAVisualizer from './DAVisualizer';
 import AgentVisualizer from './AgentVisualizer';
 import LinearVisualizer from './LinearVisualizer';
 import GitWorkbench from './GitWorkbench';
+import DockerVisualizer from './DockerVisualizer';
+import GenAIVisualizer from './GenAIVisualizer';
+import RAGVisualizer from './RAGVisualizer';
 import './teaching.css';
 
 const stageNames: Record<string, string> = { intro: 'Gặp một vấn đề', model: 'Xem một ví dụ', guided: 'Cùng làm từng bước', practice: 'Tự mình thử', transfer: 'Vận dụng điều vừa học', code: 'Từ ý tưởng đến code' };
@@ -95,6 +98,9 @@ export default function GuidedLesson({ lesson, attempt, onChange, onCode, onAsse
   function go(next: number) { const target = Math.max(0, Math.min(next, flow.steps.length-1)); navigated.current = true; setIndex(target); setTocOpen(false); updateProgress(flow.steps[target].id); }
   function reviewModel() { let previous = 0; for (let i = 0; i < index; i++) if (flow.steps[i].kind === 'worked' || flow.steps[i].stage === 'model') previous = i; go(previous); }
   function courseVisual() {
+    if (course.id === 'docker') return <DockerVisualizer lesson={lesson} compact/>;
+    if (course.id === 'genai') return <GenAIVisualizer lesson={lesson} compact/>;
+    if (course.id === 'rag') return <RAGVisualizer lesson={lesson} compact/>;
     if (course.id === 'linear' && lesson.id === 1) return <CoordinateBoard input={step.visual?.input || flow.sample.input}/>;
     if (course.id === 'linear') return <LinearVisualizer lesson={lesson} compact/>;
     if (course.id === 'agent') return <AgentVisualizer lesson={lesson} compact/>;

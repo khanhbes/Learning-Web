@@ -1,0 +1,32 @@
+import {generateInput,oracle,problems,NOTICE,cosine} from './problems.mjs';
+const copy=x=>structuredClone(x);
+export function visualizationMode(pid){const key=pid.replace(/^rag-/,'');return['cosine','vector','bow','attention'].includes(key)?'vectors':key==='chunks'?'chunks':['retrieve','rrf','rerank','mmr','dedup','neighbors'].includes(key)?'retrieval':['metrics','mrr'].includes(key)?'evaluation':'evidence';}
+export function traceFor(pid,input){const d=copy(input??generateInput(pid,0)),key=pid.replace(/^rag-/,''),frames=[],result=oracle(pid,d);const push=(label,state,active=[])=>frames.push({label,caption:label,state:copy(state),entries:Object.entries(state).map(([label,value])=>({label,value:copy(value)})),active});
+ push('Đọc dữ liệu và hợp đồng trước khi thao tác.',d);
+ switch(key){
+ case'lookup':for(const doc of d.docs){push('So ID '+doc.id+' với '+d.sourceId+'.',{doc,matched:doc.id===d.sourceId},[doc.id]);if(doc.id===d.sourceId)break;}break;
+ case'tokens':{const parts=d.text.split(/\s+/),tokens=[];for(const part of parts){if(part)tokens.push(part);push(part?'Giữ đơn vị “'+part+'”.':'Bỏ phần rỗng giữa/ngoài khoảng trắng.',{tokens:[...tokens],count:tokens.length});}break;}
+ case'budget':{let remaining=d.limit-d.reserved,used=0;const ids=[];push('Dành chỗ reserved trước.',{remaining,used,ids});for(const c of d.chunks){const fits=c.cost<=remaining;if(fits){remaining-=c.cost;used+=c.cost;ids.push(c.id);}push((fits?'Giữ ':'Bỏ qua ')+c.id+': cost '+c.cost+'.',{chunk:c,remaining,used,ids:[...ids]},[c.id]);}break;}
+ case'argmax':{let best=null;for(const c of d.candidates){if(!best||c.score>best.score||(c.score===best.score&&c.id<best.id))best=c;push('So '+c.id+' với lựa chọn đang giữ.',{candidate:c,best},[c.id]);}break;}
+ case'attention':{let total=0;d.weights.forEach((w,i)=>{total+=w*d.values[i];push('Cộng '+w+'% × '+d.values[i]+'.',{weight:w,value:d.values[i],sum:total,outputSoFar:total/100},[i]);});break;}
+ case'route':{const routes=[];for(const request of d.requests){routes.push(request.need==='fresh-facts'?'retrieve':request.need==='style'?'fine-tune':'clarify');push('Đọc nhu cầu '+request.need+'.',{request,routes:[...routes]});}break;}
+ case'filter':{const ids=[];for(const doc of d.docs){const allowed=doc.tenant===d.tenant&&doc.expiresAt>d.now;if(allowed)ids.push(doc.id);push((allowed?'Giữ ':'Loại ')+doc.id+': kiểm cả phạm vi lẫn hạn.',{doc,allowed,ids:[...ids]},[doc.id]);}break;}
+ case'chunks':for(const chunk of result)push('Cắt từ chỉ số '+chunk.start+'; phủ đến '+(chunk.start+chunk.tokens.length-1)+'.',{start:chunk.start,tokens:chunk.tokens,stride:d.size-d.overlap},Array.from({length:chunk.tokens.length},(_,i)=>chunk.start+i));break;
+ case'bow':{const vector=[];for(const word of d.vocab){vector.push(d.tokens.filter(t=>t===word).length);push('Đếm số lần “'+word+'” xuất hiện.',{word,vector:[...vector]});}break;}
+ case'cosine':{let dot=0,aa=0,bb=0;d.a.forEach((v,i)=>{dot+=v*d.b[i];aa+=v*v;bb+=d.b[i]*d.b[i];push('Ghép tọa độ thứ '+i+'.',{a:v,b:d.b[i],dot,squaredNormA:aa,squaredNormB:bb},[i]);});push('Kiểm độ dài trước khi chia.',{dot,squaredNormA:aa,squaredNormB:bb,cosine:result});break;}
+ case'vector':for(const doc of d.docs)push('So hướng query với '+doc.id+'.',{query:d.query,doc,cosine:cosine(d.query,doc.vector)},[doc.id]);break;
+ case'retrieve':{const query=[...new Set(d.query)];for(const doc of d.docs){const shared=query.filter(t=>doc.tokens.includes(t));push('Đếm từ chung duy nhất với '+doc.id+'.',{doc,query,shared,score:shared.length},[doc.id]);}break;}
+ case'dedup':{const ids=[];for(const list of d.lists)for(const id of list){const seen=ids.includes(id);if(!seen)ids.push(id);push((seen?'Bỏ bản lặp ':'Giữ lần đầu ')+id+'.',{id,ids:[...ids]},[id]);}break;}
+ case'rrf':{const scores={};d.rankings.forEach((list,table)=>list.forEach((id,i)=>{const added=1/(d.c+i+1);scores[id]=(scores[id]??0)+added;push('Bảng '+(table+1)+', hạng '+(i+1)+': cộng cho '+id+'.',{id,rank:i+1,added,scores:{...scores}},[id]);}));break;}
+ case'rerank':for(const id of d.candidates)push('Chỉ tra điểm của ứng viên '+id+'.',{id,score:d.scores[id]},[id]);break;
+ case'citations':for(const claim of d.claims){const source=d.sources.find(x=>x.id===claim.sourceId);push('Kiểm claim '+claim.id+' trên đúng nguồn '+claim.sourceId+'.',{claim,source:source??null,supported:!!source&&claim.quote.length>0&&source.text.includes(claim.quote)},[claim.sourceId]);}break;
+ case'abstain':for(const score of d.scores){push('So '+score+' với ngưỡng '+d.threshold+'.',{score,threshold:d.threshold,reaches:score>=d.threshold});if(score>=d.threshold)break;}break;
+ case'metrics':{const relevant=[...new Set(d.relevant)],retrieved=[...new Set(d.retrieved)],hits=relevant.filter(x=>retrieved.includes(x));push('Khử trùng trước khi đếm.',{relevant,retrieved});push('Tô các ID chung.',{hits,count:hits.length});push('Chia theo đúng hai mẫu số.',{precisionDenominator:retrieved.length,recallDenominator:relevant.length,...result});break;}
+ case'upsert':{const latest={};for(const record of d.records){const accept=!latest[record.id]||record.version>=latest[record.id].version;if(accept)latest[record.id]=record;push((accept?'Giữ ':'Bỏ bản cũ ')+record.id+' v'+record.version+'.',{record,latest:{...latest}},[record.id]);}break;}
+ case'mmr':{const selected=[];while(selected.length<Math.min(d.k,d.docs.length)){const scores=d.docs.map((doc,i)=>({id:doc.id,i,score:d.lambda*doc.relevance-(100-d.lambda)*(selected.length?Math.max(...selected.map(j=>d.similarity[i][j])):0)})).filter(x=>!selected.includes(x.i)).sort((a,b)=>b.score-a.score||(a.id<b.id?-1:1));selected.push(scores[0].i);push('Chọn '+scores[0].id+' rồi cập nhật tập đã chọn.',{scores,selected:selected.map(i=>d.docs[i].id)},[scores[0].id]);}break;}
+ case'neighbors':{const found=new Set();for(const edge of d.edges){if(edge[0]===d.start)found.add(edge[1]);push('Kiểm cạnh '+edge.join(' → ')+'.',{edge,matches:edge[0]===d.start,found:[...found]});}break;}
+ case'mrr':{const values=[];for(const query of d.rankings){const index=query.retrieved.findIndex(id=>query.relevant.includes(id));values.push(index<0?0:1/(index+1));push('Nguồn đúng đầu tiên '+(index<0?'không xuất hiện.':'ở vị trí '+(index+1)+'.'),{query,reciprocalRank:values.at(-1),values:[...values]});}break;}
+ }
+ push('Kết quả theo hợp đồng; so lại trường hợp biên.',{result});
+ return{title:problems[pid].title,mode:visualizationMode(pid),problemId:pid,input:d,result,frames,notice:NOTICE,detailed:true};
+}

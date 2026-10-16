@@ -11,6 +11,7 @@ import { courseRegistry,getCourse,courseForProblem } from "../content/registry.m
 import { courseState,persistCourse,courseSummary,courseUnlocked,normalizeCourses } from "./course-state.mjs";
 import { runML,mlRunnerHealth } from "./ml-runner.mjs";
 import { runGit,gitRunnerHealth } from "./git-runner.mjs";
+import { runDocker,dockerRunnerHealth } from "./docker-runner.mjs";
 import { registerKnowledgeRoutes,validateSavedKnowledgeAttempt } from "./knowledge.mjs";
 import { knowledgeById } from "../content/knowledge.mjs";
 import { registerGamificationRoutes,purchaseExtended,awardCourseCosmetic,normalizeGamification } from "./gamification.mjs";
@@ -335,6 +336,15 @@ export async function createApp({
     const input=def.generateInput(visual?.problemId??lesson.problemIds[0],`workbench:${lesson.id}`);
     return def.runGitScript(visual?.initial??input.initial,b.script);
   });
+  app.post("/api/courses/docker/workbench",async req=>{
+    const b=z.object({lessonId:z.number().int().positive(),script:z.string().max(50000)}).strict().parse(req.body),def=getCourse("docker");
+    const lesson=def.lessons.find(l=>l.id===b.lessonId);
+    if(!lesson||!courseUnlocked(state(),def,lesson.id))throw fail("Bài chưa mở khóa.",403);
+    if(lesson.kind==='exam'||store.list("attempts").some(a=>a.courseId==='docker'&&a.mode==='assessment'&&a.status==='active')||store.list('capstones').some(a=>a.courseId==='docker'&&a.status==='active'))throw fail("Phòng mô phỏng ẩn trong lượt kiểm tra.",403);
+    const material=def.lessonMaterial(lesson),visual=material.visualization;
+    const input=def.generateInput(visual?.problemId??lesson.problemIds[0],`workbench:${lesson.id}`);
+    return def.runDockerScript(visual?.initial??visual?.input?.initial??input.initial,b.script);
+  });
   app.get("/api/course", async () => {
     const s = state();
     return {
@@ -391,6 +401,7 @@ export async function createApp({
     runner: await health(),
     mlRunner: await mlRunnerHealth(),
     gitRunner: gitRunnerHealth(),
+    dockerRunner: dockerRunnerHealth(),
     ai: await aiHealth(),
     version: VERSION,
   }));
@@ -707,7 +718,7 @@ export async function createApp({
       job.status = "running";
       store.put("jobs", job);
       try {
-        const runner = execute!==runCode ? execute : def.course.runtime==="pyodide" ? options=>runML(options,def) : def.course.runtime==="git-sim" ? options=>runGit(options,def) : execute;
+        const runner = execute!==runCode ? execute : def.course.runtime==="pyodide" ? options=>runML(options,def) : def.course.runtime==="git-sim" ? options=>runGit(options,def) : def.course.runtime==="docker-sim" ? options=>runDocker(options,def) : execute;
         job.result = await runner({
           ...body,
           seed: a.seed,
@@ -1007,7 +1018,7 @@ export async function createApp({
     const s = state(),def=getCourse(req.params.courseId??"dsa"),id=def.course.id,cs=id==="dsa"?{essayFields,capstoneProblems}:def;
     const caps=store.list("capstones").filter(a=>a.courseId===id);
     return {
-      courseId:id,title:cs.capstoneTitle??def.course.capstone?.title??"Lập kế hoạch học thông minh",
+      courseId:id,title:cs.capstoneTitle??def.course.capstoneTitle??def.course.capstone?.title??"Dự án cuối khóa",
       unlocked: courseSummary(s,def).capstoneUnlocked,
       fields: cs.essayFields,
       latest: caps[0]

@@ -1,0 +1,419 @@
+[
+  {
+    "id": "GENAI-839936638",
+    "courseId": "genai",
+    "prefix": "839936638",
+    "file": "839936638_1783005879282720_2604003172815154836_n.jpg",
+    "path": "study documents/Gen AI/839936638_1783005879282720_2604003172815154836_n.jpg",
+    "url": "/sources/genai/839936638_1783005879282720_2604003172815154836_n.jpg",
+    "sha256": "87b4a62c5e3120e4e4770a1b230e3a83d386c2c7b74a3117427c291583d9ca98",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 1,
+    "title": "Tổng quan 20 khái niệm Gen AI",
+    "topic": "Tổng quan 20 khái niệm Gen AI",
+    "topics": [
+      "Tổng quan 20 khái niệm Gen AI"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "reviewIds": [
+      1
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-1"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-840901139",
+    "courseId": "genai",
+    "prefix": "840901139",
+    "file": "840901139_1787672975774614_8943707921618005057_n.jpg",
+    "path": "study documents/Gen AI/840901139_1787672975774614_8943707921618005057_n.jpg",
+    "url": "/sources/genai/840901139_1787672975774614_8943707921618005057_n.jpg",
+    "sha256": "027bef8727b3522ac65f195fb7d2318e62e665a80a2eb89be3aea2191a72b5d8",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 2,
+    "title": "Tokenization và embeddings",
+    "topic": "Tokenization và embeddings",
+    "topics": [
+      "Tokenization và embeddings"
+    ],
+    "lessonIds": [
+      2,
+      4
+    ],
+    "reviewIds": [
+      2,
+      4
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-2",
+      "genai-interview-lesson-4"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-843591993",
+    "courseId": "genai",
+    "prefix": "843591993",
+    "file": "843591993_1045271585226852_2088728408407609288_n.jpg",
+    "path": "study documents/Gen AI/843591993_1045271585226852_2088728408407609288_n.jpg",
+    "url": "/sources/genai/843591993_1045271585226852_2088728408407609288_n.jpg",
+    "sha256": "0ee74a7fa176708a971ef0f7e21400932a7fa026d57d4cd4dc9112b961441377",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 3,
+    "title": "Attention và dự đoán token tiếp theo",
+    "topic": "Attention và dự đoán token tiếp theo",
+    "topics": [
+      "Attention và dự đoán token tiếp theo"
+    ],
+    "lessonIds": [
+      3,
+      5,
+      6
+    ],
+    "reviewIds": [
+      3,
+      5,
+      6
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-3",
+      "genai-interview-lesson-5",
+      "genai-interview-lesson-6"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-840697720",
+    "courseId": "genai",
+    "prefix": "840697720",
+    "file": "840697720_1422811153289481_3388613019290072976_n.jpg",
+    "path": "study documents/Gen AI/840697720_1422811153289481_3388613019290072976_n.jpg",
+    "url": "/sources/genai/840697720_1422811153289481_3388613019290072976_n.jpg",
+    "sha256": "ee9339d3175457f13a9512a21ad21c43983dcca1a13b772fcfcacde69bdb286c",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 4,
+    "title": "Decoding, context window và KV cache",
+    "topic": "Decoding, context window và KV cache",
+    "topics": [
+      "Decoding, context window và KV cache"
+    ],
+    "lessonIds": [
+      7,
+      8,
+      9,
+      10,
+      25
+    ],
+    "reviewIds": [
+      7,
+      8,
+      9,
+      10,
+      25
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-7",
+      "genai-interview-lesson-9",
+      "genai-interview-lesson-10",
+      "genai-interview-lesson-25"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-840561941",
+    "courseId": "genai",
+    "prefix": "840561941",
+    "file": "840561941_3002798683393024_6618706475015531191_n.jpg",
+    "path": "study documents/Gen AI/840561941_3002798683393024_6618706475015531191_n.jpg",
+    "url": "/sources/genai/840561941_3002798683393024_6618706475015531191_n.jpg",
+    "sha256": "b5ab00ff67a1682540015d7d6bbba31e6cf7903b6f2900adf0873eea10a9b95e",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 5,
+    "title": "Pretraining, post-training và preference optimization",
+    "topic": "Pretraining, post-training và preference optimization",
+    "topics": [
+      "Pretraining, post-training và preference optimization"
+    ],
+    "lessonIds": [
+      11,
+      12
+    ],
+    "reviewIds": [
+      11,
+      12
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-11",
+      "genai-interview-lesson-12"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-844023998",
+    "courseId": "genai",
+    "prefix": "844023998",
+    "file": "844023998_1314520177353773_3554144694148060318_n.jpg",
+    "path": "study documents/Gen AI/844023998_1314520177353773_3554144694148060318_n.jpg",
+    "url": "/sources/genai/844023998_1314520177353773_3554144694148060318_n.jpg",
+    "sha256": "0d2f8e5d15579cc4026726f133f7e112b3dac91d0a8785568f2cbc57ead8f3e3",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 6,
+    "title": "Scaling laws, inference compute và LoRA",
+    "topic": "Scaling laws, inference compute và LoRA",
+    "topics": [
+      "Scaling laws, inference compute và LoRA"
+    ],
+    "lessonIds": [
+      13,
+      28
+    ],
+    "reviewIds": [
+      13,
+      28
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-13",
+      "genai-interview-lesson-28"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-840961254",
+    "courseId": "genai",
+    "prefix": "840961254",
+    "file": "840961254_1107852378364047_4422613140883852163_n.jpg",
+    "path": "study documents/Gen AI/840961254_1107852378364047_4422613140883852163_n.jpg",
+    "url": "/sources/genai/840961254_1107852378364047_4422613140883852163_n.jpg",
+    "sha256": "1189093e6ad2654de32b0ec14d655b9abeb23ca9ce71dea98f7b43dc574c06dd",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 7,
+    "title": "Quantization, distillation và prompting",
+    "topic": "Quantization, distillation và prompting",
+    "topics": [
+      "Quantization, distillation và prompting"
+    ],
+    "lessonIds": [
+      14,
+      15,
+      16,
+      26,
+      27
+    ],
+    "reviewIds": [
+      14,
+      15,
+      16,
+      26,
+      27
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-14",
+      "genai-interview-lesson-15",
+      "genai-interview-lesson-26",
+      "genai-interview-lesson-27"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-833298804",
+    "courseId": "genai",
+    "prefix": "833298804",
+    "file": "833298804_1119252140469230_2241521383128018030_n.jpg",
+    "path": "study documents/Gen AI/833298804_1119252140469230_2241521383128018030_n.jpg",
+    "url": "/sources/genai/833298804_1119252140469230_2241521383128018030_n.jpg",
+    "sha256": "8733c1186ca0436079253ba3aab0d01c572d5ad3f210b4c3ffbc12c55513a75a",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 8,
+    "title": "Structured output và context engineering",
+    "topic": "Structured output và context engineering",
+    "topics": [
+      "Structured output và context engineering"
+    ],
+    "lessonIds": [
+      17,
+      18
+    ],
+    "reviewIds": [
+      17,
+      18
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-17",
+      "genai-interview-lesson-18"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-843324468",
+    "courseId": "genai",
+    "prefix": "843324468",
+    "file": "843324468_1821575462361437_3677028953859858779_n.jpg",
+    "path": "study documents/Gen AI/843324468_1821575462361437_3677028953859858779_n.jpg",
+    "url": "/sources/genai/843324468_1821575462361437_3677028953859858779_n.jpg",
+    "sha256": "7e5e5173478349c8e1492b0b23522a81aa7598e8a67ac28c4826a167d4c9288e",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 9,
+    "title": "RAG và các bước truy xuất",
+    "topic": "RAG và các bước truy xuất",
+    "topics": [
+      "RAG và các bước truy xuất"
+    ],
+    "lessonIds": [
+      19
+    ],
+    "reviewIds": [
+      19
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-19"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-840643342",
+    "courseId": "genai",
+    "prefix": "840643342",
+    "file": "840643342_1422749099953175_4593111042136464743_n.jpg",
+    "path": "study documents/Gen AI/840643342_1422749099953175_4593111042136464743_n.jpg",
+    "url": "/sources/genai/840643342_1422749099953175_4593111042136464743_n.jpg",
+    "sha256": "9a5f2c0047fa7d51d0c0fbe7516b24e148e8f7ef85989c856daaa4050b85fb24",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 10,
+    "title": "Hallucination, grounding và tool use",
+    "topic": "Hallucination, grounding và tool use",
+    "topics": [
+      "Hallucination, grounding và tool use"
+    ],
+    "lessonIds": [
+      20,
+      21
+    ],
+    "reviewIds": [
+      20,
+      21
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-20",
+      "genai-interview-lesson-21"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  },
+  {
+    "id": "GENAI-841283655",
+    "courseId": "genai",
+    "prefix": "841283655",
+    "file": "841283655_973251991851006_1046002607702787644_n.jpg",
+    "path": "study documents/Gen AI/841283655_973251991851006_1046002607702787644_n.jpg",
+    "url": "/sources/genai/841283655_973251991851006_1046002607702787644_n.jpg",
+    "sha256": "3c12bbbeaf895e0c053fc05cde0d7542d65ce04ab2cd3cdfd457de0b3dffbe30",
+    "pack": "genai-concepts",
+    "packTitle": "20 khái niệm Gen AI",
+    "collection": "20 khái niệm Gen AI · 11 trang",
+    "page": 11,
+    "title": "Kiến trúc agent, evaluation và observability",
+    "topic": "Kiến trúc agent, evaluation và observability",
+    "topics": [
+      "Kiến trúc agent, evaluation và observability"
+    ],
+    "lessonIds": [
+      22,
+      23,
+      24,
+      29,
+      30
+    ],
+    "reviewIds": [
+      22,
+      23,
+      24,
+      29,
+      30
+    ],
+    "interviewIds": [
+      "genai-interview-lesson-22",
+      "genai-interview-lesson-23",
+      "genai-interview-lesson-29",
+      "genai-interview-lesson-30"
+    ],
+    "uses": [
+      "lesson",
+      "review",
+      "interview"
+    ],
+    "note": "Đã đọc hình gốc. Ví dụ nhỏ, bài Python và hoạt động tương tác là phần bổ sung; xem sổ hiệu đính cho nhận định được sửa."
+  }
+]

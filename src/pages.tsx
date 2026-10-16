@@ -47,6 +47,7 @@ export function Home() {
           <Icon name="layers" size={26} />
         </Link>
       </div>
+      <Link to="/courses" className="new-courses-link"><Icon name="layers" size={19}/><span><strong>Thêm 3 hành trình mới</strong> Docker · Gen AI · RAG LLM</span><Icon name="right" size={17}/></Link>
       {guidedLesson && <section className="teaching-update-banner" aria-label="Bài giảng đã cập nhật">
         <Byte size={74} mood="explaining" skin={state.profile.skin}/>
         <div><span className="eyebrow">BÀI GIẢNG ĐÃ ĐƯỢC LÀM MỚI</span><h2>Nhìn hình, làm thử, rồi viết code</h2><p>Ví dụ từng bước và bổ trợ ngay khi cần. Khi chuyển sang bản mới, code và lượt học cũ vẫn được giữ.</p>

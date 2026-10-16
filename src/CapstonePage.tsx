@@ -8,7 +8,8 @@ import type { Attempt } from "./types";
 import CodePanel from "./CodePanelLazy";
 import QuizPane from "./QuizPane";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
-import { courseInfo, mandatoryLessons, gitCourse } from './courseUI';
+import { courseInfo, mandatoryLessons, gitCourse, dockerCourse } from './courseUI';
+import LearningDataView from './LearningDataView';
 import CourseProjectPreview from './CourseProjectPreview';
 function ChurnChart({input}:{input:{p:number[];y:number[];threshold:number}}) {
   return <section className="ml-visualizer"><h3>Đọc kết quả trên khách hàng giả lập</h3><p>Mỗi cột là xác suất rời dịch vụ. Màu cam: nhãn thật 1; màu xanh: nhãn thật 0. Hãy giải thích các cảnh báo nhầm và trường hợp bỏ sót.</p><svg viewBox="0 0 560 260" role="img" aria-label="Biểu đồ xác suất churn trên tập test; đường ngang là ngưỡng dự đoán dương">
@@ -226,7 +227,7 @@ export default function CapstonePage() {
       <PageHeading
         eyebrow="BÀI CUỐI KHÓA"
         title={data.title||course.capstoneTitle||info.capstone}
-        description={gitCourse(course)?'Giải thích thao tác, viết chuỗi lệnh mô phỏng và kiểm chứng lịch sử Git.':'Giải thích ý tưởng, viết code, kiểm chứng và nhìn lại cách mình đã giải bài.'}
+        description={dockerCourse(course)?'Giải thích cấu hình, viết lệnh mô phỏng và kiểm chứng trạng thái của dịch vụ.':gitCourse(course)?'Giải thích thao tác, viết chuỗi lệnh mô phỏng và kiểm chứng lịch sử Git.':'Giải thích ý tưởng, viết code, kiểm chứng và nhìn lại cách mình đã giải bài.'}
         icon="graduate"
       />
       {busy && working === "start" && <LoadingScene compact title="Chuẩn bị tình huống của bạn…" detail="Đề và dữ liệu sẽ được cố định khi lượt làm bắt đầu." />}
@@ -320,6 +321,7 @@ export default function CapstonePage() {
           {course.id === "ml" && (attempt as any).tasks?.["ml-confusion"] && <ChurnChart input={(attempt as any).tasks["ml-confusion"]} />}
           {course.id==='da'&&(attempt as any).tasks?.['da-clean-orders']?.rows&&<DataProjectTable input={(attempt as any).tasks['da-clean-orders']}/>}
           {['agent','linear'].includes(course.id)&&attempt.tasks&&<CourseProjectPreview key={course.id+attempt.id} courseId={course.id} tasks={attempt.tasks}/>}
+          {['docker','genai','rag'].includes(course.id)&&attempt.tasks&&<section className="guided-project-data"><h3>Dữ liệu của dự án này</h3><p>Quan sát đầu vào của từng chức năng trước khi viết phương án và kiểm thử.</p>{Object.entries(attempt.tasks).map(([id,input])=><details key={id}><summary>{data.problems.find((p:{id:string;title:string})=>p.id===id)?.title??id}</summary><LearningDataView value={input}/></details>)}</section>}
           <div className="tabs capstone-tabs">
             {[
               ["essay", "Bài luận"],

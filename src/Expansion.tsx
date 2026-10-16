@@ -8,12 +8,13 @@ import { Byte, Icon, Button, ProgressBar } from './components';
 import { LevelUpOverlay } from './bitty/RewardOverlays';
 import { CelebrationScene } from './Delight';
 import { courseInfo } from './courseUI';
+import NewCourseArt from './NewCourseArt';
 
 export function CourseArt({ courseId = 'dsa' }: { courseId?: string }) {
-  const labels:Record<string,string>={dsa:'Các nút dữ liệu kết nối thành cây',ml:'Điểm dữ liệu và đường dự đoán',da:'Bảng dữ liệu chuyển thành biểu đồ doanh thu',git:'Nhánh tính năng gặp nhánh chính ở một commit hợp nhất',agent:'Agent quan sát, dùng công cụ và kiểm chứng kết quả',linear:'Vector và lưới tọa độ biến đổi bởi một ma trận'};
+  const labels:Record<string,string>={docker:'Một image tạo nhiều container độc lập',genai:'Xác suất của các token ứng viên',rag:'Tài liệu đi qua truy xuất tới câu trả lời có dẫn nguồn',dsa:'Các nút dữ liệu kết nối thành cây',ml:'Điểm dữ liệu và đường dự đoán',da:'Bảng dữ liệu chuyển thành biểu đồ doanh thu',git:'Nhánh tính năng gặp nhánh chính ở một commit hợp nhất',agent:'Agent quan sát, dùng công cụ và kiểm chứng kết quả',linear:'Vector và lưới tọa độ biến đổi bởi một ma trận'};
   return <svg className="course-art" viewBox="0 0 340 190" role="img" aria-label={labels[courseId]||'Hành trình học cùng Byte'}>
-    <circle cx="170" cy="97" r="85" fill={{ml:'#e8efff',da:'#e0f6f3',git:'#fff0e6',agent:'#ecf1fb',linear:'#edf8e5'}[courseId]||'#e9f8dc'} />
-    {courseId==='agent'?<>
+    <circle cx="170" cy="97" r="85" fill={{docker:'#e5f4f8',genai:'#f0eafa',rag:'#edf7ed',ml:'#e8efff',da:'#e0f6f3',git:'#fff0e6',agent:'#ecf1fb',linear:'#edf8e5'}[courseId]||'#e9f8dc'} />
+    {['docker','genai','rag'].includes(courseId)?<NewCourseArt courseId={courseId}/>:courseId==='agent'?<>
       <path d="M74 94h58m76 0h54M170 68V45m0 100v-23" fill="none" stroke="#a9badd" strokeWidth="5" strokeLinecap="round"/>
       <rect x="132" y="61" width="76" height="66" rx="23" fill="#7990d6"/><rect x="144" y="78" width="52" height="28" rx="11" fill="white"/><circle cx="159" cy="90" r="4" fill="#7990d6"/><circle cx="181" cy="90" r="4" fill="#7990d6"/><path d="M158 114h24" stroke="#c9d3f0" strokeWidth="4" strokeLinecap="round"/>
       <circle cx="64" cy="94" r="24" fill="white" stroke="#b9c8e4" strokeWidth="3"/><path d="m54 94 7 7 13-15" fill="none" stroke="#58b537" strokeWidth="4" strokeLinecap="round"/>

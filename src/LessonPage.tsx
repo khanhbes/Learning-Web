@@ -23,6 +23,9 @@ import DAVisualizer from './DAVisualizer';
 import AgentVisualizer from './AgentVisualizer';
 import LinearVisualizer from './LinearVisualizer';
 import GitWorkbench from './GitWorkbench';
+import DockerVisualizer from './DockerVisualizer';
+import GenAIVisualizer from './GenAIVisualizer';
+import RAGVisualizer from './RAGVisualizer';
 import { currentLanguage, gitCourse } from './courseUI';
 import { useMascot } from './bitty/MascotProvider';
 import { LessonCompleteModal } from './bitty/RewardOverlays';
@@ -452,6 +455,9 @@ export default function LessonPage() {
                 {course.id === "agent" && [0,2,4].includes(block) && <AgentVisualizer lesson={lesson} compact />}
                 {course.id === "linear" && [0,2,4].includes(block) && <LinearVisualizer lesson={lesson} compact />}
                 {gitCourse(course) && [0,2].includes(block) && <GitWorkbench lesson={lesson} compact />}
+                {course.id === 'docker' && [0,2,4].includes(block) && <DockerVisualizer lesson={lesson} compact />}
+                {course.id === 'genai' && [0,2,4].includes(block) && <GenAIVisualizer lesson={lesson} compact />}
+                {course.id === 'rag' && [0,2,4].includes(block) && <RAGVisualizer lesson={lesson} compact />}
                 <p className="teaching-text">{lesson.blocks[block].text}</p>
                 {block === 0 && (
                   <details className="recall-panel">
@@ -573,7 +579,7 @@ export default function LessonPage() {
                     </select>
                   </label>
                 )}
-                {gitCourse(course)?<GitWorkbench lesson={lesson}/>:course.id==='da'?<DAVisualizer lesson={lesson}/>:course.id==='agent'?<AgentVisualizer lesson={lesson}/>:course.id==='linear'?<LinearVisualizer lesson={lesson}/>:course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
+                {course.id==='docker'?<DockerVisualizer lesson={lesson}/>:course.id==='genai'?<GenAIVisualizer lesson={lesson}/>:course.id==='rag'?<RAGVisualizer lesson={lesson}/>:gitCourse(course)?<GitWorkbench lesson={lesson}/>:course.id==='da'?<DAVisualizer lesson={lesson}/>:course.id==='agent'?<AgentVisualizer lesson={lesson}/>:course.id==='linear'?<LinearVisualizer lesson={lesson}/>:course.id === "ml" ? <MLVisualizer lesson={lesson} /> : <Visualizer
                   key={visualProblemId || main.id}
                   problemId={visualProblemId || main.id}
                   defaultVariant={

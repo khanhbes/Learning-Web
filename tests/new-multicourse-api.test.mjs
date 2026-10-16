@@ -23,7 +23,7 @@ test("Course manifests, source paths, same numeric lesson IDs and language prefe
   const {store,app,call}=await setup();
   try {
     const courses=(await call("GET","/api/courses")).body.courses;
-    assert.deepEqual(courses.map(c=>[c.id,c.mandatoryLessons,c.advancedLessons]),[["dsa",48,12],["ml",40,12],["da",28,8],["git",24,6],["agent",24,8],["linear",28,8]]);
+    assert.deepEqual(courses.map(c=>[c.id,c.mandatoryLessons,c.advancedLessons]),[["dsa",48,12],["ml",40,12],["da",28,8],["git",24,6],["agent",24,8],["linear",28,8],["docker",24,6],["genai",24,6],["rag",28,6]]);
     for(const c of courses)for(const lesson of c.lessons){assert.equal(lesson.blocks,undefined,"Catalog must not leak lesson solutions");assert.equal(lesson.questions,undefined,"Catalog must not leak assessment answers");}
     assert.equal((await call("GET","/api/courses/ml/lessons/1")).status,200);
     assert.equal((await call("GET","/api/courses/ml/lessons/2")).status,403);

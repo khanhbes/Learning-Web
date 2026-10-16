@@ -9,8 +9,10 @@ import { useApp } from "./context";
 import { Button, Icon, Modal, Byte } from "./components";
 import type { Attempt, Problem, Language } from "./types";
 import { LoadingScene, CelebrationScene, SuccessFeedback } from "./Delight";
-import { courseLanguages, currentLanguage, editorLanguageName, gitCourse, pythonDataCourse, languageName } from './courseUI';
+import { courseLanguages, currentLanguage, editorLanguageName, gitCourse, dockerCourse, shellCourse, pythonDataCourse, languageName } from './courseUI';
 import { GitFrameView, GitScenarioPreview } from './GitWorkbench';
+import { DockerFrameView } from './DockerVisualizer';
+import LearningDataView from './LearningDataView';
 import { useMascot } from './bitty/MascotProvider';
 (globalThis as any).MonacoEnvironment = { getWorker: () => new EditorWorker() };
 loader.config({ monaco });
@@ -61,7 +63,7 @@ export default function CodePanel({
   const p = problems.find((p) => p.id === pid) || problems[0];
   if (!p) return null;
   const code = attempt.codeDrafts[p.id]?.[language] ?? p.starters[language] ?? '';
-  const shell=gitCourse(course),languages=courseLanguages(course).filter(l=>p.starters[l]!==undefined);
+  const shell=shellCourse(course),docker=dockerCourse(course),languages=courseLanguages(course).filter(l=>p.starters[l]!==undefined);
   function updateCode(value:string) {
     onChange({...current.current,codeDrafts:{...current.current.codeDrafts,[p.id]:{...current.current.codeDrafts[p.id],[language]:value}}});
   }
@@ -164,23 +166,18 @@ export default function CodePanel({
           </span>
           <h2>{p.title}</h2>
           <p>{p.statement}</p>
-          {shell?<GitScenarioPreview input={p.sampleInput} output={p.sampleOutput}/>:<><h4>Ví dụ</h4>
-          <div className="example-box">
-            <small>ĐẦU VÀO</small>
-            <pre>{JSON.stringify(p.sampleInput, null, 2)}</pre>
-            <small>KẾT QUẢ</small>
-            <pre>{JSON.stringify(p.sampleOutput)}</pre>
-          </div>
+          {gitCourse(course)?<GitScenarioPreview input={p.sampleInput} output={p.sampleOutput}/>:<><h4>Ví dụ</h4>
+          <LearningDataView value={p.sampleInput} label="Đầu vào"/>
+          <LearningDataView value={p.sampleOutput} label={docker?'Trạng thái cần đạt':'Kết quả'}/>
           </>}
           <h4>Điều kiện bài toán</h4>
           <p className="constraint">{p.constraints}</p>
           <details>
             <summary>{shell?'Viết chuỗi lệnh mô phỏng như thế nào?':'Viết hàm solve như thế nào?'}</summary>
-            {shell?<p>Mỗi dòng là một lệnh Git trong danh sách cho phép. <code>edit path "nội dung"</code> và <code>delete path</code> là thao tác editor mô phỏng. Bộ chấm kiểm tra trạng thái kho và lịch sử theo đề, không chạy shell hoặc Git thật trên máy.</p>:<>
+            {docker?<p>Mỗi dòng là một lệnh trong môi trường Docker mô phỏng. Xem các lệnh được hỗ trợ trong bài. Bộ chấm kiểm tra trạng thái image, container, mạng và dữ liệu theo yêu cầu; không thực thi shell hoặc Docker trên máy.</p>:shell?<p>Mỗi dòng là một lệnh Git trong danh sách cho phép. <code>edit path "nội dung"</code> và <code>delete path</code> là thao tác editor mô phỏng. Bộ chấm kiểm tra trạng thái kho và lịch sử theo đề, không chạy shell hoặc Git thật trên máy.</p>:<>
             <p>
               <code>solve(data)</code> nhận dữ liệu trên và <code>return</code>{" "}
-              kết quả. Python có sẵn deque, Counter, heapq, bisect. C++ có sẵn
-              std và kiểu json. Không cần viết main hoặc đọc stdin.
+              kết quả. {pythonDataCourse(course)?'Thêm import cho thư viện bạn dùng.':'Python có sẵn deque, Counter, heapq, bisect. C++ có sẵn std và kiểu json.'} Không cần viết main hoặc đọc stdin.
             </p>
             {!pythonDataCourse(course)&&<p>
               Hàm hỗ trợ: make_list, list_values, make_tree, tree_values và
@@ -231,7 +228,7 @@ export default function CodePanel({
           <div className="editor-toolbar">
             <span>
               <Icon name="file" size={16} />
-              {language === 'shell'?'scenario.git':language === "python" ? "solution.py" : "solution.cpp"}
+              {language === 'shell'?(docker?'scenario.docker':'scenario.git'):language === "python" ? "solution.py" : "solution.cpp"}
             </span>
             <select
               aria-label="Ngôn ngữ code"
@@ -266,7 +263,7 @@ export default function CodePanel({
             </button>
           </div>
           <div className="monaco-host">
-            {shell?<textarea className="git-code-editor" spellCheck={false} aria-label="Editor chuỗi lệnh Git" value={code} disabled={attempt.status!=='active'} onChange={e=>updateCode(e.target.value)}/>:<>
+            {shell?<textarea className="git-code-editor" spellCheck={false} aria-label={`Editor chuỗi lệnh ${docker?'Docker':'Git'}`} value={code} disabled={attempt.status!=='active'} onChange={e=>updateCode(e.target.value)}/>:<>
             <Editor
               height="360px"
               language={language === "cpp" ? "cpp" : "python"}
@@ -295,7 +292,7 @@ export default function CodePanel({
           </div>
           <div className="editor-actions">
             <span className="editor-save">
-              <Icon name="shield" size={15} /> {shell?'Kho Git mô phỏng':'Chạy trong môi trường riêng'}
+              <Icon name="shield" size={15} /> {docker?'Docker mô phỏng':shell?'Kho Git mô phỏng':'Chạy trong môi trường riêng'}
             </span>
             <div>
               {!protectedAttempt && (
@@ -369,7 +366,7 @@ export default function CodePanel({
                 {result.diagnostic && (
                   <pre className="diagnostic">{result.diagnostic}</pre>
                 )}
-                {shell&&(result.frame||result.frames?.length>0)&&<section><p className="git-code-note">Trạng thái của test mẫu. Kết quả toàn bộ test được liệt kê phía trên.</p><GitFrameView frame={result.frame||result.frames.at(-1)}/></section>}
+                {shell&&(result.frame||result.frames?.length>0)&&<section><p className="git-code-note">Trạng thái của test mẫu. Kết quả toàn bộ test được liệt kê phía trên.</p>{docker?<DockerFrameView frame={result.frame||result.frames.at(-1)}/>:<GitFrameView frame={result.frame||result.frames.at(-1)}/>}</section>}
               </>
             ) : (
               <div className="result-placeholder">

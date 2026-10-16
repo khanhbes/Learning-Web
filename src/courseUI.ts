@@ -1,8 +1,11 @@
 import type { Course, Language } from './types';
 
-export const languageName: Record<Language, string> = {python:'Python',cpp:'C++17',shell:'Git mô phỏng'};
-export const languageFlag: Record<Language, string> = {python:'Py',cpp:'C+',shell:'Git'};
+export const languageName: Record<Language, string> = {python:'Python',cpp:'C++17',shell:'Lệnh mô phỏng'};
+export const languageFlag: Record<Language, string> = {python:'Py',cpp:'C+',shell:'>_'};
 export const courseDetails: Record<string,{icon:string;tagline:string;description:string;capstone:string;tasks:string[]}> = {
+  docker:{icon:'layers',tagline:'DOCKER · ĐÓNG GÓI VÀ VẬN HÀNH',description:'Thấy image trở thành container, dữ liệu được lưu và các dịch vụ kết nối với nhau.',capstone:'Triển khai trạm học Byte',tasks:['Đóng gói và chạy đúng dịch vụ','Giữ dữ liệu qua vòng đời container','Kết nối dịch vụ và kiểm chứng cấu hình']},
+  genai:{icon:'brain',tagline:'GEN AI · TỪ TOKEN ĐẾN CÂU TRẢ LỜI',description:'Thử prompt, quan sát xác suất và kiểm tra đầu ra qua những thí nghiệm nhỏ.',capstone:'Trợ lý tạo nội dung có kiểm chứng',tasks:['Chuẩn bị ngữ cảnh trong ngân sách','Kiểm tra đầu ra có cấu trúc','Đánh giá kết quả theo tiêu chí rõ ràng']},
+  rag:{icon:'search',tagline:'RAG & LLM · TỪ TÀI LIỆU ĐẾN BẰNG CHỨNG',description:'Chia tài liệu, tìm đoạn phù hợp và kiểm chứng câu trả lời bằng nguồn.',capstone:'Thư viện hỏi đáp có trích dẫn',tasks:['Chuẩn bị các đoạn tài liệu','Truy xuất và xếp hạng bằng chứng','Kiểm tra nguồn và chất lượng kết quả']},
   dsa:{icon:'code',tagline:'PYTHON & C++ · TƯ DUY GIẢI BÀI',description:'Hiểu cấu trúc dữ liệu và thuật toán bằng từng bước trực quan.',capstone:'Lập kế hoạch học thông minh',tasks:['Sắp lịch theo tiên quyết bằng đồ thị','Chọn công việc bằng priority queue','Thống kê thời gian bằng prefix sum']},
   ml:{icon:'brain',tagline:'PYTHON · TỪ DỮ LIỆU ĐẾN DỰ ĐOÁN',description:'Khám phá mô hình qua biểu đồ, dữ liệu nhỏ và Python.',capstone:'Dự đoán khách hàng ngừng sử dụng dịch vụ',tasks:['Tiền xử lý học từ train, tránh leakage','Huấn luyện và dự đoán đúng cấu hình','Tính metric và kiểm tra trường hợp biên']},
   da:{icon:'layers',tagline:'PYTHON · TỪ BẢNG SỐ ĐẾN CÂU CHUYỆN',description:'Làm sạch, phân tích và trình bày dữ liệu bằng bảng và biểu đồ có thể thao tác.',capstone:'Dashboard cửa hàng Byte',tasks:['Làm sạch đơn hàng, giữ đúng dữ liệu hợp lệ','Tính KPI và tổng hợp theo nhóm','Tạo chuỗi dữ liệu cho biểu đồ báo cáo']},
@@ -14,8 +17,10 @@ export function courseInfo(course:Course) {const info=courseDetails[course.id] |
 export function courseLanguages(course:Course):Language[] {return course.languages?.length?course.languages:['python'];}
 export function currentLanguage(course:Course,language?:Language):Language {const allowed=courseLanguages(course);return language&&allowed.includes(language)?language:allowed[0];}
 export function gitCourse(course:Course) {return course.runtime==='git-sim'||course.id==='git';}
+export function dockerCourse(course:Course) {return course.runtime==='docker-sim'||course.id==='docker';}
+export function shellCourse(course:Course) {return gitCourse(course)||dockerCourse(course);}
 export function pythonDataCourse(course:Course) {return ['ml-python','pyodide','pyodide-python'].includes(course.runtime||'')||['ml','da','agent','linear'].includes(course.id);}
-export function courseRunner(health:any,course:Course) {return gitCourse(course)?health?.gitRunner:pythonDataCourse(course)?health?.mlRunner:health?.runner;}
-export function editorLanguageName(course:Course,language:Language) {return language==='shell'?'Lệnh Git · mô phỏng':language==='cpp'?'C++17':pythonDataCourse(course)?'Python 3.14 · dữ liệu':'Python 3.12';}
+export function courseRunner(health:any,course:Course) {return dockerCourse(course)?health?.dockerRunner:gitCourse(course)?health?.gitRunner:pythonDataCourse(course)?health?.mlRunner:health?.runner;}
+export function editorLanguageName(course:Course,language:Language) {return language==='shell'?`Lệnh ${dockerCourse(course)?'Docker':'Git'} · mô phỏng`:language==='cpp'?'C++17':pythonDataCourse(course)?'Python 3.14 · dữ liệu':'Python 3.12';}
 export function mandatoryLessons(course:Course) {return course.mandatoryCount??course.lessons?.filter(l=>l.kind!=='advanced').length??0;}
 export function courseIconName(name:string) {return ({chart:'layers',table:'layers',spreadsheet:'layers',sql:'code',branch:'network',history:'clock',cloud:'link',dashboard:'target',robot:'brain',team:'network',array:'layers',grid:'layers',graph:'network',vector:'move',matrix:'layers'} as Record<string,string>)[name]||name;}

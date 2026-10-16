@@ -15,7 +15,7 @@ assert.equal(login.status,200,'Existing password must still work');
 const cookie=login.headers.get('set-cookie')?.split(';')[0];assert.ok(cookie);
 const get=async path=>{const r=await fetch(origin+path,{headers:{cookie,Origin:origin}});assert.equal(r.status,200,path);return r.json();};
 const report={origin,online:true,existingPassword:true,courses:[],teachingVersion:TEACHING_VERSION};
-const courses=(await get('/api/courses')).courses;assert.equal(courses.length,6);
+const courses=(await get('/api/courses')).courses;assert.equal(courses.length,Object.keys(courseRegistry).length);
 for(const[id,def]of Object.entries(courseRegistry)){
   const course=courses.find(c=>c.id===id),lesson=await get(`/api/courses/${id}/lessons/1`),flow=lesson.teachingFlow;
   assert.equal(course.mandatoryCount,def.course.mandatoryLessons);assert.equal(course.advancedCount,def.course.advancedLessons);

@@ -1,7 +1,7 @@
 import { random, int, shuffle } from "../shared/random.mjs";
 import { readFileSync } from "node:fs";
 import { lessons as dsaLessons } from "./curriculum.mjs";
-import { getCourse } from "./registry.mjs";
+import { getCourse,courseRegistry } from "./registry.mjs";
 import { knowledgeTipRows as daTipRows,knowledgeInterviewRows as daRows,knowledgeLessonIds as daLessonIds } from "./da/knowledge.mjs";
 import { knowledgeTipRows as gitTipRows,knowledgeInterviewRows as gitRows } from "./git/knowledge.mjs";
 import { knowledgeTipRows as agentTipRows,knowledgeInterviewRows as agentRows } from "./agent/knowledge.mjs";
@@ -143,6 +143,12 @@ function makeItem(row, courseId, type, index) {
 }
 export const tips = [...dsaTipRows.map((r, i) => makeItem(r, "dsa", "tip", i)), ...mlTipRows.map((r, i) => makeItem(r, "ml", "tip", i)),...daTipRows.map((r,i)=>makeItem(r,"da","tip",i)),...gitTipRows.map((r,i)=>makeItem(r,"git","tip",i)),...agentTipRows.map((r,i)=>makeItem(r,"agent","tip",i)),...linearTipRows.map((r,i)=>makeItem(r,"linear","tip",i))];
 export const topics = [...dsaRows.map((r, i) => makeItem(r, "dsa", "interview", i)), ...mlRows.map((r, i) => makeItem(r, "ml", "interview", i)),...daRows.map((r,i)=>makeItem(r,"da","interview",i)),...gitRows.map((r,i)=>makeItem(r,"git","interview",i)),...agentRows.map((r,i)=>makeItem(r,"agent","interview",i)),...linearRows.map((r,i)=>makeItem(r,"linear","interview",i))];
+// Additional course modules publish their own rows; existing stable IDs stay intact.
+for(const [id,definition] of Object.entries(courseRegistry)) {
+  if(['dsa','ml','da','git','agent','linear'].includes(id))continue;
+  tips.push(...(definition.knowledgeTipRows??[]).map((row,i)=>makeItem(row,id,'tip',i)));
+  topics.push(...(definition.knowledgeInterviewRows??[]).map((row,i)=>makeItem(row,id,'interview',i)));
+}
 export const knowledgeItems = [...tips, ...topics];
 export const knowledgeById = Object.fromEntries(knowledgeItems.map((item) => [item.id, item]));
 const mlInterviewLessons = [1,50,48,48,50,39,49,50,51,50,12,10,17,12,11,16,17,21,28,28,36,39,38,39,39,50,19,48,51,38,50,51,50,38,37];

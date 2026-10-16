@@ -1,8 +1,10 @@
 import { useId } from 'react';
 import { GitScenarioPreview } from './GitWorkbench';
+import { DockerScenarioPreview } from './DockerVisualizer';
 import './teaching.css';
 
 const labels: Record<string, string> = {
+  tokens:'Các mảnh token',vocab:'Bảng token',candidates:'Các ứng viên',weight:'Trọng số',score:'Điểm',logits:'Điểm trước chuẩn hóa',probabilities:'Xác suất',documents:'Các tài liệu',chunks:'Các đoạn',citations:'Nguồn trích dẫn',context:'Ngữ cảnh',budget:'Ngân sách token',images:'Các image',containers:'Các container',volumes:'Vùng lưu bền vững',networks:'Các mạng',ports:'Ánh xạ cổng',status:'Trạng thái',embedding:'Vector biểu diễn',retrieved:'Kết quả truy xuất',relevant:'Các tài liệu liên quan',topK:'Số kết quả giữ lại',chunkSize:'Độ dài đoạn',overlap:'Phần chồng lặp',
   nums: 'Các phần tử', values: 'Các giá trị', arr: 'Mảng', array: 'Mảng', target: 'Giá trị cần tìm',
   matrix: 'Ma trận', A: 'Ma trận A', B: 'Ma trận B', a:'a',b:'b',x:'x',y:'y',
   rows: 'Các dòng dữ liệu', data: 'Dữ liệu', records: 'Bản ghi', columns: 'Các cột',
@@ -75,6 +77,9 @@ function DataContent({ value, depth = 0 }: { value: any; depth?: number }) {
 
 export default function LearningDataView({ value, label = 'Dữ liệu đang dùng', raw = true }: { value: unknown; label?: string; raw?: boolean }) {
   if (value === undefined) return null;
-  if (value && typeof value === 'object' && 'initial' in value) return <div className="learning-data-view"><span className="learning-data-label">{label}</span><GitScenarioPreview input={value}/>{raw && <details className="learning-raw"><summary>Xem dữ liệu JSON</summary><pre>{JSON.stringify(value, null, 2)}</pre></details>}</div>;
+  if (value && typeof value === 'object' && 'initial' in value && value.initial && typeof value.initial === 'object') {
+    if ('containers' in value.initial) return <div className="learning-data-view"><span className="learning-data-label">{label}</span><DockerScenarioPreview input={value}/></div>;
+    if ('commits' in value.initial) return <div className="learning-data-view"><span className="learning-data-label">{label}</span><GitScenarioPreview input={value}/>{raw && <details className="learning-raw"><summary>Xem dữ liệu JSON</summary><pre>{JSON.stringify(value, null, 2)}</pre></details>}</div>;
+  }
   return <div className="learning-data-view"><span className="learning-data-label">{label}</span><DataContent value={value}/>{raw && typeof value === 'object' && value !== null && <details className="learning-raw"><summary>Xem dữ liệu JSON</summary><pre>{JSON.stringify(value, null, 2)}</pre></details>}</div>;
 }

@@ -4,9 +4,12 @@ import {lessonDesigns as da} from './da.mjs';
 import {lessonDesigns as git} from './git.mjs';
 import {lessonDesigns as agent} from './agent.mjs';
 import {lessonDesigns as linear} from './linear.mjs';
+import {lessonDesigns as docker} from './docker.mjs';
+import {lessonDesigns as genai} from './genai.mjs';
+import {lessonDesigns as rag} from './rag.mjs';
 import {buildTeachingFlow,createTeachingLab,checkTeachingActivity,generateUnderstandingQuestions,TEACHING_VERSION} from './engine.mjs';
 import {checkLab as legacyCheckLab} from '../labs.mjs';
-export const teachingDesigns={dsa,ml,da,git,agent,linear};
+export const teachingDesigns={dsa,ml,da,git,agent,linear,docker,genai,rag};
 export function installTeaching(registry){
   for(const[id,def]of Object.entries(registry)){
     const designs=teachingDesigns[id],originalMaterial=def.lessonMaterial,originalCheck=def.checkLab;

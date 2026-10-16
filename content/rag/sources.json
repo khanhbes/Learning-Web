@@ -1,0 +1,407 @@
+[
+  {
+    "id": "RAG-828843433",
+    "courseId": "rag",
+    "prefix": "828843433",
+    "file": "828843433_1620348062926691_3070570276294378548_n.jpg",
+    "path": "study documents/RAG LLM/828843433_1620348062926691_3070570276294378548_n.jpg",
+    "url": "/sources/rag/828843433_1620348062926691_3070570276294378548_n.jpg",
+    "sha256": "b15684e3375dec07ade3e5ba55386b4742e587ce4a30eec137490da0aebaa7eb",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 8,
+    "title": "Nền tảng Retrieval-Augmented Generation",
+    "topic": "Nền tảng Retrieval-Augmented Generation",
+    "topics": [
+      "Nền tảng Retrieval-Augmented Generation"
+    ],
+    "lessonIds": [
+      1,
+      9
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-828987393",
+    "courseId": "rag",
+    "prefix": "828987393",
+    "file": "828987393_1677190407090705_2381122838196840124_n.jpg",
+    "path": "study documents/RAG LLM/828987393_1677190407090705_2381122838196840124_n.jpg",
+    "url": "/sources/rag/828987393_1677190407090705_2381122838196840124_n.jpg",
+    "sha256": "ba47ce1e85ce78f5b5dffe40899bea37784349c42a5affbce664d3843a6b2fbb",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 10,
+    "title": "Embeddings và vector databases",
+    "topic": "Embeddings và vector databases",
+    "topics": [
+      "Embeddings và vector databases"
+    ],
+    "lessonIds": [
+      13,
+      14,
+      15
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-829528974",
+    "courseId": "rag",
+    "prefix": "829528974",
+    "file": "829528974_1586948262904985_8786196024593668613_n.jpg",
+    "path": "study documents/RAG LLM/829528974_1586948262904985_8786196024593668613_n.jpg",
+    "url": "/sources/rag/829528974_1586948262904985_8786196024593668613_n.jpg",
+    "sha256": "09cc2c271a41cdaf9caa88c8e83c2743b377bfc32e6f27114737b1c5fed36a1c",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 4,
+    "title": "Prompt engineering",
+    "topic": "Prompt engineering",
+    "topics": [
+      "Prompt engineering"
+    ],
+    "lessonIds": [
+      7
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-830181126",
+    "courseId": "rag",
+    "prefix": "830181126",
+    "file": "830181126_1588753432350312_2776988000866394362_n.jpg",
+    "path": "study documents/RAG LLM/830181126_1588753432350312_2776988000866394362_n.jpg",
+    "url": "/sources/rag/830181126_1588753432350312_2776988000866394362_n.jpg",
+    "sha256": "2e2a29ab97589e71074a8f56dfd8fe80ca4d11f0da997c9298a067ce4584ba4a",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 13,
+    "title": "Các kỹ thuật RAG nâng cao",
+    "topic": "Các kỹ thuật RAG nâng cao",
+    "topics": [
+      "Các kỹ thuật RAG nâng cao"
+    ],
+    "lessonIds": [
+      19,
+      21,
+      29,
+      31,
+      32
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-830349631",
+    "courseId": "rag",
+    "prefix": "830349631",
+    "file": "830349631_1439662441354938_6852540256384340801_n.jpg",
+    "path": "study documents/RAG LLM/830349631_1439662441354938_6852540256384340801_n.jpg",
+    "url": "/sources/rag/830349631_1439662441354938_6852540256384340801_n.jpg",
+    "sha256": "380bc35bf78606442fea919e152b9be25659789c64374d6e476c509c745f25b8",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 6,
+    "title": "Pretraining và fine-tuning",
+    "topic": "Pretraining và fine-tuning",
+    "topics": [
+      "Pretraining và fine-tuning"
+    ],
+    "lessonIds": [
+      8
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-830447277",
+    "courseId": "rag",
+    "prefix": "830447277",
+    "file": "830447277_1458906302758436_8623964931863742786_n.jpg",
+    "path": "study documents/RAG LLM/830447277_1458906302758436_8623964931863742786_n.jpg",
+    "url": "/sources/rag/830447277_1458906302758436_8623964931863742786_n.jpg",
+    "sha256": "887d338e678dc214550514f20f22e2f8c6c624c21a43d4a6a80e40a0f32490d3",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 1,
+    "title": "Kiến thức nền tảng về LLM",
+    "topic": "Kiến thức nền tảng về LLM",
+    "topics": [
+      "Kiến thức nền tảng về LLM"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-830642426",
+    "courseId": "rag",
+    "prefix": "830642426",
+    "file": "830642426_1104707302487679_8386802628029639355_n.jpg",
+    "path": "study documents/RAG LLM/830642426_1104707302487679_8386802628029639355_n.jpg",
+    "url": "/sources/rag/830642426_1104707302487679_8386802628029639355_n.jpg",
+    "sha256": "0f72cb6c80ce8d82363b2c9241c10b3efeccdc62b80deaba4621e502b45b4d78",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 2,
+    "title": "Transformers và attention",
+    "topic": "Transformers và attention",
+    "topics": [
+      "Transformers và attention"
+    ],
+    "lessonIds": [
+      6
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-830701340",
+    "courseId": "rag",
+    "prefix": "830701340",
+    "file": "830701340_1592148636023966_8092528081983098838_n.jpg",
+    "path": "study documents/RAG LLM/830701340_1592148636023966_8092528081983098838_n.jpg",
+    "url": "/sources/rag/830701340_1592148636023966_8092528081983098838_n.jpg",
+    "sha256": "aef7dec97619c3b46aad205aa7d4ccfa9c5737a538d6d6a974b173316bdccf8e",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 12,
+    "title": "Pipeline và kiến trúc RAG",
+    "topic": "Pipeline và kiến trúc RAG",
+    "topics": [
+      "Pipeline và kiến trúc RAG"
+    ],
+    "lessonIds": [
+      17,
+      22,
+      26,
+      27
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-830754904",
+    "courseId": "rag",
+    "prefix": "830754904",
+    "file": "830754904_1331451742268332_4897803249708039584_n.jpg",
+    "path": "study documents/RAG LLM/830754904_1331451742268332_4897803249708039584_n.jpg",
+    "url": "/sources/rag/830754904_1331451742268332_4897803249708039584_n.jpg",
+    "sha256": "ab754e7f0df39174b072f0f3b1994245fe53fd4d00cb6fc0ae02f2b75cc38f57",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 7,
+    "title": "Instruction tuning và RLHF",
+    "topic": "Instruction tuning và RLHF",
+    "topics": [
+      "Instruction tuning và RLHF"
+    ],
+    "lessonIds": [
+      8
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-831712068",
+    "courseId": "rag",
+    "prefix": "831712068",
+    "file": "831712068_1096469916463112_901528742056268052_n.jpg",
+    "path": "study documents/RAG LLM/831712068_1096469916463112_901528742056268052_n.jpg",
+    "url": "/sources/rag/831712068_1096469916463112_901528742056268052_n.jpg",
+    "sha256": "4c9863c35b326410c1198cd5743cd2683e9beb6aa4402986f517a961418505f2",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 0,
+    "title": "Bìa và mục lục RAG & LLMs",
+    "topic": "Bìa và mục lục RAG & LLMs",
+    "topics": [
+      "Bìa và mục lục RAG & LLMs"
+    ],
+    "lessonIds": [
+      1
+    ],
+    "role": "introduction",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-832591589",
+    "courseId": "rag",
+    "prefix": "832591589",
+    "file": "832591589_1816881196008316_3130045580354710134_n.jpg",
+    "path": "study documents/RAG LLM/832591589_1816881196008316_3130045580354710134_n.jpg",
+    "url": "/sources/rag/832591589_1816881196008316_3130045580354710134_n.jpg",
+    "sha256": "e8e51a68e57f78af32561ea2ed7828ff5048955b7596307590ca71def3862d24",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 14,
+    "title": "Ứng dụng LLM, agents và đánh giá",
+    "topic": "Ứng dụng LLM, agents và đánh giá",
+    "topics": [
+      "Ứng dụng LLM, agents và đánh giá"
+    ],
+    "lessonIds": [
+      23,
+      24
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-833392351",
+    "courseId": "rag",
+    "prefix": "833392351",
+    "file": "833392351_2271899760299797_2839019560875454955_n.jpg",
+    "path": "study documents/RAG LLM/833392351_2271899760299797_2839019560875454955_n.jpg",
+    "url": "/sources/rag/833392351_2271899760299797_2839019560875454955_n.jpg",
+    "sha256": "76291767abf13961ff8b2042fec6b7b0c54d303bea8d825297bb63412273b342",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 11,
+    "title": "Retrieval và reranking",
+    "topic": "Retrieval và reranking",
+    "topics": [
+      "Retrieval và reranking"
+    ],
+    "lessonIds": [
+      16,
+      18,
+      20,
+      30
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-833604193",
+    "courseId": "rag",
+    "prefix": "833604193",
+    "file": "833604193_1010821001993188_1148531890168741097_n.jpg",
+    "path": "study documents/RAG LLM/833604193_1010821001993188_1148531890168741097_n.jpg",
+    "url": "/sources/rag/833604193_1010821001993188_1148531890168741097_n.jpg",
+    "sha256": "88509a45ddbb7b2af2ef46065eb320f85bbbcffb1b97ca3b0810a0dea5d5fc5c",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 15,
+    "title": "Phỏng vấn RAG & LLM, kiến thức thực tế",
+    "topic": "Phỏng vấn RAG & LLM, kiến thức thực tế",
+    "topics": [
+      "Phỏng vấn RAG & LLM, kiến thức thực tế"
+    ],
+    "lessonIds": [
+      25,
+      28,
+      33,
+      34
+    ],
+    "role": "interview",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-833753486",
+    "courseId": "rag",
+    "prefix": "833753486",
+    "file": "833753486_2267638263782020_6454637151173049350_n.jpg",
+    "path": "study documents/RAG LLM/833753486_2267638263782020_6454637151173049350_n.jpg",
+    "url": "/sources/rag/833753486_2267638263782020_6454637151173049350_n.jpg",
+    "sha256": "d319e3ee070ff6a5d11a88c75b118320ff6fd9948360de7b487200a0d9f71b10",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 3,
+    "title": "Tokens, embeddings và context window",
+    "topic": "Tokens, embeddings và context window",
+    "topics": [
+      "Tokens, embeddings và context window"
+    ],
+    "lessonIds": [
+      3,
+      4
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-833862787",
+    "courseId": "rag",
+    "prefix": "833862787",
+    "file": "833862787_1413571646862007_3009713129470277096_n.jpg",
+    "path": "study documents/RAG LLM/833862787_1413571646862007_3009713129470277096_n.jpg",
+    "url": "/sources/rag/833862787_1413571646862007_3009713129470277096_n.jpg",
+    "sha256": "96384a69e1019c5368577705fa9a0269d7e62863ef35e9f1dcffd2724d4310e9",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 9,
+    "title": "Document loading và chunking",
+    "topic": "Document loading và chunking",
+    "topics": [
+      "Document loading và chunking"
+    ],
+    "lessonIds": [
+      2,
+      10,
+      11,
+      12
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  },
+  {
+    "id": "RAG-834192814",
+    "courseId": "rag",
+    "prefix": "834192814",
+    "file": "834192814_1828632278130023_8563735558735286633_n.jpg",
+    "path": "study documents/RAG LLM/834192814_1828632278130023_8563735558735286633_n.jpg",
+    "url": "/sources/rag/834192814_1828632278130023_8563735558735286633_n.jpg",
+    "sha256": "000622097c490ee9d9416d8d45389e74fb2bb77586a229d10f949ca3aefd5be1",
+    "pack": "rag-handbook",
+    "packTitle": "RAG & LLMs — Cẩm nang viết tay",
+    "collection": "RAG & LLMs — Series viết tay v1.0",
+    "page": 5,
+    "title": "Kiến trúc LLM",
+    "topic": "Kiến trúc LLM",
+    "topics": [
+      "Kiến trúc LLM"
+    ],
+    "lessonIds": [
+      5
+    ],
+    "role": "lesson",
+    "reviewed": true,
+    "reviewMethod": "Read full-resolution contact sheets, all 16 source images; checked corrections against primary references."
+  }
+]

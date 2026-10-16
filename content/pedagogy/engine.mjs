@@ -52,6 +52,16 @@ function annotationsFor(code,design){
     const s=line.trim();
     if(!s)return 'Dòng trống ngăn các phần để dễ đọc.';
     if(language==='shell'){
+      if(/(^|\n)\s*docker\s/.test(source)){
+        if(s.startsWith('#'))return 'Chú thích của bài; không thực thi như một lệnh.';
+        if(/^edit\b/.test(s))return 'Sửa tệp trong build context ảo; image đã tạo trước đó chưa tự đổi theo.';
+        if(/^docker build\b/.test(s))return 'Đọc Dockerfile và build context để tạo image mới trong mô phỏng.';
+        if(/^docker (run|create)\b/.test(s))return 'Tạo container từ image và cấu hình các cờ; run đồng thời khởi động ứng dụng.';
+        if(/^docker stop\b/.test(s))return 'Dừng ứng dụng. Container thường vẫn tồn tại; --rm là trường hợp được xóa khi thoát.';
+        if(/^docker rm\b/.test(s))return 'Xóa container được chỉ định; named volume có vòng đời riêng.';
+        if(/^docker (ps|inspect|logs|port)\b/.test(s))return 'Đọc trạng thái hoặc nhật ký của tài nguyên ảo để kiểm chứng điều vừa làm.';
+        return 'Áp dụng lệnh Docker lên tài nguyên ảo rồi đối chiếu trạng thái với yêu cầu của bài.';
+      }
       if(/^git add\b/.test(s))return 'Chụp nội dung file hiện tại vào vùng chọn (index); sửa file sau đó chưa tự sửa bản đã chọn.';
       if(/^git commit\b/.test(s))return 'Ghi nội dung đang ở index thành một mốc lịch sử; phần chưa được chọn vẫn ở ngoài commit.';
       if(/^git init\b/.test(s))return 'Khởi tạo kho Git để bắt đầu theo dõi lịch sử của các file.';
@@ -96,13 +106,13 @@ export function buildTeachingFlow(def,lesson,design){
     activity('match','Nối tên với điều bạn vừa thấy','guided'),
     {id:'visual',stage:'guided',kind:'visual',title:'Dừng ở một bước, đoán bước tiếp theo',prompt:'Theo dõi điều thay đổi trước khi bấm bước tiếp.',text:design.algorithm[0],visual:{...dataVisual,kind:def.course.id==='linear'&&lesson.id===1?'course':'trace'}},
     activity('predict','Đến lượt bạn: dự đoán kết quả','practice'),
-    {id:'code-model',stage:'model',kind:'worked',title:def.course.id==='git'?'Từ ý tưởng đến lệnh':'Từ hình đến vài dòng code',prompt:'Đọc từng đoạn và liên hệ với ví dụ.',text:'Chú ý phần nhận dữ liệu, phép xử lý và kết quả được trả về.',code,annotations:design.annotations??annotationsFor(code,design),visual:dataVisual},
+    {id:'code-model',stage:'model',kind:'worked',title:def.course.languages?.includes('shell')?'Từ ý tưởng đến lệnh':'Từ hình đến vài dòng code',prompt:'Đọc từng đoạn và liên hệ với ví dụ.',text:def.course.languages?.includes('shell')?'Đọc lệnh và quan sát trạng thái nào thay đổi sau mỗi bước.':'Chú ý phần nhận dữ liệu, phép xử lý và kết quả được trả về.',code,annotations:design.annotations??annotationsFor(code,design),visual:dataVisual},
     activity('fill','Hoàn thiện phần còn thiếu','guided'),
     {id:'misconception',stage:'practice',kind:'story',title:'Một lỗi dễ mắc',prompt:design.misconception.wrong,text:design.misconception.why+' '+design.misconception.repair,visual:dataVisual},
     activity('debug','Tìm lỗi trước khi chạy','practice'),
     activity('boundary','Thử trường hợp khác thường','transfer'),
     activity('transfer','Mang ý tưởng sang tình huống mới','transfer'),
-    {id:'independent-code',stage:'code',kind:'code',title:def.course.id==='git'?'Tự thao tác trên kho mới':'Tự viết lời giải của bạn',prompt:design.transfer.prompt,text:design.transfer.explanation},
+    {id:'independent-code',stage:'code',kind:'code',title:def.course.id==='docker'?'Tự vận hành dịch vụ mới':def.course.id==='git'?'Tự thao tác trên kho mới':'Tự viết lời giải của bạn',prompt:design.transfer.prompt,text:design.transfer.explanation},
     {id:'recap',stage:'transfer',kind:'story',title:'Bạn vừa làm được gì?',prompt:'Thử nói lại ý chính trước khi kiểm tra.',text:design.goals.join(' '),explanations:[design.misconception.repair,...design.algorithm.slice(-1)]},
   ];
   return{version:TEACHING_VERSION,objectives:design.goals,prerequisites:design.bridges??[],glossary:design.vocabulary??[],steps,summary:design.goals,sample,trace:workedTrace(def,lesson,sample),
@@ -191,7 +201,7 @@ function mutatedCandidates(value){
   return Object.keys(value).length?Object.entries(value).flatMap(([k,v])=>mutatedCandidates(v).slice(0,3).map(n=>({...value,[k]:n}))):[{value:0},{value:1}];
 }
 function traceRow(def,pid,seed){
-  if(def.traceQuestion&&['linear','git'].includes(def.course.id)){
+  if(def.traceQuestion&&['linear','git','docker'].includes(def.course.id)){
     const t=def.traceQuestion(pid,seed);
     return{...t,wrongAnswers:t.wrongAnswers.filter(v=>stable(v)!==stable(t.answer))};
   }

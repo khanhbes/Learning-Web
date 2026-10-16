@@ -1,0 +1,430 @@
+[
+  {
+    "id": "DOCKER-782889150",
+    "prefix": "782889150",
+    "file": "782889150_1688612098901258_8794308366115119219_n.jpg",
+    "sha256": "c2590a23b1853ad289ef579ebf58adcef82364f286742e5a731297a4981415d6",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 1,
+    "topic": "Build, context, cache và multi-stage",
+    "lessonIds": [
+      9,
+      10,
+      11,
+      25,
+      29
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 9, 10, 11, 25, 29",
+    "interviewIds": [],
+    "url": "/sources/docker/782889150_1688612098901258_8794308366115119219_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-784541700",
+    "prefix": "784541700",
+    "file": "784541700_1688612242234577_8389436398280004873_n.jpg",
+    "sha256": "4875d0b9fd6391fac96ddca8a31037066764cbea3e0130ba6cf9504c92c07194",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 2,
+    "topic": "Volumes và storage",
+    "lessonIds": [
+      4,
+      13,
+      15,
+      27
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 4, 13, 15, 27",
+    "interviewIds": [],
+    "url": "/sources/docker/784541700_1688612242234577_8389436398280004873_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-784716847",
+    "prefix": "784716847",
+    "file": "784716847_1688612225567912_1980654215303590731_n.jpg",
+    "sha256": "9da3a4bd96bd08be6230f8d808438d09e793068c23c72f185006214b4d643db3",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 3,
+    "topic": "Docker networking và DNS",
+    "lessonIds": [
+      5,
+      14,
+      16,
+      17
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 5, 14, 16, 17",
+    "interviewIds": [],
+    "url": "/sources/docker/784716847_1688612225567912_1980654215303590731_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-785281575",
+    "prefix": "785281575",
+    "file": "785281575_1688612492234552_4481319659753119658_n.jpg",
+    "sha256": "6341de70b3896a28ed72706c2de1d255e00f63394fddda0ebd6db007399356d0",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 4,
+    "topic": "Quản lý CPU, memory và dung lượng",
+    "lessonIds": [
+      19,
+      22,
+      30
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 19, 22, 30",
+    "interviewIds": [],
+    "url": "/sources/docker/785281575_1688612492234552_4481319659753119658_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-785282149",
+    "prefix": "785282149",
+    "file": "785282149_1688611985567936_5351460492021279829_n.jpg",
+    "sha256": "c919ed5800210283ef855677275da70cee264be2371d2c0e1740d775899a919f",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 5,
+    "topic": "Kiến trúc client, daemon, host và registry",
+    "lessonIds": [
+      2,
+      3,
+      26
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 2, 3, 26",
+    "interviewIds": [],
+    "url": "/sources/docker/785282149_1688611985567936_5351460492021279829_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-785600098",
+    "prefix": "785600098",
+    "file": "785600098_1688612075567927_6604932392909176168_n.jpg",
+    "sha256": "c0f6ce763132a55cd6cc8c42227ba9930c027b2b2dba692dcf50eeb532e60c3c",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 6,
+    "topic": "Images, layer, ID và tag",
+    "lessonIds": [
+      1,
+      7,
+      9,
+      26
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 1, 7, 9, 26",
+    "interviewIds": [],
+    "url": "/sources/docker/785600098_1688612075567927_6604932392909176168_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-785600147",
+    "prefix": "785600147",
+    "file": "785600147_1688612622234539_7031643688873398578_n.jpg",
+    "sha256": "ed16c2c6312c21d3b530d141ee858412fb1128cc878809c183f56d177c856660",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 7,
+    "topic": "Logging và troubleshooting",
+    "lessonIds": [
+      6,
+      21,
+      22,
+      30
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 6, 21, 22, 30",
+    "interviewIds": [],
+    "url": "/sources/docker/785600147_1688612622234539_7031643688873398578_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-785678118",
+    "prefix": "785678118",
+    "file": "785678118_1688611992234602_6378431465262984730_n.jpg",
+    "sha256": "cb10967b2f85df546c6d305362f086f0fe2511d3ce5ee70bbcfea7f36499d62e",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 8,
+    "topic": "Bảng tra cứu lệnh Docker",
+    "lessonIds": [
+      3,
+      4,
+      6,
+      8,
+      22,
+      24
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 3, 4, 6, 8, 22, 24",
+    "interviewIds": [],
+    "url": "/sources/docker/785678118_1688611992234602_6378431465262984730_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-785759123",
+    "prefix": "785759123",
+    "file": "785759123_1688611908901277_1067805582805415980_n.jpg",
+    "sha256": "5da9f60931055656964b053b2e794f331a7644369804d50e761c55a3b7337fe4",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 9,
+    "topic": "Cài đặt và kiến thức cơ bản",
+    "lessonIds": [
+      1,
+      2,
+      3
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 1, 2, 3",
+    "interviewIds": [],
+    "url": "/sources/docker/785759123_1688611908901277_1067805582805415980_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-786070021",
+    "prefix": "786070021",
+    "file": "786070021_1688611912234610_4347034376921738069_n.jpg",
+    "sha256": "1bfef12b318dd6f5a0666e5e8807c8026f8f66cfcfa9a274716bbeb7d6f01cc1",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 10,
+    "topic": "Docker là gì, VM và container",
+    "lessonIds": [
+      1,
+      2
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 1, 2",
+    "interviewIds": [],
+    "url": "/sources/docker/786070021_1688611912234610_4347034376921738069_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-786352935",
+    "prefix": "786352935",
+    "file": "786352935_1688612638901204_8983010612183840809_n.jpg",
+    "sha256": "59426dd596764b604d5c055b62a9ddc3752bc8d71132e481aa1a9daf217c21ba",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 11,
+    "topic": "Production và mười câu phỏng vấn",
+    "lessonIds": [
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 23, 24, 25, 26, 27, 28, 29, 30",
+    "interviewIds": [
+      "docker-container",
+      "docker-architecture",
+      "docker-copy",
+      "docker-layers",
+      "docker-size",
+      "docker-multistage",
+      "docker-storage",
+      "docker-compose",
+      "docker-secret",
+      "docker-security"
+    ],
+    "url": "/sources/docker/786352935_1688612638901204_8983010612183840809_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-786453044",
+    "prefix": "786453044",
+    "file": "786453044_1688612198901248_3395203200790620533_n.jpg",
+    "sha256": "d335e5a0be21302416b93b7db8be5a6190456ba28e988f1e6e48295b4f1b99e7",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 12,
+    "topic": "Containers và vòng đời",
+    "lessonIds": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 3, 4, 5, 6",
+    "interviewIds": [],
+    "url": "/sources/docker/786453044_1688612198901248_3395203200790620533_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-786888780",
+    "prefix": "786888780",
+    "file": "786888780_1688612345567900_2236727894258289936_n.jpg",
+    "sha256": "18f3dcc818d6c91a94b90d1c001559df89f99e385307f660f17cd4ea1a36c4a2",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 13,
+    "topic": "Environment và secrets",
+    "lessonIds": [
+      12,
+      20,
+      28
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 12, 20, 28",
+    "interviewIds": [],
+    "url": "/sources/docker/786888780_1688612345567900_2236727894258289936_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-786898952",
+    "prefix": "786898952",
+    "file": "786898952_1688612545567880_808315935690898565_n.jpg",
+    "sha256": "37b3a86f6730636fd4f90065e726be1ffeddec4f2a58de3d4c544b575124dd1a",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 14,
+    "topic": "Registry và phiên bản image",
+    "lessonIds": [
+      7,
+      26,
+      29
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 7, 26, 29",
+    "interviewIds": [],
+    "url": "/sources/docker/786898952_1688612545567880_808315935690898565_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-787036366",
+    "prefix": "787036366",
+    "file": "787036366_1688612322234569_7454446923509159300_n.jpg",
+    "sha256": "5f3a2f1e976348d4f8522f73ddaef0b1965105ba04dc9666fc20988d33f65a74",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 15,
+    "topic": "Compose production, healthcheck và secrets",
+    "lessonIds": [
+      18,
+      19,
+      21,
+      28
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 18, 19, 21, 28",
+    "interviewIds": [],
+    "url": "/sources/docker/787036366_1688612322234569_7454446923509159300_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-787167917",
+    "prefix": "787167917",
+    "file": "787167917_1688612022234599_1622662145451792987_n.jpg",
+    "sha256": "a823ac3822fa4cb73da9c7881ea64463e792a94a77d401791f8d981911208289",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 16,
+    "topic": "Dockerfile nền tảng",
+    "lessonIds": [
+      9,
+      10,
+      12
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 9, 10, 12",
+    "interviewIds": [],
+    "url": "/sources/docker/787167917_1688612022234599_1622662145451792987_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-788574798",
+    "prefix": "788574798",
+    "file": "788574798_1688612052234596_5359560757831633782_n.jpg",
+    "sha256": "1813a2e2e4a7e0229c847a3126185a81ae53516a306307c922c674753e3a69a6",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 17,
+    "topic": "Dockerfile thực hành production",
+    "lessonIds": [
+      10,
+      11,
+      20,
+      25
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 10, 11, 20, 25",
+    "interviewIds": [],
+    "url": "/sources/docker/788574798_1688612052234596_5359560757831633782_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-790476147",
+    "prefix": "790476147",
+    "file": "790476147_1688612495567885_8621357391312593661_n.jpg",
+    "sha256": "ca8a8774e05ed4e3f84a289eb55e8f31e5973b5553bdb6134781f83e093a1894",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 18,
+    "topic": "Docker security",
+    "lessonIds": [
+      12,
+      20,
+      23,
+      30
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 12, 20, 23, 30",
+    "interviewIds": [],
+    "url": "/sources/docker/790476147_1688612495567885_8621357391312593661_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-792133575",
+    "prefix": "792133575",
+    "file": "792133575_1688612302234571_8934683609835026111_n.jpg",
+    "sha256": "6dd1228a89654d4f8273326e66e5c5b6b470289b1699941cbf52fc8dcb724b70",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 19,
+    "topic": "Compose, services và dependencies",
+    "lessonIds": [
+      17,
+      18,
+      28
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 17, 18, 28",
+    "interviewIds": [],
+    "url": "/sources/docker/792133575_1688612302234571_8934683609835026111_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  },
+  {
+    "id": "DOCKER-792404634",
+    "prefix": "792404634",
+    "file": "792404634_1688611885567946_4906664068565002092_n.jpg",
+    "sha256": "2d75e49c80607a2ab18730da1b4f1d5f4210764516cf1864953743233668bdde",
+    "sourceDirectory": "Docker",
+    "collection": "Docker — Cẩm nang toàn tập",
+    "pack": "docker-handbook",
+    "page": 20,
+    "topic": "Bìa và mục lục Docker",
+    "lessonIds": [
+      1,
+      24,
+      30
+    ],
+    "review": "Ôn sơ đồ và tình huống ở buổi 1, 24, 30",
+    "interviewIds": [],
+    "url": "/sources/docker/792404634_1688611885567946_4906664068565002092_n.jpg",
+    "note": "Đã đọc toàn trang qua contact sheet; bài viết lại theo tình huống, có hiệu đính và chỉ rõ giới hạn mô phỏng."
+  }
+]
