@@ -1,0 +1,354 @@
+{
+  "version": 1,
+  "artboard": "Bitty",
+  "stateMachine": "MascotSM",
+  "scriptFree": true,
+  "artboardSize": [
+    360,
+    360
+  ],
+  "sourceSize": [
+    256,
+    256
+  ],
+  "animationPadding": 52,
+  "palette": {
+    "mint": "#76DEC1",
+    "green": "#3AA58E",
+    "ink": "#243E4B",
+    "cream": "#FFF9E9",
+    "gold": "#F3CB65",
+    "coral": "#F4887E"
+  },
+  "states": [
+    {
+      "state": "idle_breathe",
+      "index": 0,
+      "duration": 2800,
+      "loop": true,
+      "priority": 0,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "idle_blink",
+      "index": 1,
+      "duration": 160,
+      "loop": false,
+      "priority": 5,
+      "interruptible": true,
+      "blend": 40,
+      "fps": 60
+    },
+    {
+      "state": "idle_look",
+      "index": 2,
+      "duration": 1800,
+      "loop": true,
+      "priority": 0,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "idle_bored",
+      "index": 3,
+      "duration": 2600,
+      "loop": false,
+      "priority": 5,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "idle_sleep",
+      "index": 4,
+      "duration": 3000,
+      "loop": true,
+      "priority": 0,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "wave_hello",
+      "index": 5,
+      "duration": 1100,
+      "loop": false,
+      "priority": 30,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "teach_talk",
+      "index": 6,
+      "duration": 1800,
+      "loop": true,
+      "priority": 20,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "teach_point",
+      "index": 7,
+      "duration": 1500,
+      "loop": false,
+      "priority": 25,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "teach_think",
+      "index": 8,
+      "duration": 2400,
+      "loop": true,
+      "priority": 20,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "teach_idea",
+      "index": 9,
+      "duration": 1700,
+      "loop": false,
+      "priority": 40,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "teach_code",
+      "index": 10,
+      "duration": 2000,
+      "loop": true,
+      "priority": 20,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "answer_correct",
+      "index": 11,
+      "duration": 1000,
+      "loop": false,
+      "priority": 60,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "answer_correct_combo",
+      "index": 12,
+      "duration": 1400,
+      "loop": false,
+      "priority": 60,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "answer_wrong",
+      "index": 13,
+      "duration": 1800,
+      "loop": false,
+      "priority": 65,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "answer_almost",
+      "index": 14,
+      "duration": 1000,
+      "loop": false,
+      "priority": 50,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "timer_hurry",
+      "index": 15,
+      "duration": 1800,
+      "loop": true,
+      "priority": 70,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "lesson_complete",
+      "index": 16,
+      "duration": 2800,
+      "loop": false,
+      "priority": 85,
+      "interruptible": false,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "perfect_score",
+      "index": 17,
+      "duration": 3600,
+      "loop": false,
+      "priority": 95,
+      "interruptible": false,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "streak_up",
+      "index": 18,
+      "duration": 2200,
+      "loop": false,
+      "priority": 80,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "streak_lost",
+      "index": 19,
+      "duration": 2400,
+      "loop": false,
+      "priority": 75,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "level_up",
+      "index": 20,
+      "duration": 4600,
+      "loop": false,
+      "priority": 100,
+      "interruptible": false,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "badge_unlock",
+      "index": 21,
+      "duration": 2300,
+      "loop": false,
+      "priority": 85,
+      "interruptible": false,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "xp_gain",
+      "index": 22,
+      "duration": 900,
+      "loop": false,
+      "priority": 55,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "cheer_encourage",
+      "index": 23,
+      "duration": 1800,
+      "loop": false,
+      "priority": 45,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "loading",
+      "index": 24,
+      "duration": 1400,
+      "loop": true,
+      "priority": 10,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "error_404",
+      "index": 25,
+      "duration": 2300,
+      "loop": false,
+      "priority": 75,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    },
+    {
+      "state": "offline",
+      "index": 26,
+      "duration": 2200,
+      "loop": true,
+      "priority": 70,
+      "interruptible": true,
+      "blend": 120,
+      "fps": 60
+    }
+  ],
+  "inputs": {
+    "triggers": [
+      "wave",
+      "correct",
+      "wrong",
+      "almost",
+      "complete",
+      "perfect",
+      "levelUp",
+      "streakUp",
+      "streakLost",
+      "badge",
+      "hint",
+      "hurry",
+      "cheer",
+      "loading",
+      "play"
+    ],
+    "booleans": [
+      "isTalking",
+      "isThinking",
+      "isSleeping",
+      "isCoding"
+    ],
+    "numbers": {
+      "viseme": [
+        0,
+        5
+      ],
+      "combo": [
+        0,
+        10
+      ],
+      "lookX": [
+        -1,
+        1
+      ],
+      "lookY": [
+        -1,
+        1
+      ],
+      "xp": [
+        0,
+        999
+      ],
+      "mood": [
+        0,
+        4
+      ],
+      "stateIndex": [
+        0,
+        26
+      ],
+      "pointDirection": [
+        -1,
+        1
+      ]
+    }
+  }
+}

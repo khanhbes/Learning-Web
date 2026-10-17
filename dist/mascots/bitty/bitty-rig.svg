@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 256 256" role="img" aria-labelledby="bitty-title bitty-desc">
+  <title id="bitty-title">Bitty — mèo robot đồng hành cùng BytePath</title>
+  <desc id="bitty-desc">Sinh vật tròn màu bạc hà, tai mèo, ăng-ten cảm xúc, mắt lớn và một chiếc răng cửa. Các nhóm được tách riêng để dựng rig 2D.</desc>
+  <g id="shadow" inkscape:label="shadow"><ellipse cx="128" cy="235" rx="63" ry="10" fill="#243E4B" opacity=".13"/></g>
+  <g id="tail" inkscape:label="tail"><path d="M184 184c32 13 43-2 37-22" fill="none" stroke="#3AA58E" stroke-width="19" stroke-linecap="round"/><path d="M221 162q-4-8-10-8" fill="none" stroke="#FFF9E9" stroke-width="10" stroke-linecap="round"/></g>
+  <g id="leg_L" inkscape:label="leg_L"><path d="M78 202v21c0 9 8 12 23 12h12v-35" fill="#3AA58E"/><path d="M85 225h19" stroke="#76DEC1" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="leg_R" inkscape:label="leg_R"><path d="M143 200v35h14c16 0 22-5 22-13v-20" fill="#3AA58E"/><path d="M151 225h19" stroke="#76DEC1" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="body" inkscape:label="body"><path d="M62 118c-9 23-13 41-9 61 7 35 34 47 75 47s70-16 77-47c5-21-1-43-10-61Z" fill="#76DEC1"/></g>
+  <g id="belly" inkscape:label="belly"><ellipse cx="128" cy="179" rx="42" ry="32" fill="#FFF9E9"/><path d="m113 176-9 7 9 7m30-14 9 7-9 7" fill="none" stroke="#3AA58E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="128" cy="183" r="3" fill="#F3CB65"/></g>
+  <g id="arm_L" inkscape:label="arm_L"><path d="M62 151c-17 3-25 20-21 30 4 10 15 9 20 1l9-20" fill="#3AA58E"/><path d="M47 176q3 5 7 2" fill="none" stroke="#76DEC1" stroke-width="3" stroke-linecap="round"/></g>
+  <g id="arm_R" inkscape:label="arm_R"><path d="M194 151c17 3 25 20 21 30-4 10-15 9-20 1l-9-20" fill="#3AA58E"/><path d="M202 178q4 2 7-2" fill="none" stroke="#76DEC1" stroke-width="3" stroke-linecap="round"/></g>
+  <g id="ear_L" inkscape:label="ear_L"><path d="M61 80C45 60 45 35 52 28c8-6 34 12 46 28Z" fill="#3AA58E"/><path d="M61 61q-8-14-6-21 15 5 23 15Z" fill="#F4887E"/></g>
+  <g id="ear_R" inkscape:label="ear_R"><path d="M158 56c12-16 37-34 46-28 7 7 7 32-9 52Z" fill="#3AA58E"/><path d="M177 55q9-10 23-15 2 8-6 21Z" fill="#F4887E"/></g>
+  <g id="antenna_stem" inkscape:label="antenna_stem"><path d="M127 48c-6-15-2-24 5-30" fill="none" stroke="#243E4B" stroke-width="5" stroke-linecap="round"/></g>
+  <g id="antenna_tip" inkscape:label="antenna_tip"><circle cx="133" cy="18" r="13" fill="#76DEC1" opacity=".2"/><circle cx="133" cy="18" r="8" fill="#3AA58E"/><circle cx="131" cy="15" r="3" fill="#FFF9E9"/></g>
+  <g id="head" inkscape:label="head"><ellipse cx="128" cy="106" rx="79" ry="66" fill="#76DEC1"/><path d="M69 86c10-25 41-37 72-32" fill="none" stroke="#FFF9E9" stroke-width="7" stroke-linecap="round" opacity=".42"/><path d="M70 93c7-21 32-29 58-29s52 8 59 29c6 20 3 41-13 53-12 9-30 14-46 14s-35-5-46-14c-16-12-19-33-12-53Z" fill="#FFF9E9"/></g>
+  <g id="eye_L" inkscape:label="eye_L"><ellipse cx="101" cy="104" rx="17" ry="22" fill="#FFF9E9"/></g>
+  <g id="eye_R" inkscape:label="eye_R"><ellipse cx="155" cy="104" rx="17" ry="22" fill="#FFF9E9"/></g>
+  <g id="pupil_L" inkscape:label="pupil_L"><ellipse cx="101" cy="104" rx="12" ry="18" fill="#243E4B"/><circle cx="98" cy="98" r="4" fill="#FFF9E9"/><circle cx="106" cy="110" r="2" fill="#FFF9E9"/></g>
+  <g id="pupil_R" inkscape:label="pupil_R"><ellipse cx="155" cy="104" rx="12" ry="18" fill="#243E4B"/><circle cx="152" cy="98" r="4" fill="#FFF9E9"/><circle cx="160" cy="110" r="2" fill="#FFF9E9"/></g>
+  <g id="eyelid_L" inkscape:label="eyelid_L" opacity="0"><path d="M81 83h40v45H81Z" fill="#FFF9E9"/><path d="M90 106q11 9 22 0" fill="none" stroke="#243E4B" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="eyelid_R" inkscape:label="eyelid_R" opacity="0"><path d="M135 83h40v45h-40Z" fill="#FFF9E9"/><path d="M144 106q11 9 22 0" fill="none" stroke="#243E4B" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="eyebrow_L" inkscape:label="eyebrow_L"><path d="M91 78q10-5 19 0" fill="none" stroke="#3AA58E" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="eyebrow_R" inkscape:label="eyebrow_R"><path d="M145 78q10-5 19 0" fill="none" stroke="#3AA58E" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="cheek_L" inkscape:label="cheek_L"><ellipse cx="81" cy="128" rx="10" ry="6" fill="#F4887E" opacity=".68"/></g>
+  <g id="cheek_R" inkscape:label="cheek_R"><ellipse cx="175" cy="128" rx="10" ry="6" fill="#F4887E" opacity=".68"/></g>
+  <g id="mouth_closed" inkscape:label="mouth_closed" opacity="0"><path d="M119 137q9 5 18 0" fill="none" stroke="#243E4B" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="mouth_open_A" inkscape:label="mouth_open_A" opacity="0"><ellipse cx="128" cy="140" rx="13" ry="15" fill="#243E4B"/><path d="M124 126h8v7h-8Z" fill="#FFF9E9"/></g>
+  <g id="mouth_open_E" inkscape:label="mouth_open_E" opacity="0"><rect x="112" y="131" width="32" height="17" rx="8" fill="#243E4B"/><path d="M124 132h8v6h-8Z" fill="#FFF9E9"/></g>
+  <g id="mouth_open_O" inkscape:label="mouth_open_O" opacity="0"><ellipse cx="128" cy="140" rx="9" ry="12" fill="#243E4B"/></g>
+  <g id="mouth_smile" inkscape:label="mouth_smile"><path d="M111 132q17 6 34 0c-1 16-9 23-17 23s-16-7-17-23Z" fill="#243E4B"/><path d="M124 135h8v7h-8Z" fill="#FFF9E9"/></g>
+  <g id="mouth_sad" inkscape:label="mouth_sad" opacity="0"><path d="M117 145q11-13 22 0" fill="none" stroke="#243E4B" stroke-width="4" stroke-linecap="round"/></g>
+  <g id="mouth_wow" inkscape:label="mouth_wow" opacity="0"><ellipse cx="128" cy="140" rx="12" ry="15" fill="#243E4B"/><path d="M125 127h6v5h-6Z" fill="#FFF9E9"/></g>
+  <g id="tongue" inkscape:label="tongue"><path d="M118 149q10-10 20 0c-3 5-6 6-10 6s-7-1-10-6Z" fill="#F4887E"/></g>
+</svg>
