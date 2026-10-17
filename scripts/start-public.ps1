@@ -58,7 +58,7 @@ if ($tunnelProcess -and $publicAppProcess -and $state.db -eq $database) {
             Write-Host ('Public BytePath: ' + $(if ($state.publicOrigin) { $state.publicOrigin } else { $state.origin }))
             Write-Host ('Login password is in ' + $accessPath)
             Assert-PublicStartAllowed
-            if(-not $Recovery -and (Get-Content -Raw -LiteralPath $desiredPath | ConvertFrom-Json).recoveryEnabled){Start-PublicWatchdog $projectRoot}
+            if((Get-Content -Raw -LiteralPath $desiredPath | ConvertFrom-Json).recoveryEnabled){Start-PublicWatchdog $projectRoot}
             exit 0
         }
         Write-Host 'The old tunnel no longer responds. Reconnecting with the existing password and database.'
@@ -134,7 +134,7 @@ try {
     Write-Host ('Login password is in ' + $accessPath)
     Write-Host 'Keep this computer awake and connected. The tunnel fallback URL changes after stopping and starting.'
     Assert-PublicStartAllowed
-    if(-not $Recovery -and (Get-Content -Raw -LiteralPath $desiredPath | ConvertFrom-Json).recoveryEnabled){Start-PublicWatchdog $projectRoot}
+    if((Get-Content -Raw -LiteralPath $desiredPath | ConvertFrom-Json).recoveryEnabled){Start-PublicWatchdog $projectRoot}
 } catch {
     if($Recovery){
         Stop-VerifiedPublicProcess $publicAppProcess

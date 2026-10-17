@@ -24,11 +24,31 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-public.ps1
 
 Monitor kiểm tra mỗi phút; sau ba lần lỗi liên tiếp, chỉ xử lý khi Internet đã có lại. Nếu tunnel khỏe nhưng Worker lỗi, nó cập nhật alias riêng. Nếu cần khởi động lại, nó đọc SQLite ở chế độ readonly và hoãn khi job đang queued/running còn có tiến trình server hoặc cổng đang lắng nghe. Khi server đã chết và cổng trống, các job bị gián đoạn được backend chuyển thành lỗi hạ tầng để chấm lại, không đánh trượt. Nếu không thể đọc trạng thái job, monitor hoãn sửa. Khởi động lại vẫn có thể gây gián đoạn ngắn; đây không phải bảo đảm uptime.
 
-Lỗi phục hồi có backoff 2/5/10/30 phút. Không gọi Gemini, không chấm lại bài, không cài service hoặc task tự mở lúc Windows boot. Các PID được kiểm tra tên tiến trình, đường dẫn script và thời điểm bắt đầu trước khi dừng.
+Lỗi phục hồi có backoff 2/5/10/30 phút. Monitor không gọi Gemini, không chấm lại bài và không cài Windows service. Các PID được kiểm tra tên tiến trình, đường dẫn script và thời điểm bắt đầu trước khi dừng. Chạy `start-public.ps1 -Recovery` thành công cũng khôi phục monitor nếu tính năng tự phục hồi đã được bật.
+
+### Khôi phục sau khi đăng nhập Windows
+
+Sau khi đã cho phép tự phục hồi, có thể cài tác vụ cho tài khoản Windows hiện tại:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install-public-autostart.ps1
+```
+
+Tác vụ `BytePathPublicRecovery` chạy ẩn khi đăng nhập và kiểm tra mỗi năm phút để mở lại monitor nếu nó đã dừng bất ngờ. Tác vụ dùng quyền Limited, không lưu mật khẩu Windows, mật khẩu web hoặc API key. Bootstrap dùng đường dẫn tuyệt đối, kiểm tra lựa chọn đã lưu và không tạo thêm monitor khi tiến trình đã có. Nếu backend đang chạy, monitor sẽ kiểm tra tunnel và alias mà không khởi động lại backend. Nếu chưa có mạng lúc đăng nhập, monitor chờ và thử lại.
+
+Tác vụ chỉ hoạt động khi cả `enabled` và `recoveryEnabled` trong trạng thái riêng đều bật. **Stop Public BytePath.cmd** đặt `enabled=false`; đăng nhập hoặc lịch kiểm tra không mở lại web sau khi bạn chủ động Stop. Chạy Start Public để mở lại. Máy vẫn phải bật, có Internet, không sleep và người dùng đã đăng nhập Windows; đây không phải dịch vụ hosting độc lập.
+
+Để gỡ tác vụ mà không dừng website đang chạy:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install-public-autostart.ps1 -Remove
+```
 
 **Stop Public BytePath.cmd** đánh dấu dừng trước khi đóng monitor, tiến trình phục hồi, server và tunnel; monitor không tự bật lại web sau thao tác Stop. Lựa chọn bật monitor được giữ cho lần Start sau. Log riêng ở `.data/public/watchdog.log` và `.data/public/recovery-last.log`. Wrangler phải còn đăng nhập để tự cập nhật alias; monitor không tự mở màn đăng nhập hoặc mua dịch vụ.
 
 Kiểm thử chính sách và đọc job: `node --test tests/public-recovery.test.mjs tests/tunnel.test.mjs`. Trên Windows, `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/public-stop.integration.ps1` kiểm tra Stop trong cửa sổ tạo tiến trình/ghi PID bằng server giả riêng trong `output/`, không dừng website thật.
+
+`powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/public-bootstrap.integration.ps1` kiểm tra cờ tắt, không tạo monitor trùng, không đụng PID của tiến trình khác và không đảo ngược Stop bằng fixture riêng trong `output/`.
 
 ## Quyền truy cập và dữ liệu
 
